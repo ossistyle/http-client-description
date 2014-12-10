@@ -1,0 +1,32 @@
+{
+    "name": "ossistyle/http-client-description",
+    "description": "Description of project http-client-description.",
+    "authors": [
+        {
+            "name": "thoffmann",
+            "email": "thoffmann@ebay.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "~4.2",
+        "mockery/mockery": "0.9.1",
+        "psr/log": "~1.0",
+        "guzzlehttp/log-subscriber": "~1.0"        
+    },
+    "require": {
+        "php": ">=5.4",
+        "guzzlehttp/guzzle": "~4.2",        
+        "guzzlehttp/guzzle-services": "~0.3",
+        "ossistyle/http-client": "~1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Via\\HttpDescription\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Via\\HttpDescription\\Tests\\": "tests/"
+        }
+    }
+}
