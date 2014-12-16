@@ -1,0 +1,51 @@
+{
+    "operations": {
+        "getAll": {
+            "httpMethod": "GET",
+            "uri": "Catalogs",            
+            "responseModel": "Generic",
+            "parameters": {
+                
+            }
+        },
+        "getById": {
+            "httpMethod": "GET",
+            "uri": "Catalogs/{id}",            
+            "responseModel": "Generic",
+            "parameters": {
+                "id": {
+                    "location": "uri",
+                    "required": true,
+                    "type": "integer"
+                }
+            }
+        },
+        "post": {
+            "httpMethod": "POST",
+            "uri": "Catalogs",            
+            "responseModel": "Generic",
+            "parameters": {
+                "name": {
+                    "location": "json",
+                    "required": true,
+                    "type": "string",
+                    "sentAs": "Name"
+                },
+                "is_root_level": {
+                    "location": "json",                    
+                    "type": "boolean",
+                    "sentAs": "IsRootLevel",
+                    "static": true
+                }
+            }
+        }
+    },
+    "models": {
+        "Generic": {
+            "type": "object",            
+            "additionalProperties": {
+                "location": "json"
+            }
+        }
+    }
+}
