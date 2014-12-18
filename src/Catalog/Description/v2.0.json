@@ -23,7 +23,7 @@
         "post": {
             "httpMethod": "POST",
             "uri": "Catalogs",            
-            "responseModel": "Generic",
+            "responseModel": "CatalogOutput",
             "parameters": {
                 "name": {
                     "location": "json",
@@ -45,6 +45,29 @@
             "type": "object",            
             "additionalProperties": {
                 "location": "json"
+            }
+        },        
+        "CatalogOutput": {
+            "type": "object",            
+            "additionalProperties": {
+                "$ref": "Catalog"
+            }
+        },
+        "Catalog": {
+            "type": "object",
+            "properties": {
+                "Name": {
+                    "location": "json",
+                    "type": "string"
+                },
+                "IsRootLevel": {
+                    "location": "json",
+                    "type": "boolean"
+                },
+                "ForeignId": {
+                    "location": "json",
+                    "type": "string"
+                 }
             }
         }
     }

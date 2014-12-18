@@ -13,7 +13,6 @@ namespace Via\Common\Event;
 
 use GuzzleHttp\Event\AbstractEvent;
 use GuzzleHttp\Message\RequestInterface;
-use Via\Common\Auth\Catalog;
 use Via\Common\Command\CommandInterface;
 
 /**
@@ -72,21 +71,4 @@ class PrepareEvent extends AbstractEvent
     {
         return $this->request;
     }
-
-    /**
-     * @param Catalog $catalog
-     */
-    public function setCatalog(Catalog $catalog)
-    {
-        $this->catalog = $catalog;
-    }
-
-    /**
-     * @return Catalog
-     */
-    public function getCatalog()
-    {
-        return $this->catalog;
-    }
-
 }

@@ -14,7 +14,6 @@ namespace Via\Common\Service;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Command\Guzzle\Description;
-use GuzzleHttp\Command\Guzzle\Subscriber\ValidateInput;
 use InvalidArgumentException;
 use RuntimeException;
 use Symfony\Component\Serializer\Encoder\JsonDecode;
@@ -22,6 +21,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Yaml\Parser;
 use Via\Common\Event\AuthHandler;
 use Via\Common\Event\PrepareRequest;
+use Via\Common\Enum\EndPoint;
 
 /**
  * Description of ServiceFactory
@@ -77,13 +77,13 @@ class ServiceFactory
                     "These required options are either not set or empty: %s", implode(', ', $missing)
             ));
         }
-//        $defaults = ['urlType' => Endpoint::PUBLIC_URL_TYPE];
-//        foreach ($defaults as $key => $val)
-//        {
-//            if (empty($this->userOptions[$key])) {
-//                $this->userOptions[$key] = $val;
-//            }
-//        }
+        $defaults = ['base_url' => EndPoint::SANDBOX_URL_TYPE];
+        foreach ($defaults as $key => $val)
+        {
+            if (empty($this->userOptions[$key])) {
+                $this->userOptions[$key] = $val;
+            }
+        }
     }
 
     /**
@@ -156,7 +156,7 @@ class ServiceFactory
             $this->setDescription(new Description($array));
         }
 
-        $service = new $class($this->httpClient, $this->description);
+        $service = new $class($this->httpClient, $this->description, $this->userOptions);
 
         $parserClass = sprintf('Via\\%s\\WildcardParser', ucfirst($serviceName));
         if (class_exists($parserClass)) {

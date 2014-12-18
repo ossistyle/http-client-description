@@ -9,16 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Via\Catalog;
-
-use Via\Common\Service\AbstractService;
+namespace Via\Common\Enum;
 
 /**
- * Description of Service
+ * Description of EndPoint
  *
  * @author VIA-Online GmbH | eBay Inc. <thoffmann@ebay.com>
  */
-class Service extends AbstractService
+class EndPoint
 {
-    const STABLE_VERSION = 2.0;
+    const SANDBOX_URL_TYPE   = 'http://sandbox.api.via.de:8001/WebApi/Api/';
+    const PUBLIC_URL_TYPE    = 'adminUrl';
 }
