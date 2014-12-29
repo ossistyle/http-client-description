@@ -43,7 +43,7 @@ class CommandFactory
     public function __construct(Description $description, EmitterInterface $emitter)
     {
         $this->description = $description;
-        $this->emitter = clone $emitter;
+        $this->emitter = $emitter;
     }
 
     /**
@@ -64,7 +64,7 @@ class CommandFactory
             return false;
         }
         $operation = $this->description->getOperation($name);
-        return new Command($operation, $args, ['emitter' => $this->emitter]);
+        return new Command($name, $args, ['emitter' => clone $this->emitter]);
     }
 
 }

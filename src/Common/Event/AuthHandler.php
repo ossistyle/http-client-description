@@ -13,7 +13,8 @@ namespace Via\Common\Event;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Event\SubscriberInterface;
-use GuzzleHttp\Url;
+use Via\HttpDescription\Response\Catalog;
+use GuzzleHttp\Command\Event\PreparedEvent;
 
 /**
  * Description of AuthHandler
@@ -22,12 +23,6 @@ use GuzzleHttp\Url;
  */
 class AuthHandler implements SubscriberInterface
 {
-
-    /**
-     * @var Token The token which is the basis of authentication
-     */
-    private $token;
-
     /**
      * @var array User-defined configuration options
      */
@@ -39,11 +34,6 @@ class AuthHandler implements SubscriberInterface
     private $httpClient;
 
     /**
-     * @var \Via\Common\Auth\Catalog
-     */
-    private $catalog;
-
-    /**
      * @param ClientInterface $httpClient The HTTP client which sends requests
      * @param array $options User-defined options
      * @param Token $token An optional token that has already been
@@ -51,20 +41,16 @@ class AuthHandler implements SubscriberInterface
      * @param Catalog $catalog An optional catalog that has already
      * been populated beforehand
      */
-    public function __construct(
-    ClientInterface $httpClient, array $options, Token $token = null, Catalog $catalog = null
-    )
+    public function __construct(ClientInterface $httpClient, array $options)
     {
         $this->httpClient = $httpClient;
         $this->options = $options;
-        $this->token = $token;
-        $this->catalog = $catalog;
     }
 
     public function getEvents()
     {
         return [
-            'prepare' => ['onPrepare', 200]
+            'prepared' => ['onPrepare', 200]
         ];
     }
 
@@ -78,7 +64,7 @@ class AuthHandler implements SubscriberInterface
      * mutable, so it acts as a communication device
      * between objects.
      */
-    public function onPrepare(PrepareEvent $event)
+    public function onPrepare(PreparedEvent $event)
     {
         $event->getRequest()->setHeader('Username', $this->options['username']);
         $event->getRequest()->setHeader('Password', $this->options['password']);

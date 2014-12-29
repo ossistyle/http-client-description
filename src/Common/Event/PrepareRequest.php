@@ -10,21 +10,23 @@
  */
 
 namespace Via\Common\Event;
+#use Via\Common\Command\CommandInterface;
+
 
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Command\CommandInterface;
+use GuzzleHttp\Command\Event\PreparedEvent;
+use GuzzleHttp\Command\Guzzle\DescriptionInterface;
 use GuzzleHttp\Command\Guzzle\Operation;
 use GuzzleHttp\Event\RequestEvents;
 use GuzzleHttp\Event\SubscriberInterface;
 use GuzzleHttp\Message\RequestInterface;
-use Via\Common\Command\CommandInterface;
+use RuntimeException;
 use Via\Common\Service\RequestLocation\BodyLocation;
 use Via\Common\Service\RequestLocation\HeaderLocation;
-use Via\Common\Service\RequestLocation\QueryLocation;
 use Via\Common\Service\RequestLocation\JsonLocation;
-#use GuzzleHttp\Command\Guzzle\RequestLocation\BodyLocation;
-#use GuzzleHttp\Command\Guzzle\RequestLocation\HeaderLocation;
-#use GuzzleHttp\Command\Guzzle\RequestLocation\JsonLocation;
-#use GuzzleHttp\Command\Guzzle\RequestLocation\QueryLocation;
+use Via\Common\Service\RequestLocation\QueryLocation;
+use Via\Common\Service\RequestLocation\RequestLocationInterface;
 
 /**
  * Description of PrepareRequest
@@ -35,7 +37,7 @@ class PrepareRequest implements SubscriberInterface
 {
 
     /**
-     * @var \GuzzleHttp\ClientInterface
+     * @var ClientInterface
      */
     private $httpClient;
 
@@ -45,12 +47,17 @@ class PrepareRequest implements SubscriberInterface
     private $command;
 
     /**
+     * @var DescriptionInterface
+     */
+    private $description;
+
+    /**
      * @var RequestInterface
      */
     private $request;
 
     /**
-     * @var \Via\Common\Service\RequestLocation\RequestLocationInterface[]
+     * @var RequestLocationInterface[]
      */
     private $visitors = [];
 
@@ -59,16 +66,17 @@ class PrepareRequest implements SubscriberInterface
      * @param array $visitors An optional array of visitor objects. If left empty, defaults
      * are used
      */
-    public function __construct(ClientInterface $httpClient, array $visitors = [])
+    public function __construct(ClientInterface $httpClient, DescriptionInterface $description, array $visitors = [])
     {
         $this->httpClient = $httpClient;
+        $this->description = $description;
         $this->visitors = $visitors ? : $this->getDefaultVisitors();
     }
 
     public function getEvents()
     {
         return [
-            'prepare' => ['onPrepare', RequestEvents::EARLY]
+            'prepared' => ['onPrepare', RequestEvents::EARLY]
         ];
     }
 
@@ -76,7 +84,7 @@ class PrepareRequest implements SubscriberInterface
      * Retrieves a default array of visitor objects if none of provided by the
      * user.
      *
-     * @return \Via\Common\Service\RequestLocation\RequestLocationInterface[]
+     * @return RequestLocationInterface[]
      */
     private function getDefaultVisitors()
     {
@@ -107,16 +115,16 @@ class PrepareRequest implements SubscriberInterface
     /**
      * @param PrepareEvent $event
      */
-    public function onPrepare(PrepareEvent $event)
+    public function onPrepare(PreparedEvent $event)
     {
         if ($event->getRequest()) {
             return;
         }
-// Retrieve command from event
+        // Retrieve command from event
         $this->setCommand($event->getCommand());
-// Create request and set it
+        // Create request and set it
         $this->setRequest($this->createRequest());
-// Populate request by using visitors and then set back on event
+        // Populate request by using visitors and then set back on event
         $this->prepareRequest();
         $event->setRequest($this->request);
     }
@@ -126,13 +134,14 @@ class PrepareRequest implements SubscriberInterface
      * and HTTP method of the command.
      *
      * @return RequestInterface
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     private function createRequest()
     {
-        $operation = $this->command->getName();
+        $name = $this->command->getName();
+        $operation = $this->description->getOperation($name);
         if (null === ($uri = $operation->getUri())) {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                     "The %s operation does not have a URI set", $operation->getName()
             ));
         }
@@ -149,17 +158,19 @@ class PrepareRequest implements SubscriberInterface
      */
     private function prepareRequest()
     {
-// Get the REST operation which this request is operating against
-        $operation = $this->command->getName();
-// Traverse through all the defined parameters for this REST operation
+        // Get the REST operation which this request is operating against
+        #$operation = $this->command->getName();
+        $name = $this->command->getName();
+        $operation = $this->description->getOperation($name);
+        // Traverse through all the defined parameters for this REST operation
         foreach ($operation->getParams() as $name => $param)
         {
-// If the user has not set this input parameter, skip it
+            // If the user has not set this input parameter, skip it
             if (!$this->command[$name]) {
                 continue;
             }
-// If a visitor exists for the location of this parameter, visit
-// the request by adding the user value to the request
+            // If a visitor exists for the location of this parameter, visit
+            // the request by adding the user value to the request
             $location = $param->getLocation();
             if ($visitor = $this->getVisitor($location)) {
                 $visitor->visit($this->command, $this->request, $param, array());
@@ -176,11 +187,11 @@ class PrepareRequest implements SubscriberInterface
      *
      * @param string $name The location you want the visitor for
      *
-     * @return false|\Via\Common\Service\RequestLocation\RequestLocationInterface
+     * @return false|RequestLocationInterface
      */
     private function getVisitor($name)
     {
-// Make sure the location is registered. URIs are visited separately.
+        // Make sure the location is registered. URIs are visited separately.
         if (!isset($this->visitors[$name]) || $name == 'uri') {
             return false;
         }
@@ -203,7 +214,7 @@ class PrepareRequest implements SubscriberInterface
         $variables = [];
         foreach ($operation->getParams() as $name => $param)
         {
-// Collect params which have URI locations and are defined by user
+            // Collect params which have URI locations and are defined by user
             if ($param->getLocation() == 'uri' && ($value = $this->command[$name])) {
                 $variables[$name] = $param->filter($value);
             }

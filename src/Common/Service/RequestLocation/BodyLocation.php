@@ -14,7 +14,8 @@ namespace Via\Common\Service\RequestLocation;
 use GuzzleHttp\Command\Guzzle\Parameter;
 use GuzzleHttp\Message\RequestInterface;
 use GuzzleHttp\Stream\Stream;
-use Via\Common\Command\CommandInterface;
+#use Via\Common\Command\CommandInterface;
+use GuzzleHttp\Command\CommandInterface;
 
 /**
  * Description of BodyLocation

@@ -15,7 +15,8 @@ use GuzzleHttp\Command\Guzzle\Operation;
 use GuzzleHttp\Command\Guzzle\Parameter;
 use GuzzleHttp\Message\RequestInterface;
 use GuzzleHttp\Stream\Stream;
-use Via\Common\Command\CommandInterface;
+#use Via\Common\Command\CommandInterface;
+use GuzzleHttp\Command\CommandInterface;
 
 /**
  * Description of JsonLocation

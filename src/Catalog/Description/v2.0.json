@@ -3,7 +3,7 @@
         "getAll": {
             "httpMethod": "GET",
             "uri": "Catalogs",            
-            "responseModel": "Generic",
+            "responseModel": "CatalogOutput",
             "parameters": {
                 
             }
@@ -23,7 +23,7 @@
         "post": {
             "httpMethod": "POST",
             "uri": "Catalogs",            
-            "responseModel": "CatalogOutput",
+            "responseModel": "Generic",
             "parameters": {
                 "name": {
                     "location": "json",
@@ -35,7 +35,7 @@
                     "location": "json",                    
                     "type": "boolean",
                     "sentAs": "IsRootLevel",
-                    "static": true
+                    "required": false
                 }
             }
         }

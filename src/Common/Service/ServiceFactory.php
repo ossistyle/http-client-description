@@ -18,10 +18,9 @@ use InvalidArgumentException;
 use RuntimeException;
 use Symfony\Component\Serializer\Encoder\JsonDecode;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Yaml\Parser;
+use Via\Common\Enum\EndPoint;
 use Via\Common\Event\AuthHandler;
 use Via\Common\Event\PrepareRequest;
-use Via\Common\Enum\EndPoint;
 
 /**
  * Description of ServiceFactory
@@ -77,7 +76,7 @@ class ServiceFactory
                     "These required options are either not set or empty: %s", implode(', ', $missing)
             ));
         }
-        $defaults = ['base_url' => EndPoint::SANDBOX_URL_TYPE];
+        $defaults = ['base_url' => EndPoint::SANDBOX_URL_TYPE, 'defaults' => []];
         foreach ($defaults as $key => $val)
         {
             if (empty($this->userOptions[$key])) {
@@ -147,7 +146,7 @@ class ServiceFactory
             throw new InvalidArgumentException(sprintf("%s does not exist", $class));
         }
         if (!$this->httpClient) {
-//$options = array_merge_recursive($this->userOptions, ['defaults' => ['exceptions' => false]]);
+            //$options = array_merge_recursive($this->userOptions, ['defaults' => ['exceptions' => false]]);
             $options = $this->userOptions;
             $this->setHttpClient(new Client($options));
         }
@@ -158,14 +157,6 @@ class ServiceFactory
 
         $service = new $class($this->httpClient, $this->description, $this->userOptions);
 
-        $parserClass = sprintf('Via\\%s\\WildcardParser', ucfirst($serviceName));
-        if (class_exists($parserClass)) {
-            $service->setWildcardParser(new $parserClass($service));
-        }
-        $this->userOptions += [
-            'serviceName' => $service->getName(),
-            'serviceType' => $service->getType()
-        ];
         foreach ($this->getHandlers() as $handler)
         {
             $service->getEmitter()->attach($handler);
@@ -176,11 +167,8 @@ class ServiceFactory
     private function getHandlers()
     {
         return [
-            //new ValidateInput($this->description),
-            new PrepareRequest(clone $this->httpClient),
+            new PrepareRequest(clone $this->httpClient, $this->description),
             new AuthHandler(clone $this->httpClient, $this->userOptions),
-                //new BaseUrlHandler($this->userOptions),
-                //new ProcessResponse()
         ];
     }
 
@@ -209,30 +197,6 @@ class ServiceFactory
             $version = $class::STABLE_VERSION;
         }
         return (float) ltrim($version, 'v');
-    }
-
-    /**
-     * Internal method which returns a service's description array. This array
-     * is then passed in to a {@see Description} object for abstraction.
-     *
-     * This method takes a service name and API version, finds the appropriate
-     * YAML file in the directory tree, and returns the parsed response.
-     *
-     * @param string $serviceName The name of the service
-     * @param float $serviceVersion The version of the service
-     *
-     * @return array
-     * @throws RuntimeException No YAML file is found
-     */
-    private function findYamlArray($serviceName, $serviceVersion)
-    {
-        $path = sprintf("%s/../../%s/Description/v%.1f.yml", __DIR__, ucfirst($serviceName), $serviceVersion);
-        if (!file_exists($path)) {
-            throw new RuntimeException(sprintf(
-                    "The YAML file for this service could not be found: %s", $path
-            ));
-        }
-        return (new Parser())->parse(file_get_contents($path)) ? : [];
     }
 
     /**
