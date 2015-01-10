@@ -1,4 +1,4 @@
-http-client
+http-client-description
 ===========
 
-http-client using GuzzleHttp Client
+http-client-description using GuzzleHttp Client
