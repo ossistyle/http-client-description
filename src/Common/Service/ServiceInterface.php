@@ -9,7 +9,7 @@
 namespace Via\Common\Service;
 
 use GuzzleHttp\Command\ServiceClientInterface;
-use Via\Common\Command\CommandInterface;
+use GuzzleHttp\Command\CommandInterface;
 
 /**
  *
@@ -30,7 +30,7 @@ interface ServiceInterface #extends ServiceClientInterface
      *
      * @return string|null
      */
-    public function getType();
+    //public function getType();
 
     /**
      * Retrieve the description for this service.
@@ -72,7 +72,7 @@ interface ServiceInterface #extends ServiceClientInterface
      *
      * @return \Via\Common\Iterator\ResourceIterator
      */
-    public function getIterator($name, array $args = []);
+    //public function getIterator($name, array $args = []);
 
     /**
      * Executes a command by marshalling it into a {@see GuzzleHttp\Message\RequestInterface},

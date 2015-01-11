@@ -1,0 +1,40 @@
+{
+    "models": {
+        "MessagesOutput": {
+            "type": "object",            
+            "additionalProperties": {
+                "$ref": "Messages"
+            }
+        },
+        "Messages": {
+            "location": "json",
+            "type": "object",
+            "properties": {
+                "Code": {
+                    "location": "json",
+                    "type": "integer"
+                },
+                "Severity": {
+                    "location": "json",
+                    "type": "string"
+                },
+                "Message": {
+                    "location": "json",
+                    "type": "string"
+                },
+                "Description": {
+                    "location": "json",
+                    "type": "string"
+                },
+                "UserHelpLink": {
+                    "location": "json",
+                    "type": "string"
+                },
+                "DeveloperHelpLink": {
+                    "location": "json",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

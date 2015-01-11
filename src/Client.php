@@ -38,16 +38,14 @@ class Client
      * @param string $name The human-readable name of the service you are
      *                     trying to instantiate. Code-names are not valid
      *
-     * @param array $config Optional configuration values specific to this
-     *                      service
      *
      * @return \GuzzleHttp\Command\ServiceClientInterface
      */
-    public function getService($name, array $config = [])
+    public function getService($name)
     {
         $factory = new ServiceFactory($this->options);
 
-        return $factory->create($name, $config);
+        return $factory->create($name);
     }
 
     public function hasService($name)

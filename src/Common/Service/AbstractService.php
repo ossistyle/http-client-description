@@ -11,21 +11,29 @@
 
 namespace Via\Common\Service;
 
+use GuzzleHttp\Command\CommandInterface;
 use GuzzleHttp\Command\Guzzle\GuzzleClient;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Ring\Future\FutureInterface;
 use Via\Common\Command\CommandFactory;
+use Via\Common\Exception\CommandException;
 
 /**
  * Description of AbstractService
  *
  * @author VIA-Online GmbH | eBay Inc. <thoffmann@ebay.com>
  */
-class AbstractService extends GuzzleClient
+class AbstractService extends GuzzleClient implements ServiceInterface
 {
     /**
      * @var CommandFactory
      */
     private $commandFactory;
 
+    public function getName()
+    {
+        return $this->getDescription()->getName();
+    }
 
     public function getCommand($name, array $args = [])
     {
@@ -59,5 +67,38 @@ class AbstractService extends GuzzleClient
     public function setCommandFactory(CommandFactory $commandFactory)
     {
         $this->commandFactory = $commandFactory;
+    }
+    
+    public function getIterator($name, array $args = [])
+    {
+        $command = $this->getCommand($name, $args);
+
+        $options = $command->getOperation()->getData('iterator') ?: [];
+
+        return new ResourceIterator($this, $command, $options);
+    }
+    
+    public function execute(CommandInterface $command)
+    {
+        $trans = $this->initTransaction($command);
+
+        if ($trans->result !== null) {
+            return $trans->result;
+        }
+
+        try {
+            $trans->response = $this->getHttpClient()->send($trans->request);
+            return $trans->response instanceof FutureInterface
+                ? $this->createFutureResult($trans)
+                : $trans->result;
+        } catch (RequestException $e) {
+            $e = $e->getPrevious();
+            throw new CommandException($e->getMessage(), $this, $command,
+                $e->getRequest(), $e->getResponse()
+            );
+        } catch (\Exception $e) {
+            $msg = 'Error executing command: ' . $e->getMessage();
+            throw new CommandException($msg, $this, $command, null, null, $e);
+        }
     }
 }

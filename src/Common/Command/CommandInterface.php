@@ -17,6 +17,6 @@ use GuzzleHttp\Command\CommandInterface as GuzzleCommandInterface;
  *
  * @author VIA-Online GmbH | eBay Inc. <thoffmann@ebay.com>
  */
-interface CommandInterface extends \GuzzleHttp\Command\CommandInterface
+interface CommandInterface extends GuzzleCommandInterface
 {
 }

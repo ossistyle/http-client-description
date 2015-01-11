@@ -11,7 +11,6 @@
 
 namespace Via\Common\Exception;
 
-use GuzzleHttp\Command\Exception\CommandException as GuzzleCommandException;
 use GuzzleHttp\Message\RequestInterface;
 use GuzzleHttp\Message\ResponseInterface;
 use Via\Common\Command\CommandInterface;
@@ -32,15 +31,20 @@ class CommandException extends \RuntimeException
     private $command;
 
     /**
-     * @param string $message Exception message
-     * @param ServiceInterface $client Client that sent the command
-     * @param CommandInterface $command Command that failed
-     * @param RequestInterface $request Request that was sent
+     * @param string            $message  Exception message
+     * @param ServiceInterface  $client   Client that sent the command
+     * @param CommandInterface  $command  Command that failed
+     * @param RequestInterface  $request  Request that was sent
      * @param ResponseInterface $response Response that was received
-     * @param \Exception $previous Previous exception (if any)
+     * @param \Exception        $previous Previous exception (if any)
      */
     public function __construct(
-    $message, ServiceInterface $client, CommandInterface $command, RequestInterface $request = null, ResponseInterface $response = null, \Exception $previous = null
+        $message, 
+        ServiceInterface $client, 
+        CommandInterface $command, 
+        RequestInterface $request = null, 
+        ResponseInterface $response = null, 
+        \Exception $previous = null
     )
     {
         $this->client = $client;

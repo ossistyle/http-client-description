@@ -1,4 +1,4 @@
-{
+{    
     "operations": {
         "getAll": {
             "httpMethod": "GET",
@@ -11,7 +11,7 @@
         "getById": {
             "httpMethod": "GET",
             "uri": "Catalogs/{id}",            
-            "responseModel": "Generic",
+            "responseModel": "GenericOutput",
             "parameters": {
                 "id": {
                     "location": "uri",
@@ -41,7 +41,7 @@
         }
     },
     "models": {
-        "Generic": {
+        "GenericOutput": {
             "type": "object",            
             "additionalProperties": {
                 "location": "json"
@@ -69,6 +69,6 @@
                     "type": "string"
                  }
             }
-        }
+        }        
     }
 }
