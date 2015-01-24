@@ -1,0 +1,17 @@
+{
+    "includes": ["_via"],
+    "services": {
+        "default_settings": {
+            "params": {
+                "region": "sandbox"
+            }
+        },
+        "blackbox": {
+            "extends": "blackbox",
+            "params": {
+                "private_key": "change_me",
+                "key_pair_id": "change_me"
+            }
+        }
+    }
+}

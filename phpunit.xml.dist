@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="./tests/bootstrap.php"
+         colors="true"
+         forceCoversAnnotation="true">
+
+    <php>        
+        <env name="VWS_USERNAME" value="FooEnv" />        
+        <env name="VWS_PASSWORD" value="BarEnv" />
+        <env name="VWS_SUBSCRIPTION_TOKEN" value="SubscriptionTokenEnv" />
+    </php>
+
+    <testsuites>
+        <testsuite name="unit">
+            <directory suffix="Test.php">tests/</directory>
+            <exclude>tests/Integ</exclude>
+        </testsuite>
+        <testsuite name="integ">
+            <directory suffix="Test.php">tests/Integ</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">src</directory>
+            <exclude>
+                <directory>src/ressources</directory>                
+            </exclude>
+        </whitelist>
+    </filter>
+
+</phpunit>

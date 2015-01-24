@@ -1,0 +1,4 @@
+
+SetEnv VWS_USERNAME "FooEnv"
+SetEnv VWS_PASSWORD "BarEnv"
+SetEnv VWS_SUBSCRIPTION_TOKEN "SubscriptionTokenEnv"
