@@ -55,24 +55,27 @@ class Vdk
         // Normalize service name to lower case
         $name = strtolower($name);
 
+
         // Merge provided args with stored args
         if (isset($this->args[$name])) {
             $args += $this->args[$name];
         }
-        $args += $this->args;
 
         // Set the service name and determine if it is linked to a known class
+        $args += $this->args;
         $args['service'] = $name;
-        $args['class_name'] = false;
         $factoryName = 'Vws\\ClientFactory';
 
         if (isset(self::$services[$name])) {
-            $args['class_name'] = self::$services[$name];
-            $check = "Vws\\{$args['class_name']}\\{$args['class_name']}Factory";
+            $name = self::$services[$name];
+            $args['class_name'] = "Vws\\{$name}\\{$name}Client";
+            $args['exception_class'] = "Vws\\{$name}\\Exception\\{$name}Exception";
+            $check = "Vws\\{$name}\\{$name}Factory";
             if (class_exists($check)) {
                 $factoryName = $check;
             }
         }
-        return (new $factoryName())->create($args);
+
+        return (new $factoryName)->create($args);
     }
 }

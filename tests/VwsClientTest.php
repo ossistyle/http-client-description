@@ -73,7 +73,8 @@ class VwsClientTest extends \PHPUnit_Framework_TestCase
             'endpoint'     => 'https://local.via.de',
             'serializer'   => function () {},
             'api'          => new ServiceModel(function () {}, 'foo', 'bar'),
-            'version'      => 'latest'
+            'version'      => 'latest',
+            'error_parser' => function () {},
         ];
 
         $client = new VwsClient($config);
@@ -118,7 +119,8 @@ class VwsClientTest extends \PHPUnit_Framework_TestCase
             'region'       => 'foo',
             'api'          => $api,
             'serializer'   => function () {},
-            'version'      => 'latest'
+            'version'      => 'latest',
+            'error_parser' => function () {},
         ]);
     }
 }

@@ -33,35 +33,20 @@ class ClientFactoryTest extends \PHPUnit_Framework_TestCase
         $f->create([]);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Client not found for Foo
-     */
-    public function testEnsuresClientClassExists()
-    {
-        $f = new ClientFactory();
-        $f->create([
-            'service'    => 'blackbox',
-            'region'     => 'x',
-            'class_name' => 'Foo',
-            'version'    => 'latest'
-        ]);
-    }
-
     public function testCanSpecifyValidClientClass()
     {
         $f = new ClientFactory();
         $this->assertInstanceOf('Vws\Blackbox\BlackboxClient', $f->create([
             'service'    => 'blackbox',
             'region'     => 'x',
-            'class_name' => 'Blackbox',
+            'class_name' => 'Vws\Blackbox\BlackboxClient',
             'version'    => 'latest'
         ]));
     }
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage client must be an instance of GuzzleHttp\ClientInterface
+     * @expectedExceptionMessage Invalid configuration value provided for
      */
     public function testValidatesClient()
     {
@@ -74,24 +59,21 @@ class ClientFactoryTest extends \PHPUnit_Framework_TestCase
         ]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage client_defaults must be an array
-     */
-    public function testValidatesClientDefaults()
+    public function testCanSpecifyValidExceptionClass()
     {
         $f = new ClientFactory();
         $f->create([
-            'service' => 'blackbox',
-            'region'  => 'x',
-            'client_defaults'  => 'foo',
+            'service'         => 'blackbox',
+            'region'          => 'x',
+            'exception_class' => 'Aws\Exception\AwsException',
             'version' => 'latest'
         ]);
     }
 
+
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage api_provider must be callable
+     * @expectedExceptionMessage Invalid configuration value provided for
      */
     public function testValidatesApiProvider()
     {
@@ -106,7 +88,7 @@ class ClientFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage endpoint_provider must be a callable
+     * @expectedExceptionMessage Invalid configuration value provided for
      */
     public function testValidatesEndpointProvider()
     {
@@ -121,7 +103,7 @@ class ClientFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Credentials must be an
+     * @expectedExceptionMessage Invalid configuration value provided for credentials
      */
     public function testValidatesCredentials()
     {

@@ -5,6 +5,7 @@ namespace Vws;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Command\Event\ProcessEvent;
+use GuzzleHttp\Ring\Core;
 use Vws\Api\FilesystemApiProvider;
 use Vws\Api\ServiceModel;
 use Vws\Api\Validator;
@@ -27,30 +28,153 @@ class ClientFactory
         'api_provider',
     ];
 
+    public static function getValidArguments()
+    {
+        return [
+            'key' => ['type' => 'deprecated'],
+            'ssl.certificate_authority' => ['type' => 'deprecated'],
+            'curl.options' => ['type' => 'deprecated'],
+            'service' => [
+                'type'     => 'value',
+                'valid'    => 'string',
+                'required' => true,
+                'doc'      => 'Name of the service to utilize. This value will be supplied by default.'
+            ],
+            'scheme' => [
+                'type'     => 'value',
+                'valid'    => 'string',
+                'default'  => 'https',
+                'doc'      => 'URI scheme to use to connect. One of http or https.'
+            ],
+            'region' => [
+                'type'     => 'value',
+                'valid'    => 'string',
+                'required' => true,
+                'doc'      => 'Region to connect to. See http://docs.aws.amazon.com/general/latest/gr/rande.html for a list of available regions.'
+            ],
+            'version' => [
+                'type'     => 'value',
+                'valid'    => 'string',
+                'required' => true,
+                'doc'      => 'The version of the webservice to utilize (e.g., 2006-03-01).'
+            ],
+            'endpoint' => [
+                'type'  => 'value',
+                'valid' => 'string',
+                'doc'   => 'The full URI of the webservice. This is only required when connecting to a custom endpoint (e.g., a local version of S3).'
+            ],
+            'defaults' => [
+                'type'  => 'value',
+                'valid' => 'array',
+                'doc'   => 'An associative array of default parameters to pass to each operation created by the client.'
+            ],
+            'endpoint_provider' => [
+                'type'     => 'pre',
+                'valid'    => 'callable',
+                'doc'      => 'An optional PHP callable that accepts a hash of options including a service and region key and returns a hash of endpoint data, of which the endpoint key is required.'
+            ],
+            'api_provider' => [
+                'type'     => 'pre',
+                'valid'    => 'callable',
+                'doc'      => 'An optional PHP callable that accepts a type, service, and version argument, and returns an array of corresponding configuration data. The type value can be one of api, waiter, or paginator.'
+            ],
+            'class_name' => [
+                'type'    => 'value',
+                'valid'   => 'string',
+                'default' => 'Vws\VwsClient',
+                'doc'     => 'Optional class name of the client to create. This value will be supplied by default.'
+            ],
+            'exception_class' => [
+                'type'    => 'value',
+                'valid'   => 'string',
+                'default' => 'Vws\Exception\VwsException',
+                'doc'     => 'Optional exception class name to throw on request errors. This value will be supplied by default.'
+            ],
+            'profile' => [
+                'type'  => 'pre',
+                'valid' => 'string',
+                'doc'   => 'Allows you to specify which profile to use when credentials are created from the AWS credentials file in your home directory. This setting overrides the AWS_PROFILE environment variable. Specifying "profile" will cause the "credentials" key to be ignored.'
+            ],
+            'credentials' => [
+                'type'    => 'pre',
+                'valid'   => 'array|Vws\Credentials\CredentialsInterface|bool|callable',
+                'default' => true,
+                'doc'     => 'An Vws\Credentials\CredentialsInterface object to use with each, an associative array of "key", "secret", and "token" key value pairs, `false` to utilize null credentials, or a callable credentials provider function to create credentials using a function. If no credentials are provided or credentials is set to true, the SDK will attempt to load them from the environment.'
+            ],
+
+            'client' => [
+                'type'    => 'pre',
+                'valid'   => 'GuzzleHttp\ClientInterface|bool',
+                'default' => true,
+                'doc'     => 'Optional Guzzle client used to transfer requests over the wire. Set to true or do not specify a client, and the SDK will create a new client that uses a shared Ring HTTP handler with other clients.'
+            ],
+            'validate' => [
+                'type'    => 'post',
+                'valid'   => 'bool',
+                'default' => true,
+                'doc'     => 'Set to false to disable client-side parameter validation.'
+            ],
+            'debug' => [
+                'type'  => 'post',
+                'valid' => 'bool|resource',
+                'doc'   => 'Set to true to display debug information when sending requests. Provide a stream resource to write debug information to a specific resource.'
+            ],
+            'client_defaults' => [
+                'type'  => 'post',
+                'valid' => 'array',
+                'doc'   => 'Set to an array of Guzzle client request options (e.g., proxy, verify, etc.). See http://docs.guzzlephp.org/en/latest/clients.html#request-options for a list of available options.'
+            ],
+        ];
+    }
 
     public function create(array $args = [])
     {
         $this->addDefaultArgs($args);
 
+//        foreach ($this->requiredArguments as $required) {
+//            if (!array_key_exists($required, $args)) {
+//                throw new \InvalidArgumentException("{$required} is a required client setting");
+//            }
+//        }
+//        $this->handle_profile(true, $args);
+//        $this->handle_credentials(isset($args['credentials']) ? $args['credentials'] : true, $args);
+//        $this->handle_endpoint_provider($args['endpoint_provider'], $args);
+//        $this->handle_api_provider($args['api_provider'] ? $args['api_provider'] : true, $args);
+//        $this->handle_class_name(isset($args['class_name']) ? $args['class_name'] : true, $args);
+//        $this->handle_client($args['client'], $args);
 
-
-        foreach ($this->requiredArguments as $required) {
-            if (!array_key_exists($required, $args)) {
-                throw new \InvalidArgumentException("{$required} is a required client setting");
+        foreach (static::getValidArguments() as $key => $a) {
+            if (!array_key_exists($key, $args)) {
+                if (isset($a['default'])) {
+                    // Merge defaults in when not present.
+                    $args[$key] = $a['default'];
+                } elseif (!empty($a['required'])) {
+                    // Allows custom error messages for missing values.
+                    $message = method_exists($this, "missing_{$key}")
+                        ? $this->{"missing_{$key}"}($args)
+                        : "{$key} is a required client setting";
+                    throw new \InvalidArgumentException($message);
+                } else {
+                    continue;
+                }
+            }
+            $this->validate($key, $args[$key], $a['valid']);
+            if ($a['type'] === 'pre') {
+                $this->{"handle_{$key}"}($args[$key], $args);
+            } elseif ($a['type'] === 'post') {
+                $post[$key] = $args[$key];
+            } elseif ($a['type'] === 'deprecated') {
+                $meth = 'deprecated_' . str_replace('.', '_', $key);
+                $this->{$meth}($args[$key], $args);
             }
         }
-
-        $this->handle_credentials(isset($args['credentials']) ? $args['credentials'] : true, $args);
-        $this->handle_endpoint_provider($args['endpoint_provider'], $args);
-        $this->handle_api_provider($args['api_provider'] ? $args['api_provider'] : true, $args);
-        $this->handle_class_name(isset($args['class_name']) ? $args['class_name'] : true, $args);
-        $this->handle_client($args['client'], $args);
 
         $client = $this->createClient($args);
 
         #$client->getEmitter()->attach(new Debug([]));
         $this->handle_client_defaults(isset($args['client_defaults']) ? $args['client_defaults'] : [], $args);
-        $this->handle_validate(true, $args, $client);
+        $this->handle_validate(isset($args['validate_service']) ? $args['validate_service'] : true, $args, $client);
+
         $this->applyParser($client);
 
         return $client;
@@ -58,7 +182,7 @@ class ClientFactory
 
     protected function createClient(array $args)
     {
-        return new $args['client_class']($args);
+        return new $args['class_name']($args);
     }
 
     /**
@@ -119,24 +243,6 @@ class ClientFactory
             'headers/User-Agent',
             'vws-php/' . Vdk::VERSION . ' ' . Client::getDefaultUserAgent()
         );
-    }
-
-    private function handle_class_name($value, array &$args)
-    {
-        if ($value === true) {
-            $args['client_class'] = 'Vws\VwsClient';
-//            $args['exception_class'] = 'Vws\Exception\VwsException';
-        } else {
-            // An explicitly provided class_name must be found.
-            $args['client_class'] = "Vws\\{$value}\\{$value}Client";
-            if (!class_exists($args['client_class'])) {
-                throw new \RuntimeException("Client not found for $value");
-            }
-            $args['exception_class']  = "Vws\\{$value}\\Exception\\{$value}Exception";
-            if (!class_exists($args['exception_class'] )) {
-                throw new \RuntimeException("Exception class not found $value");
-            }
-        }
     }
 
     private function handle_api_provider($value, array &$args)
@@ -214,5 +320,28 @@ class ClientFactory
         }
 
         $client->getEmitter()->attach(new Validation($args['api'], new Validator()));
+    }
+
+    private function handle_profile($value, array &$args)
+    {
+        $args['credentials'] = CredentialProvider::ini($args['profile']);
+    }
+
+    private function validate($name, $provided, $expected)
+    {
+        static $replace = ['integer' => 'int', 'boolean' => 'bool'];
+        $type = strtr(gettype($provided), $replace);
+        foreach (explode('|', $expected) as $valid) {
+            if ($type === $valid
+                || ($type === 'object' && $provided instanceof $valid)
+                || ($valid === 'callable' && is_callable($provided))
+            ) {
+                return;
+            }
+        }
+
+        throw new \InvalidArgumentException("Invalid configuration value "
+            . "provided for {$name}. Expected {$expected}, but got "
+            . Core::describeType($provided));
     }
 }
