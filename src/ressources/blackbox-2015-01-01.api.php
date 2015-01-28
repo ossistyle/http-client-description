@@ -130,18 +130,42 @@ return [
             ],
         ],
         'PostCatalogInput' => [
-            'type' => 'list',
-            'member' => [
-                'shape' => 'Catalog'
+            'type' => 'structure',
+            'required' => [
+                'Name',
+                'ForeignId',
             ],
+            'members' => [
+                'Name' => [
+                    'shape' => 'CatalogName',
+                ],
+                'IsRootLevel' => [
+                    'shape' => 'CatalogIsRootlevel',
+                ],
+                'ForeignId' => [
+                    'shape' => 'CatalogForeignId',
+                ],
+                'ChildCatalogs' => [
+                    'shape' => 'CatalogList',
+                ],
+            ]
         ],
         'PostCatalogOutput' => [
             'type' => 'structure',
             'members' => [
-                'Catalogs' => [
-                    'shape' => 'Catalog'
-                ]
-            ],
+                'Name' => [
+                    'shape' => 'CatalogName',
+                ],
+                'IsRootLevel' => [
+                    'shape' => 'CatalogIsRootlevel',
+                ],
+                'ForeignId' => [
+                    'shape' => 'CatalogForeignId',
+                ],
+                'ChildCatalogs' => [
+                    'shape' => 'CatalogList',
+                ],
+            ]
         ]
     ]
 ];
