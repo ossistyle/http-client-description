@@ -64,8 +64,13 @@ try {
 
     var_export($result->toArray());
 
-} catch (BlackboxException $e) {
-    echo "There was an error getting all catalogs.\n";
+} catch (Vws\Blackbox\Exception\BlackboxException $e)
+{
+    echo '<pre>' . $e->getMessage() . '</pre>';
+    echo '<h2>Request</h2>';
+    echo '<pre>' . $e->getRequest() . '</pre>';
+    echo '<h2>Response</h2>';
+    echo '<pre>' . $e->getResponse() . '</pre>';
 }
 ```
 
@@ -120,7 +125,12 @@ try {
 
     var_export($result->toArray());
 
-} catch (BlackboxException $e) {
-    echo "There was an error getting all catalogs.\n";
+} catch (Vws\Blackbox\Exception\BlackboxException $e)
+{
+    echo '<pre>' . $e->getMessage() . '</pre>';
+    echo '<h2>Request</h2>';
+    echo '<pre>' . $e->getRequest() . '</pre>';
+    echo '<h2>Response</h2>';
+    echo '<pre>' . $e->getResponse() . '</pre>';
 }
 ```
