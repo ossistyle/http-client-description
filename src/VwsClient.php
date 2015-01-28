@@ -6,6 +6,7 @@ use GuzzleHttp\Command\AbstractClient;
 use GuzzleHttp\Command\Command;
 use GuzzleHttp\Command\CommandInterface;
 use GuzzleHttp\Command\CommandTransaction;
+use GuzzleHttp\Exception\RequestException;
 use Vws\Api\ServiceModel;
 use Vws\Exception\VwsException;
 
@@ -26,6 +27,9 @@ class VwsClient extends AbstractClient implements VwsClientInterface
     /** @var callable */
     private $serializer;
 
+    /** @var callable */
+    private $errorParser;
+
     /** @var string */
     private $commandException;
 
@@ -43,6 +47,7 @@ class VwsClient extends AbstractClient implements VwsClientInterface
         $this->api = $config['api'];
         $this->credentials = $config['credentials'];
         $this->endpoint = $config['endpoint'];
+        $this->errorParser = $config['error_parser'];
         $this->region = isset($config['region']) ? $config['region'] : null;
         $this->defaults = isset($config['defaults']) ? $config['defaults'] : [];
         $this->commandException = isset($config['exception_class'])
@@ -140,5 +145,47 @@ class VwsClient extends AbstractClient implements VwsClientInterface
     {
         $fn = $this->serializer;
         return $fn($trans);
+    }
+
+    public function createCommandException(CommandTransaction $transaction)
+    {
+        // Throw AWS exceptions as-is
+        if ($transaction->exception instanceof VwsException) {
+            return $transaction->exception;
+        }
+
+        // Set default values (e.g., for non-RequestException)
+        $url = null;
+        $transaction->context['vws_error'] = [];
+        $serviceError = $transaction->exception->getMessage();
+
+        if ($transaction->exception instanceof RequestException) {
+            $url = $transaction->exception->getRequest()->getUrl();
+            if ($response = $transaction->exception->getResponse()) {
+                $parser = $this->errorParser;
+                // Add the parsed response error to the exception.
+                $transaction->context['vws_error'] = $parser($response);
+                // Only use the AWS error code if the parser could parse response.
+                if (!$transaction->context->getPath('vws_error/type')) {
+                    $serviceError = $transaction->exception->getMessage();
+                } else {
+                    // Create an easy to read error message.
+                    $serviceError = trim($transaction->context->getPath('vws_error/code')
+                        . ' (' . $transaction->context->getPath('vws_error/type')
+                        . ' error): ' . $transaction->context->getPath('vws_error/message'));
+                }
+            }
+        }
+
+        $exceptionClass = $this->commandException;
+        return new $exceptionClass(
+            sprintf('Error executing %s::%s() on "%s"; %s',
+                get_class($this),
+                lcfirst($transaction->command->getName()),
+                $url,
+                $serviceError),
+            $transaction,
+            $transaction->exception
+        );
     }
 }
