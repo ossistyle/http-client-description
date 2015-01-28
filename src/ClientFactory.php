@@ -5,16 +5,14 @@ namespace Vws;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Command\Event\ProcessEvent;
-use GuzzleHttp\Command\Subscriber\Debug;
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-use GuzzleHttp\Subscriber\Log\LogSubscriber;
 use Vws\Api\FilesystemApiProvider;
 use Vws\Api\ServiceModel;
+use Vws\Api\Validator;
 use Vws\Credentials\Credentials;
 use Vws\Credentials\CredentialsInterface;
 use Vws\Credentials\NullCredentials;
 use Vws\Credentials\Provider as CredentialProvider;
+use Vws\Subscriber\Validation;
 use Vws\Vdk;
 use Vws\VwsClientInterface;
 
@@ -52,6 +50,7 @@ class ClientFactory
 
         #$client->getEmitter()->attach(new Debug([]));
         $this->handle_client_defaults(isset($args['client_defaults']) ? $args['client_defaults'] : [], $args);
+        $this->handle_validate(true, $args, $client);
         $this->applyParser($client);
 
         return $client;
@@ -202,5 +201,17 @@ class ClientFactory
 
             $args['endpoint'] = $result['endpoint'];
         }
+    }
+
+     protected function handle_validate(
+        $value,
+        array &$args,
+        VwsClientInterface $client
+    ) {
+        if ($value !== true) {
+            return;
+        }
+
+        $client->getEmitter()->attach(new Validation($args['api'], new Validator()));
     }
 }
