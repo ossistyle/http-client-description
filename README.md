@@ -19,5 +19,10 @@ use Vws\Exception\BlackboxException;
 $blacckbox = BlackboxClient::factory([
     'version' => 'latest',
     'region'  => 'sandbox'
+    'credentials' => [
+        'username' => 'foo',
+        'password' => 'bar',
+        'subscription_token' => 'foo_bar'
+    ]
 ]);
 ```
