@@ -45,9 +45,9 @@ class VwsException extends CommandException
      *
      * @return string|null Returns null if no response was received
      */
-    public function getAwsRequestId()
+    public function getVwsRequestId()
     {
-        return $this->getTransaction()->context->getPath('aws_error/request_id');
+        return $this->getTransaction()->context->getPath('vws_error/request_id');
     }
 
     /**
@@ -55,9 +55,9 @@ class VwsException extends CommandException
      *
      * @return string|null Returns null if no response was received
      */
-    public function getAwsErrorType()
+    public function getVwsErrorType()
     {
-        return $this->getTransaction()->context->getPath('aws_error/type');
+        return $this->getTransaction()->context->getPath('vws_error/type');
     }
 
     /**
@@ -65,9 +65,9 @@ class VwsException extends CommandException
      *
      * @return string|null Returns null if no response was received
      */
-    public function getAwsErrorCode()
+    public function getVwsErrorCode()
     {
-        return $this->getTransaction()->context->getPath('aws_error/code');
+        return $this->getTransaction()->context->getPath('vws_error/code');
     }
 
     /**
@@ -75,7 +75,7 @@ class VwsException extends CommandException
      */
     public function getRequestId()
     {
-        return $this->getAwsRequestId();
+        return $this->getVwsRequestId();
     }
 
     /**
@@ -83,7 +83,7 @@ class VwsException extends CommandException
      */
     public function getExceptionCode()
     {
-        return $this->getAwsErrorCode();
+        return $this->getVwsErrorCode();
     }
 
     /**
@@ -91,6 +91,6 @@ class VwsException extends CommandException
      */
     public function getExceptionType()
     {
-        return $this->getAwsErrorType();
+        return $this->getVwsErrorType();
     }
 }

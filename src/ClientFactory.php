@@ -132,10 +132,10 @@ class ClientFactory
             if (!class_exists($args['client_class'])) {
                 throw new \RuntimeException("Client not found for $value");
             }
-//            $args['exception_class']  = "Vws\\{$value}\\Exception\\{$value}Exception";
-//            if (!class_exists($args['exception_class'] )) {
-//                throw new \RuntimeException("Exception class not found $value");
-//            }
+            $args['exception_class']  = "Vws\\{$value}\\Exception\\{$value}Exception";
+            if (!class_exists($args['exception_class'] )) {
+                throw new \RuntimeException("Exception class not found $value");
+            }
         }
     }
 
@@ -147,6 +147,7 @@ class ClientFactory
 
         $api = new ServiceModel($value, $args['service'], $args['version']);
         $args['api'] = $api;
+        $args['error_parser'] = ServiceModel::createErrorParser($api->getProtocol());
         $args['serializer'] = ServiceModel::createSerializer($api, $args['endpoint']);
     }
 
