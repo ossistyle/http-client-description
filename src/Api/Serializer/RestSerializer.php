@@ -104,6 +104,10 @@ abstract class RestSerializer
                         $this->applyHeaderMap($request, $name, $member, $value);
                     }
                 }
+            } else {
+                #if (!$payload && !$location) {
+                    $bodyMembers[$name] = $value;
+                #}
             }
         }
 
