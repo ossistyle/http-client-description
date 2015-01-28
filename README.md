@@ -35,7 +35,8 @@ $blackbox = BlackboxClient::factory([
 // create a single catalog with some child catalogs
 try {
     $result = $blackbox->postCatalog(
-        ['Name' => 'Root Catalog',
+        [
+            'Name' => 'Root Catalog',
             'IsRootLevel' => true,
             'ForeignId' => 'root_1',
             'ChildCatalogs' => [
@@ -75,7 +76,8 @@ try {
 // create a single catalog with some child catalogs
 try {
     $result = $blackbox->postCatalogs([
-        ['Name' => 'Root Catalog 1',
+        [
+            'Name' => 'Root Catalog 1',
             'IsRootLevel' => true,
             'ForeignId' => 'root_1',
             'ChildCatalogs' => [
@@ -99,7 +101,8 @@ try {
                 ]
             ]
         ],
-        ['Name' => 'Root Catalog 2',
+        [
+            'Name' => 'Root Catalog 2',
             'IsRootLevel' => true,
             'ForeignId' => 'root_2',
             'ChildCatalogs' => [
