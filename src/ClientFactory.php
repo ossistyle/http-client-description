@@ -2,47 +2,59 @@
 
 namespace Vws;
 
-use Aws\Credentials\CredentialsInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Command\Event\ProcessEvent;
+use GuzzleHttp\Command\Subscriber\Debug;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use GuzzleHttp\Subscriber\Log\LogSubscriber;
 use Vws\Api\FilesystemApiProvider;
 use Vws\Api\ServiceModel;
 use Vws\Credentials\Credentials;
-use Vws\Credentials\Provider as CredentialProvider;
+use Vws\Credentials\CredentialsInterface;
 use Vws\Credentials\NullCredentials;
+use Vws\Credentials\Provider as CredentialProvider;
 use Vws\Vdk;
 use Vws\VwsClientInterface;
 
 class ClientFactory
 {
+    private $requiredArguments = [
+        'service',
+        'scheme',
+        'region',
+        'version',
+        'endpoint_provider',
+        'api_provider',
+    ];
+
+
     public function create(array $args = [])
     {
         $this->addDefaultArgs($args);
 
+
+
+        foreach ($this->requiredArguments as $required) {
+            if (!array_key_exists($required, $args)) {
+                throw new \InvalidArgumentException("{$required} is a required client setting");
+            }
+        }
+
         $this->handle_credentials(isset($args['credentials']) ? $args['credentials'] : true, $args);
         $this->handle_endpoint_provider($args['endpoint_provider'], $args);
         $this->handle_api_provider($args['api_provider'] ? $args['api_provider'] : true, $args);
-        $this->handle_class_name($args['class_name'], $args);
+        $this->handle_class_name(isset($args['class_name']) ? $args['class_name'] : true, $args);
         $this->handle_client($args['client'], $args);
 
         $client = $this->createClient($args);
 
-        return $client;
-    }
-
-    protected function postCreate(VwsClientInterface $client, array $args)
-    {
-        // Apply the protocol of the service description to the client.
+        #$client->getEmitter()->attach(new Debug([]));
+        $this->handle_client_defaults(isset($args['client_defaults']) ? $args['client_defaults'] : [], $args);
         $this->applyParser($client);
-        // Attach a signer to the client.
-        $credentials = $client->getCredentials();
 
-        // Null credentials don't sign requests.
-        if (!($credentials instanceof NullCredentials)) {
-            $client->getHttpClient()->getEmitter()->attach(
-                new Signature($credentials, $client->getSignature())
-            );
-        }
+        return $client;
     }
 
     protected function createClient(array $args)
@@ -57,7 +69,7 @@ class ClientFactory
      */
     protected function addDefaultArgs(&$args)
     {
-        $args['scheme'] = 'https';
+        $args['scheme'] = 'http';
 
         if (!isset($args['client']))
         {
@@ -72,6 +84,29 @@ class ClientFactory
         if (!isset($args['endpoint_provider'])) {
             $args['endpoint_provider'] = EndpointProvider::fromDefaults();
         }
+    }
+
+    private function applyParser(VwsClientInterface $client)
+    {
+        $parser = ServiceModel::createParser($client->getApi());
+
+        $client->getEmitter()->on(
+            'process',
+            function (ProcessEvent $e) use ($parser) {
+                // Guard against exceptions and injected results.
+                if ($e->getException() || $e->getResult()) {
+                    return;
+                }
+
+                // Ensure a response exists in order to parse.
+                $response = $e->getResponse();
+                if (!$response) {
+                    throw new \RuntimeException('No response was received.');
+                }
+
+                $e->setResult($parser($e->getCommand(), $response));
+            }
+        );
     }
 
     private function handle_client($value, array &$args)
@@ -91,17 +126,17 @@ class ClientFactory
     {
         if ($value === true) {
             $args['client_class'] = 'Vws\VwsClient';
-            $args['exception_class'] = 'Vws\Exception\VwsException';
+//            $args['exception_class'] = 'Vws\Exception\VwsException';
         } else {
             // An explicitly provided class_name must be found.
             $args['client_class'] = "Vws\\{$value}\\{$value}Client";
             if (!class_exists($args['client_class'])) {
                 throw new \RuntimeException("Client not found for $value");
             }
-            $args['exception_class']  = "Vws\\{$value}\\Exception\\{$value}Exception";
-            if (!class_exists($args['exception_class'] )) {
-                throw new \RuntimeException("Exception class not found $value");
-            }
+//            $args['exception_class']  = "Vws\\{$value}\\Exception\\{$value}Exception";
+//            if (!class_exists($args['exception_class'] )) {
+//                throw new \RuntimeException("Exception class not found $value");
+//            }
         }
     }
 
@@ -138,6 +173,17 @@ class ClientFactory
                 . 'Vws\Credentials\CredentialsInterface, an associative '
                 . 'array that contains "username", "password", and "subscription_token" '
                 . 'key-value pairs, a credentials provider function, or false.');
+        }
+    }
+
+    private function handle_client_defaults($value, array &$args)
+    {
+        if (!is_array($value)) {
+            throw new \InvalidArgumentException('client_defaults must be an array');
+        }
+
+        foreach ($value as $k => $v) {
+            $args['client']->setDefaultOption($k, $v);
         }
     }
 

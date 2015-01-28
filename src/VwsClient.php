@@ -3,7 +3,11 @@
 namespace Vws;
 
 use GuzzleHttp\Command\AbstractClient;
+use GuzzleHttp\Command\Command;
+use GuzzleHttp\Command\CommandInterface;
 use GuzzleHttp\Command\CommandTransaction;
+use Vws\Api\ServiceModel;
+use Vws\Exception\VwsException;
 
 class VwsClient extends AbstractClient implements VwsClientInterface
 {
@@ -22,6 +26,9 @@ class VwsClient extends AbstractClient implements VwsClientInterface
     /** @var callable */
     private $serializer;
 
+    /** @var string */
+    private $commandException;
+
     public function __construct(array $config)
     {
         static $required = ['api', 'credentials', 'client', 'serializer'];
@@ -38,6 +45,9 @@ class VwsClient extends AbstractClient implements VwsClientInterface
         $this->endpoint = $config['endpoint'];
         $this->region = isset($config['region']) ? $config['region'] : null;
         $this->defaults = isset($config['defaults']) ? $config['defaults'] : [];
+        $this->commandException = isset($config['exception_class'])
+            ? $config['exception_class']
+            : 'Vws\Exception\VwsException';
 
         parent::__construct($config['client']);
     }
@@ -76,6 +86,34 @@ class VwsClient extends AbstractClient implements VwsClientInterface
             'emitter' => clone $this->getEmitter(),
             'future' => $future
         ]);
+    }
+
+    /**
+     * Executes an AWS command.
+     *
+     * @param CommandInterface $command Command to execute
+     *
+     * @return mixed Returns the result of the command
+     * @throws AwsException when an error occurs during transfer
+     */
+    public function execute(CommandInterface $command)
+    {
+        try {
+            return parent::execute($command);
+        } catch (VwsException $e) {
+            throw $e;
+        } catch (\Exception $e) {
+            // Wrap other uncaught exceptions for consistency
+            $exceptionClass = $this->commandException;
+            throw new $exceptionClass(
+                sprintf('Uncaught exception while executing %s::%s - %s',
+                    get_class($this),
+                    $command->getName(),
+                    $e->getMessage()),
+                new CommandTransaction($this, $command),
+                $e
+            );
+        }
     }
 
     public function getCredentials()

@@ -26,8 +26,11 @@ class JsonBody
      */
     public static function getContentType(ServiceModel $service)
     {
-        return 'application/x-amz-json-'
-            . number_format($service->getMetadata('jsonVersion'), 1);
+
+        return 'application/json';
+
+//        return 'application/x-vws-json-'
+//            . number_format($service->getMetadata('jsonVersion'), 1);
     }
 
     /**

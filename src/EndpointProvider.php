@@ -33,11 +33,16 @@ class EndpointProvider
             'version' => 2,
             'endpoints' => [
                 '*/*' => [
-                    'endpoint' => '{region}.via.de'
+                    'endpoint' => 'local.via.de'
                 ],
-                'cn-north-1/*' => [
-                    'endpoint' => '{service}.{region}.amazonaws.com.cn',
-
+                'local/blackbox' => [
+                    'endpoint' => 'local.via.de'
+                ],
+                'sandbox/blackbox' => [
+                    'endpoint' => 'sandbox.api.via.de:8001'
+                ],
+                'production/blackbox' => [
+                    'endpoint' => 'ebay.api.via.de'
                 ]
             ]
         ];
@@ -73,6 +78,6 @@ class EndpointProvider
 
     private function getKeys($region, $service)
     {
-        return ["$region/$service", "$region/*", "*/$service", "*/*"];
+        return ["$region/$service", "*/*"];
     }
 }

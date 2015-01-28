@@ -22,6 +22,48 @@ class VwsClientTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Operation not found: Foo
+     */
+    public function testEnsuresOperationIsFoundWhenCreatingCommands()
+    {
+        $this->createClient()->getCommand('foo');
+    }
+
+    public function testCanSpecifyDefaultCommandOptions()
+    {
+        $client = $this->createClient(['operations' => ['foo' => [
+            'http' => ['method' => 'POST']
+        ]]], ['defaults' => ['baz' => 'bam']]);
+
+        $c = $client->getCommand('foo');
+        $this->assertEquals('bam', $c['baz']);
+    }
+
+    public function testReturnsCommandForOperation()
+    {
+        $client = $this->createClient(['operations' => ['foo' => [
+            'http' => ['method' => 'POST']
+        ]]]);
+
+        $this->assertInstanceOf(
+            'GuzzleHttp\Command\CommandInterface',
+            $client->getCommand('foo')
+        );
+    }
+
+    public function testMergesDefaultCommandParameters()
+    {
+        $client = $this->createClient(
+            ['operations' => ['foo' => ['http' => ['method' => 'POST']]]],
+            ['defaults' => ['test' => 'foo']]
+        );
+        $command = $client->getCommand('foo', ['bar' => 'foo_bar']);
+        $this->assertEquals('foo', $command['test']);
+        $this->assertEquals('foo_bar', $command['bar']);
+    }
+
     public function testHasGetters()
     {
         $config = [

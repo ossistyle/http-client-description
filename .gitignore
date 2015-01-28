@@ -18,3 +18,4 @@ src/package.xml
 /apigen.neon
 /Makefile
 nbproject
+.htaccess

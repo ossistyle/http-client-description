@@ -64,7 +64,8 @@ class ServiceModel extends AbstractModel
     public static function createSerializer(ServiceModel $api, $endpoint)
     {
         static $mapping = [
-            'json'      => 'Vws\Api\Serializer\JsonRpcSerializer'
+            'json'      => 'Vws\Api\Serializer\JsonRpcSerializer',
+            'rest-json' => 'Vws\Api\Serializer\RestJsonSerializer',
         ];
 
         $proto = $api->getProtocol();
@@ -89,7 +90,8 @@ class ServiceModel extends AbstractModel
     public static function createErrorParser($protocol)
     {
         static $mapping = [
-            'json'      => 'Aws\Api\ErrorParser\JsonRpcErrorParser'
+            'json'      => 'Vws\Api\ErrorParser\JsonRpcErrorParser',
+            'rest-json' => 'Vws\Api\ErrorParser\RestJsonErrorParser',
         ];
 
         if (!isset($mapping[$protocol])) {
@@ -106,10 +108,11 @@ class ServiceModel extends AbstractModel
      * @return callable
      * @throws \UnexpectedValueException
      */
-    public static function createParser(Service $api)
+    public static function createParser(ServiceModel $api)
     {
         static $mapping = [
-            'json'      => 'Aws\Api\Parser\JsonRpcParser'
+            'json'      => 'Vws\Api\Parser\JsonRpcParser',
+            'rest-json' => 'Vws\Api\Parser\RestJsonParser',
         ];
 
         $proto = $api->getProtocol();

@@ -1,6 +1,8 @@
 <?php
 namespace Vws\Credentials;
 
+use Vws\Vdk;
+
 
 class Credentials implements CredentialsInterface
 {
@@ -12,7 +14,7 @@ class Credentials implements CredentialsInterface
     {
         $this->username = trim($username);
         $this->password = trim($password);
-        $this->token = trim($token);        
+        $this->token = trim($token);
     }
 
     public function getUsername()
@@ -35,7 +37,9 @@ class Credentials implements CredentialsInterface
         return [
             'Username'     => $this->username,
             'Password'  => $this->password,
-            'SubscriptionToken'   => $this->token,            
+            'SubscriptionToken'   => $this->token,
+            'Vendor' => 'vws-php',
+            'Version' => Vdk::VERSION
         ];
     }
 }
