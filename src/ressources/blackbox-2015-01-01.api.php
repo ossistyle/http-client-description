@@ -46,15 +46,28 @@ return [
             ]
 
         ],
+        'PostCatalogs' => [
+            'name' => 'PostCatalogs',
+            'http' => [
+              'method' => 'POST',
+              'requestUri' => 'WebApi/api/Catalogs/PostList',
+            ],
+            'input' => [
+              'shape' => 'PostCatalogsInput',
+            ],
+            'output' => [
+              'shape' => 'PostCatalogsOutput',
+            ]
+
+        ]
     ],
     'shapes' => [
         'Catalog' => [
             'type' => 'structure',
-            'required' => [
-                'Name',
-                'ForeignId',
-            ],
             'members' => [
+                'Id' =>  [
+                  'shape' => 'CatalogId',
+                ],
                 'Name' => [
                     'shape' => 'CatalogName',
                 ],
@@ -104,11 +117,10 @@ return [
         ],
         'GetCatalogByIdOutput' => [
             'type' => 'structure',
-            'required' => [
-                'Name',
-                'ForeignId',
-            ],
             'members' => [
+                'Id' =>  [
+                  'shape' => 'CatalogId',
+                ],
                 'Name' => [
                     'shape' => 'CatalogName',
                 ],
@@ -153,6 +165,9 @@ return [
         'PostCatalogOutput' => [
             'type' => 'structure',
             'members' => [
+                'Id' =>  [
+                  'shape' => 'CatalogId',
+                ],
                 'Name' => [
                     'shape' => 'CatalogName',
                 ],
@@ -166,7 +181,19 @@ return [
                     'shape' => 'CatalogList',
                 ],
             ]
-        ]
+        ],
+        'PostCatalogsInput' => [
+            'type' => 'list',
+            'member' => [
+                'shape' => 'PostCatalogInput',
+            ],
+        ],
+        'PostCatalogsOutput' => [
+            'type' => 'list',
+            'member' => [
+                'shape' => 'PostCatalogOutput',
+            ],
+        ],
     ]
 ];
 
