@@ -46,7 +46,7 @@ class ClientFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Invalid configuration value provided for
+     * @expectedExceptionMessage Invalid configuration value provided for client.
      */
     public function testValidatesClient()
     {
@@ -73,7 +73,7 @@ class ClientFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Invalid configuration value provided for
+     * @expectedExceptionMessage Invalid configuration value provided for api_provider.
      */
     public function testValidatesApiProvider()
     {
@@ -88,7 +88,7 @@ class ClientFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Invalid configuration value provided for
+     * @expectedExceptionMessage Invalid configuration value provided for endpoint_provider
      */
     public function testValidatesEndpointProvider()
     {
@@ -189,5 +189,25 @@ class ClientFactoryTest extends \PHPUnit_Framework_TestCase
             'client_defaults' => ['foo' => 'bar']
         ]);
         $this->assertEquals('bar', $client->getHttpClient()->getDefaultOption('foo'));
+    }
+
+    /**
+     * @expectedException \Vws\Exception\VwsException
+     * @expectedExceptionMessage Throwing!
+     */
+    public function testCanDisableValidation ()
+    {
+        $f = new ClientFactory();
+        $c = $f->create([
+            'service'           => 'blackbox',
+            'region'            => 'x',
+            'version'           => 'latest',
+            'validate_service'  => false
+        ]);
+        $command = $c->getCommand('PostCatalog');
+        $command->getEmitter()->on('prepared', function () {
+            throw new \Exception('Throwing!');
+        });
+        $c->execute($command);
     }
 }

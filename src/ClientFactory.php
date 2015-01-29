@@ -31,7 +31,7 @@ class ClientFactory
     public static function getValidArguments()
     {
         return [
-            'key' => ['type' => 'deprecated'],
+            'key'          => ['type' => 'deprecated'],
             'ssl.certificate_authority' => ['type' => 'deprecated'],
             'curl.options' => ['type' => 'deprecated'],
             'service' => [
@@ -56,12 +56,12 @@ class ClientFactory
                 'type'     => 'value',
                 'valid'    => 'string',
                 'required' => true,
-                'doc'      => 'The version of the webservice to utilize (e.g., 2006-03-01).'
+                'doc'      => 'The version of the webservice to utilize (e.g., 2015-01-01).'
             ],
-            'endpoint' => [
-                'type'  => 'value',
-                'valid' => 'string',
-                'doc'   => 'The full URI of the webservice. This is only required when connecting to a custom endpoint (e.g., a local version of S3).'
+            'endpoint'      => [
+                'type'      => 'value',
+                'valid'     => 'string',
+                'doc'       => 'The full URI of the webservice. This is only required when connecting to a custom endpoint (e.g., a local version of S3).'
             ],
             'defaults' => [
                 'type'  => 'value',
@@ -99,7 +99,7 @@ class ClientFactory
                 'type'    => 'pre',
                 'valid'   => 'array|Vws\Credentials\CredentialsInterface|bool|callable',
                 'default' => true,
-                'doc'     => 'An Vws\Credentials\CredentialsInterface object to use with each, an associative array of "key", "secret", and "token" key value pairs, `false` to utilize null credentials, or a callable credentials provider function to create credentials using a function. If no credentials are provided or credentials is set to true, the SDK will attempt to load them from the environment.'
+                'doc'     => 'An Vws\Credentials\CredentialsInterface object to use with each, an associative array of "username", "password", and "subscription_token" key value pairs, `false` to utilize null credentials, or a callable credentials provider function to create credentials using a function. If no credentials are provided or credentials is set to true, the SDK will attempt to load them from the environment.'
             ],
 
             'client' => [
@@ -234,10 +234,6 @@ class ClientFactory
 
     private function handle_client($value, array &$args)
     {
-        if (!($value instanceof ClientInterface)) {
-            throw new \InvalidArgumentException('client must be an instance of GuzzleHttp\ClientInterface');
-        }
-
         // Make sure the user agent is prefixed by the SDK version
         $args['client']->setDefaultOption(
             'headers/User-Agent',
@@ -247,10 +243,6 @@ class ClientFactory
 
     private function handle_api_provider($value, array &$args)
     {
-        if (!is_callable($value)) {
-            throw new \InvalidArgumentException('api_provider must be callable');
-        }
-
         $api = new ServiceModel($value, $args['service'], $args['version']);
         $args['api'] = $api;
         $args['error_parser'] = ServiceModel::createErrorParser($api->getProtocol());
@@ -266,7 +258,10 @@ class ClientFactory
         } elseif ($value === true) {
             $default = CredentialProvider::defaultProvider();
             $args['credentials'] = CredentialProvider::resolve($default);
-        } elseif (is_array($value) && isset($value['username']) && isset($value['password']) && isset($value['subscription_token'])) {
+        } elseif (is_array($value)
+                    && isset($value['username'])
+                    && isset($value['password'])
+                    && isset($value['subscription_token'])) {
             $args['credentials'] = new Credentials(
                 $value['username'],
                 $value['password'],
@@ -274,20 +269,11 @@ class ClientFactory
             );
         } elseif ($value === false) {
             $args['credentials'] = new NullCredentials();
-        } else {
-            throw new \InvalidArgumentException('Credentials must be an instance of '
-                . 'Vws\Credentials\CredentialsInterface, an associative '
-                . 'array that contains "username", "password", and "subscription_token" '
-                . 'key-value pairs, a credentials provider function, or false.');
         }
     }
 
     private function handle_client_defaults($value, array &$args)
     {
-        if (!is_array($value)) {
-            throw new \InvalidArgumentException('client_defaults must be an array');
-        }
-
         foreach ($value as $k => $v) {
             $args['client']->setDefaultOption($k, $v);
         }
@@ -295,10 +281,6 @@ class ClientFactory
 
     private function handle_endpoint_provider($value, array &$args)
     {
-        if (!is_callable($value)) {
-            throw new \InvalidArgumentException('endpoint_provider must be a callable that returns an endpoint array.');
-        }
-
         if (!isset($args['endpoint'])) {
             $result = call_user_func($value, [
                 'service' => $args['service'],
