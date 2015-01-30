@@ -50,7 +50,7 @@ class ClientFactory
                 'type'     => 'value',
                 'valid'    => 'string',
                 'required' => true,
-                'doc'      => 'Region to connect to. See http://docs.aws.amazon.com/general/latest/gr/rande.html for a list of available regions.'
+                'doc'      => 'Region to connect to. (e.g. sandbox, local, production)'
             ],
             'version' => [
                 'type'     => 'value',
@@ -61,7 +61,7 @@ class ClientFactory
             'endpoint'      => [
                 'type'      => 'value',
                 'valid'     => 'string',
-                'doc'       => 'The full URI of the webservice. This is only required when connecting to a custom endpoint (e.g., a local version of S3).'
+                'doc'       => 'The full URI of the webservice. This is only required when connecting to a custom endpoint (e.g., a local version of Blackbox).'
             ],
             'defaults' => [
                 'type'  => 'value',
@@ -93,7 +93,7 @@ class ClientFactory
             'profile' => [
                 'type'  => 'pre',
                 'valid' => 'string',
-                'doc'   => 'Allows you to specify which profile to use when credentials are created from the AWS credentials file in your home directory. This setting overrides the AWS_PROFILE environment variable. Specifying "profile" will cause the "credentials" key to be ignored.'
+                'doc'   => 'Allows you to specify which profile to use when credentials are created from the VWS credentials file in your home directory.'
             ],
             'credentials' => [
                 'type'    => 'pre',
@@ -101,7 +101,6 @@ class ClientFactory
                 'default' => true,
                 'doc'     => 'An Vws\Credentials\CredentialsInterface object to use with each, an associative array of "username", "password", and "subscription_token" key value pairs, `false` to utilize null credentials, or a callable credentials provider function to create credentials using a function. If no credentials are provided or credentials is set to true, the SDK will attempt to load them from the environment.'
             ],
-
             'client' => [
                 'type'    => 'pre',
                 'valid'   => 'GuzzleHttp\ClientInterface|bool',
@@ -131,18 +130,6 @@ class ClientFactory
     {
         $this->addDefaultArgs($args);
 
-//        foreach ($this->requiredArguments as $required) {
-//            if (!array_key_exists($required, $args)) {
-//                throw new \InvalidArgumentException("{$required} is a required client setting");
-//            }
-//        }
-//        $this->handle_profile(true, $args);
-//        $this->handle_credentials(isset($args['credentials']) ? $args['credentials'] : true, $args);
-//        $this->handle_endpoint_provider($args['endpoint_provider'], $args);
-//        $this->handle_api_provider($args['api_provider'] ? $args['api_provider'] : true, $args);
-//        $this->handle_class_name(isset($args['class_name']) ? $args['class_name'] : true, $args);
-//        $this->handle_client($args['client'], $args);
-
         foreach (static::getValidArguments() as $key => $a) {
             if (!array_key_exists($key, $args)) {
                 if (isset($a['default'])) {
@@ -171,7 +158,6 @@ class ClientFactory
 
         $client = $this->createClient($args);
 
-        #$client->getEmitter()->attach(new Debug([]));
         $this->handle_client_defaults(isset($args['client_defaults']) ? $args['client_defaults'] : [], $args);
         $this->handle_validate(isset($args['validate_service']) ? $args['validate_service'] : true, $args, $client);
 
