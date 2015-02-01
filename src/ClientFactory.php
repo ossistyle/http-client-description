@@ -93,7 +93,7 @@ class ClientFactory
             'profile' => [
                 'type'  => 'pre',
                 'valid' => 'string',
-                'doc'   => 'Allows you to specify which profile to use when credentials are created from the VWS credentials file in your home directory.'
+                'doc'   => 'Allows you to specify which profile to use when credentials are created from the VWS credentials file in your document root.'
             ],
             'credentials' => [
                 'type'    => 'pre',
