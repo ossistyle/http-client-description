@@ -8,6 +8,7 @@ class Provider
     const ENV_USERNAME = 'VWS_USERNAME';
     const ENV_PASSWORD = 'VWS_PASSWORD';
     const ENV_SUBSCRIPTION_TOKEN = 'VWS_SUBSCRIPTION_TOKEN';
+    const ENV_PROFILE = 'VWS_PROFILE';
 
     public static function resolve(callable $provider)
     {
