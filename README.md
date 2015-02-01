@@ -13,18 +13,23 @@ vws-php using GuzzleHttp Client
 require 'vendor/autoload.php';
 
 use Vws\Blackbox\BlackboxClient;
-use Vws\Exception\BlackboxException;
+use Vws\Blackbox\Exception\BlackboxException;
 
-// Instantiate an Via Blackbox Client.
-$blackbox = BlackboxClient::factory([
-    'version' => 'latest',
-    'region'  => 'sandbox'
-    'credentials' => [
-        'username' => 'foo',
-        'password' => 'bar',
-        'subscription_token' => 'foo_bar'
-    ]
-]);
+try {
+    // Instantiate an Via Blackbox Client.
+    $blackbox = BlackboxClient::factory([
+        'version' => 'latest',
+        'region'  => 'sandbox'
+        'credentials' => [
+            'username' => 'foo',
+            'password' => 'bar',
+            'subscription_token' => 'foo_bar'
+        ]
+    ]);
+} catch (\Exception $e)
+{
+    echo '<pre>' . $e->getMessage() . '</pre>';
+}
 ```
 
 
@@ -64,7 +69,7 @@ try {
 
     var_export($result->toArray());
 
-} catch (Vws\Blackbox\Exception\BlackboxException $e)
+} catch (BlackboxException $e)
 {
     echo '<pre>' . $e->getMessage() . '</pre>';
     echo '<h2>Request</h2>';
@@ -125,7 +130,7 @@ try {
 
     var_export($result->toArray());
 
-} catch (Vws\Blackbox\Exception\BlackboxException $e)
+} catch (BlackboxException $e)
 {
     echo '<pre>' . $e->getMessage() . '</pre>';
     echo '<h2>Request</h2>';
