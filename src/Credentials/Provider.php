@@ -47,8 +47,7 @@ class Provider
 
     public static function ini($profile = null, $filename = null)
     {
-        //$filename = $filename ?: (self::getHomeDir() . '/.vws/credentials');
-        $filename = $filename ?: (self::getDocumentRootDir() . '/.vws/credentials');
+        $filename = $filename ?: (self::getWorkingDir() . '/.vws/credentials');
         $profile = $profile ?: ('default');
 
         return function () use ($profile, $filename) {
@@ -75,32 +74,11 @@ class Provider
         };
     }
 
-    private static function getDocumentRootDir()
+    private static function getWorkingDir()
     {
-        // On Linux/Unix-like systems, use the HOME environment variable
-        if ($homeDir = getenv('DOCUMENT_ROOT')) {
+        if ($homeDir = getcwd()) {
             return $homeDir;
         }
-
-        // Get the HOMEDRIVE and HOMEPATH values for Windows hosts
-        $homeDrive = getenv('HOMEDRIVE');
-        $homePath = getenv('HOMEPATH');
-
-        return ($homeDrive && $homePath) ? $homeDrive . $homePath : null;
-    }
-
-    private static function getHomeDir()
-    {
-        // On Linux/Unix-like systems, use the HOME environment variable
-        if ($homeDir = getenv('HOME')) {
-            return $homeDir;
-        }
-
-        // Get the HOMEDRIVE and HOMEPATH values for Windows hosts
-        $homeDrive = getenv('HOMEDRIVE');
-        $homePath = getenv('HOMEPATH');
-
-        return ($homeDrive && $homePath) ? $homeDrive . $homePath : null;
     }
 
     public static function defaultProvider(array $config = [])
