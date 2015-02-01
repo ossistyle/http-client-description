@@ -94,12 +94,12 @@ class VwsClient extends AbstractClient implements VwsClientInterface
     }
 
     /**
-     * Executes an AWS command.
+     * Executes an VWS command.
      *
      * @param CommandInterface $command Command to execute
      *
      * @return mixed Returns the result of the command
-     * @throws AwsException when an error occurs during transfer
+     * @throws VwsException when an error occurs during transfer
      */
     public function execute(CommandInterface $command)
     {
@@ -172,7 +172,7 @@ class VwsClient extends AbstractClient implements VwsClientInterface
                     // Create an easy to read error message.
                     $serviceError = trim($transaction->context->getPath('vws_error/code')
                         . ' (' . $transaction->context->getPath('vws_error/type')
-                        . ' error): ' . $transaction->context->getPath('vws_error/message'));
+                        . ' error): ' . implode('\r\n', $transaction->context->getPath('vws_error/messages')));
                 }
             }
         }
