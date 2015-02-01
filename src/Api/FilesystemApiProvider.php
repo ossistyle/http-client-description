@@ -43,7 +43,7 @@ class FilesystemApiProvider
     {
         switch ($type) {
             case 'api':
-                return $this->getService($service, $version);            
+                return $this->getService($service, $version);
             default:
                 throw new \InvalidArgumentException('Unknown type: ' . $type);
         }
@@ -56,7 +56,7 @@ class FilesystemApiProvider
         }
 
         return $this->load($service, $version, 'api');
-    }    
+    }
 
     public function getServiceVersions($service)
     {

@@ -16,11 +16,9 @@ trait JsonParserTrait
         $data['type'] = $data['status_code'][0] == '4' ? 'client' : 'server';
         $data['messages'] = [];
 
-        if (isset($data['parsed']['Messages']))
-        {
+        if (isset($data['parsed']['Messages'])) {
             $messages = $data['parsed']['Messages'];
-            foreach ($messages as $key => $message)
-            {
+            foreach ($messages as $key => $message) {
                 $data['messages'][] = [
                             'code'        => $message['Code'],
                             'severity'    => $message['Severity'],

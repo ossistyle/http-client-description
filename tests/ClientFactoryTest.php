@@ -195,7 +195,7 @@ class ClientFactoryTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Vws\Exception\VwsException
      * @expectedExceptionMessage Throwing!
      */
-    public function testCanDisableValidation ()
+    public function testCanDisableValidation()
     {
         $f = new ClientFactory();
         $c = $f->create([

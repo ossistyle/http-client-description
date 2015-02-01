@@ -26,7 +26,6 @@ class JsonBody
      */
     public static function getContentType(ServiceModel $service)
     {
-
         return 'application/json';
 
 //        return 'application/x-vws-json-'

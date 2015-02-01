@@ -4,7 +4,7 @@ namespace Vws\Blackbox;
 
 use Vws\VwsClient;
 
-class BlackboxClient extends VwsClient 
+class BlackboxClient extends VwsClient
 {
     protected function addDefaultArgs(&$args)
     {

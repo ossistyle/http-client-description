@@ -13,7 +13,7 @@ class ApplyCredentialsSubscriber implements SubscriberInterface
 
     public function __construct(Credentials $credentials)
     {
-            $this->credentials = $credentials;
+        $this->credentials = $credentials;
     }
 
     public function getEvents()

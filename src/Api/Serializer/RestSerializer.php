@@ -89,8 +89,7 @@ abstract class RestSerializer
         }
 
         foreach ($args as $name => $value) {
-            if ($input->getType() !== 'list')
-            {
+            if ($input->getType() !== 'list') {
                 if ($input->hasMember($name)) {
                     $member = $input->getMember($name);
                     $location = $member['location'];

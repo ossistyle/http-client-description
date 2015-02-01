@@ -29,7 +29,6 @@ class RestJsonParser extends AbstractRestParser
         Shape $member,
         array &$result
     ) {
-
         if ($jsonBody = $response->json()) {
             $result += $this->parser->parse($member, $jsonBody);
         }

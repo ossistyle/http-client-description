@@ -38,8 +38,7 @@ abstract class AbstractRestParser extends AbstractParser
             $this->extractPayload($payload, $output, $response, $result);
         }
 
-        if ($output->getType() !== 'list')
-        {
+        if ($output->getType() !== 'list') {
             foreach ($output->getMembers() as $name => $member) {
                 switch ($member['location']) {
                     case 'header':

@@ -229,5 +229,4 @@ class ServiceModel extends AbstractModel
 
         return null;
     }
-
 }

@@ -180,8 +180,7 @@ class ClientFactory
     {
         $args['scheme'] = 'http';
 
-        if (!isset($args['client']))
-        {
+        if (!isset($args['client'])) {
             $clientArgs = [];
             $args['client'] = new Client($clientArgs);
         }
@@ -278,7 +277,7 @@ class ClientFactory
         }
     }
 
-     protected function handle_validate(
+    protected function handle_validate(
         $value,
         array &$args,
         VwsClientInterface $client

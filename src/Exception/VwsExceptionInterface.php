@@ -2,6 +2,6 @@
 
 namespace Vws\Exception;
 
-interface VwsExceptionInterface 
-{    
+interface VwsExceptionInterface
+{
 }

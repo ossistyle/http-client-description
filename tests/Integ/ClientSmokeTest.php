@@ -41,7 +41,6 @@ class ClientSmokeTest extends \PHPUnit_Framework_TestCase
                 // Ensure the presence of the specified key.
                 $this->assertArrayHasKey($value, $result);
             }
-
         } catch (VwsException $e) {
             if ($succeed) {
                 $this->fail("The {$operation} operation of the {$service} "
@@ -57,7 +56,9 @@ class ClientSmokeTest extends \PHPUnit_Framework_TestCase
             // Look at the error code first, then the root exception class, to
             // see if it matches the value.
             $error = $e;
-            while ($error->getPrevious()) $error = $error->getPrevious();
+            while ($error->getPrevious()) {
+                $error = $error->getPrevious();
+            }
             $this->assertEquals(
                 $value,
                 $e->getVwsErrorCode() ?: get_class($error),

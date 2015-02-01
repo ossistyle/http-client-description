@@ -95,7 +95,6 @@ class VwsClientTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($config['credentials'], $client->getCredentials());
         $this->assertSame($config['region'], $client->getRegion());
         $this->assertSame($config['api'], $client->getApi());
-
     }
 
     /**
@@ -128,7 +127,7 @@ class VwsClientTest extends \PHPUnit_Framework_TestCase
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage is a required option
      */
-    public function testEnsureMissingRequiredArgumentsThrowException ()
+    public function testEnsureMissingRequiredArgumentsThrowException()
     {
         new VwsClient([]);
     }

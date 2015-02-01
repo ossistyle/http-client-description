@@ -10,5 +10,4 @@ interface CredentialsInterface extends ToArrayInterface
     public function getPassword();
 
     public function getToken();
-
 }
