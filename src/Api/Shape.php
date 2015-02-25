@@ -64,4 +64,20 @@ class Shape extends AbstractModel
     {
         return $this->definition['name'];
     }
+
+    public function getMin ()
+    {
+        if (!isset($this->definition['min'])) {
+            return false;
+        }
+        return $this->definition['min'];
+    }
+
+    public function getMax ()
+    {
+        if (!isset($this->definition['max'])) {
+            return false;
+        }
+        return $this->definition['max'];
+    }
 }

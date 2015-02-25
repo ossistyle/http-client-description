@@ -59,7 +59,21 @@ return [
               'shape' => 'PostCatalogsOutput',
             ]
 
-        ]
+        ],
+        'PostProduct' => [
+            'name' => 'PostProduct',
+            'http' => [
+              'method' => 'POST',
+              'requestUri' => 'WebApi/api/Products',
+            ],
+            'input' => [
+              'shape' => 'PostProductInput',
+            ],
+            'output' => [
+              'shape' => 'PostProductOutput',
+            ]
+
+        ],
     ],
     'shapes' => [
         'Catalog' => [
@@ -80,27 +94,6 @@ return [
                 'ChildCatalogs' => [
                     'shape' => 'CatalogList',
                 ],
-            ]
-        ],
-        'CatalogForeignId' => [
-            'type' => 'string',
-            'max' => 255,
-        ],
-        'CatalogId' => [
-            'type' => 'string',
-            'max' => 30,
-        ],
-        'CatalogIsRootlevel' => [
-            'type' => 'boolean',
-        ],
-        'CatalogName' => [
-            'type' => 'string',
-            'max' => 30,
-        ],
-        'CatalogList' => [
-            'type' => 'list',
-            'member' => [
-                'shape' => 'Catalog'
             ]
         ],
         'GetCatalogByIdInput' => [
@@ -133,6 +126,12 @@ return [
                 'ChildCatalogs' => [
                     'shape' => 'CatalogList',
                 ],
+            ]
+        ],
+        'CatalogList' => [
+            'type' => 'list',
+            'member' => [
+                'shape' => 'Catalog'
             ]
         ],
         'GetCatalogsOutput' => [
@@ -193,6 +192,142 @@ return [
             'member' => [
                 'shape' => 'PostCatalogOutput',
             ],
+        ],
+        'PostProductInput' => [
+            'type' => 'structure',
+            'required' => [
+                'Title',
+                'ForeignId',
+                'Price',
+                'StockAmount'
+            ],
+            'members' => [
+                'ForeignId' => [
+                    'shape' => 'ProductForeignId',
+                ],
+                'Title' => [
+                    'shape' => 'ProductTitle',
+                ],
+                'Description' => [
+                    'shape' => 'ProductDescription',
+                ],
+                'ShortDescription' => [
+                    'shape' => 'ProductShortDescription',
+                ],
+                'Price' => [
+                    'shape' => 'Float',
+                ],
+                'Ean' => [
+                    'shape' => 'ProductEan',
+                ],
+                'Upc' => [
+                    'shape' => 'ProductUpc',
+                ],
+                'Isbn' => [
+                    'shape' => 'ProductIsbn',
+                ],
+                'StockAmount' => [
+                    'shape' => 'ProductStockAmount',
+                ],
+                'ProductImages' => [
+                    'shape' => 'ProductImageList',
+                ],
+            ]
+        ],
+        'ProductImageList' => [
+            'type' => 'list',
+            'maxItems' => 1,
+            'minItems' => 1,
+            'member' => [
+                'shape' => 'ProductImage'
+            ]
+        ],
+        'ProductImage' => [
+            'type' => 'structure',
+            'required' => [
+                'ImageUrl',
+                'ForeignId',
+            ],
+            'members' => [
+                'ForeignId' => [
+                    'shape' => 'ProductImageForeignId',
+                ],
+                'ImageUrl' => [
+                    'shape' => 'ProductImageUrl',
+                ],
+                'Type' => [
+                    'shape' => 'ProductImageType',
+                ],
+            ]
+        ],
+        'CatalogForeignId' => [
+            'type' => 'string',
+            'max' => 255,
+        ],
+        'CatalogId' => [
+            'type' => 'string',
+            'max' => 30,
+        ],
+        'CatalogIsRootlevel' => [
+            'type' => 'boolean',
+        ],
+        'CatalogName' => [
+            'type' => 'string',
+            'max' => 30,
+        ],
+        'Float' => [
+            'type' => 'float',
+        ],
+        'ProductTitle' => [
+            'type' => 'string',
+            'min' => 3,
+            'max' => 80,
+        ],
+        'ProductForeignId' => [
+            'type' => 'string',
+            'max' => 255,
+        ],
+        'ProductDescription' => [
+            'type' => 'string',
+        ],
+        'ProductShortDescription' => [
+            'type' => 'string',
+            'max' => 2000
+        ],
+        'ProductPrice' => [
+            'type' => 'float',
+        ],
+        'ProductEan' => [
+            'type' => 'integer',
+        ],
+        'ProductUpc' => [
+            'type' => 'integer',
+        ],
+        'ProductIsbn' => [
+            'type' => 'string',
+            'pattern' => '^(97(8|9))?\d{9}(\d|X)$', /* /\b(?:ISBN(?:: ?| ))?((?:97[89])?\d{9}[\dx])\b/i */
+        ],
+        'ProductStockAmount' => [
+            'type' => 'integer',
+        ],
+        'ProductImageUrl' => [
+            'type' => 'string',
+            'max' => 255,
+            'filters' => [
+                [
+                    'method' => '\GuzzleHttp\Url::fromString',
+                    'args' => ['array', '@value'],
+                ]
+            ],
+        ],
+        'ProductImageType' => [
+            'type' => 'integer',
+            'min' => 1,
+            'max' => 1,
+        ],
+        'ProductImageForeignId' => [
+            'type' => 'string',
+            'max' => 255,
         ],
     ]
 ];

@@ -95,6 +95,22 @@ class Validator
             return;
         }
 
+        if ($minItems = $shape->getMin()) {
+            $size = count($value);
+            if ($size < $minItems) {
+                $this->addError('must contain ' . $minItems . ' or more elements');
+                return;
+            }
+        }
+
+        if ($maxItems = $shape->getMax()) {
+            $size = count($value);
+            if ($size > $maxItems) {
+                $this->addError('must contain ' . $maxItems . ' or fewer elements');
+                return;
+            }
+        }
+
         $items = $shape->getMember();
         foreach ($value as $index => $v) {
             $this->path[] = $index;
@@ -155,6 +171,18 @@ class Validator
         if (!$this->checkCanString($value)) {
             $this->addError('must be a string or an object that implements '
                 . '__toString(). Found ' . Core::describeType($value));
+        }
+        if ($min = $shape->getMin()) {
+            $size = strlen($value);
+            if ($size < $min) {
+                $this->addError('length must be greater than or equal to ' . $min);
+            }
+        }
+        if ($max = $shape->getMax()) {
+            $size = strlen($value);
+            if ($size > $max) {
+                $this->addError('length must be less than or equal to ' . $max);
+            }
         }
     }
 
