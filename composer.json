@@ -19,7 +19,8 @@
         "guzzlehttp/log-subscriber": "~1.0",
         "monolog/monolog": "~1.12",
         "mtdowling/jmespath.php": "~2.1",
-        "mtdowling/transducers": "0.3.*"
+        "mtdowling/transducers": "0.3.*",
+        "respect/validation": "0.8.*"
     },
     "autoload": {
         "psr-4": {

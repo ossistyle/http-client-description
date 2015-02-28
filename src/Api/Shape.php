@@ -80,4 +80,12 @@ class Shape extends AbstractModel
         }
         return $this->definition['max'];
     }
+
+    public function getPattern ()
+    {
+        if (!isset($this->definition['pattern'])) {
+            return false;
+        }
+        return $this->definition['pattern'];
+    }
 }

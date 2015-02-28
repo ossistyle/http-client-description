@@ -58,6 +58,8 @@ class Validator
         if (isset($methods[$type])) {
             $this->{$methods[$type]}($shape, $value);
         }
+
+        $this->check_pattern($shape, $value);
     }
 
     private function check_structure(StructureShape $shape, $value)
@@ -217,5 +219,12 @@ class Validator
             implode('', array_map(function ($s) { return "[{$s}]"; }, $this->path))
             . ' '
             . $message;
+    }
+
+    private function check_pattern (Shape $shape, $value)
+    {
+        if (($pattern = $shape->getPattern()) && !preg_match($pattern, $value)) {
+            $this->addError('must match the following regular expression: ' . $pattern);
+        }
     }
 }

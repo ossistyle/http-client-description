@@ -16,7 +16,6 @@ vendor
 docs
 src/package.xml
 /apigen.neon
-/Makefile
 nbproject
 .htaccess
 index.php
