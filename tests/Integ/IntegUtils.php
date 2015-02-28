@@ -7,7 +7,7 @@ trait IntegUtils
     {
         return new \Vws\Vdk([
             'region'  => 'local',
-            'profile' => 'integ-local',
+            'profile' => 'integ-sandbox',
             'version' => 'latest',
         ]);
     }

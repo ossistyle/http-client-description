@@ -9,9 +9,9 @@ class ClientSmokeTest extends \PHPUnit_Framework_TestCase
     use IntegUtils;
 
     /**
-     * @dataProvider provideServiceTestCases
+     * @dataProvider provideLocalServiceTestCases
      */
-    public function testBasicOperationWorks($service, $class, $options,
+    public function testLocalBasicOperationWorks($service, $class, $options,
         $endpoint, $operation, $params, $succeed, $value
     ) {
         // Create the client and make sure it is the right class.
@@ -75,7 +75,7 @@ class ClientSmokeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($endpoint, $host);
     }
 
-    public function provideServiceTestCases()
+    public function provideLocalServiceTestCases()
     {
         return [
             /*[
@@ -115,7 +115,7 @@ class ClientSmokeTest extends \PHPUnit_Framework_TestCase
                 [],
                 'local.via.de',
                 'GetCatalogById',
-                ['Id' => 0815],
+                ['Id' => 4711],
                 false,
                 'GuzzleHttp\Exception\ClientException'
             ],
