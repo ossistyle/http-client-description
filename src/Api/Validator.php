@@ -159,6 +159,13 @@ class Validator
         if (!is_numeric($value)) {
             $this->addError('must be numeric. Found ' . Core::describeType($value));
         }
+
+        if (($min = $shape->getMin()) && $value < $min) {
+            $this->addError('must be greater than or equal to ' . $min);
+        }
+        if (($max = $shape->getMax()) && $value > $max) {
+            $this->addError('must be less than or equal to ' . $max);
+        }
     }
 
     private function check_boolean(Shape $shape, $value)
