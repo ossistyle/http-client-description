@@ -33,13 +33,13 @@ class EndpointProvider
             'version' => 2,
             'endpoints' => [
                 '*/*' => [
-                    'endpoint' => 'local.via.de'
+                    'endpoint' => 'local.via.de/WebApi/'
                 ],
                 'local/blackbox' => [
-                    'endpoint' => 'local.via.de'
+                    'endpoint' => 'local.via.de/WebApi/'
                 ],
                 'sandbox/blackbox' => [
-                    'endpoint' => 'sandbox.api.via.de:8001'
+                    'endpoint' => 'sandboxapi.via.de:8001'
                 ],
                 'production/blackbox' => [
                     'endpoint' => 'ebay.api.via.de'

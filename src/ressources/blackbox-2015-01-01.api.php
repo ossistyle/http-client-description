@@ -13,7 +13,7 @@ return [
             'name' => 'GetCatalogs',
             'http' => [
               'method' => 'GET',
-              'requestUri' => 'WebApi/api/Catalogs',
+              'requestUri' => 'api/Catalogs',
             ],
             'output' => [
               'shape' => 'GetCatalogsOutput',
@@ -23,7 +23,7 @@ return [
             'name' => 'GetCatalogById',
             'http' => [
               'method' => 'GET',
-              'requestUri' => 'WebApi/api/Catalogs/{Id}',
+              'requestUri' => 'api/Catalogs/{Id}',
             ],
             'input' => [
               'shape' => 'GetCatalogByIdInput',
@@ -36,7 +36,7 @@ return [
             'name' => 'PostCatalog',
             'http' => [
               'method' => 'POST',
-              'requestUri' => 'WebApi/api/Catalogs',
+              'requestUri' => 'api/Catalogs',
             ],
             'input' => [
               'shape' => 'PostCatalogInput',
@@ -50,7 +50,7 @@ return [
             'name' => 'PostCatalogs',
             'http' => [
               'method' => 'POST',
-              'requestUri' => 'WebApi/api/Catalogs/PostList',
+              'requestUri' => 'api/Catalogs/PostList',
             ],
             'input' => [
               'shape' => 'PostCatalogsInput',
@@ -64,7 +64,7 @@ return [
             'name' => 'PostProduct',
             'http' => [
               'method' => 'POST',
-              'requestUri' => 'WebApi/api/Products',
+              'requestUri' => 'api/Products',
             ],
             'input' => [
               'shape' => 'PostProductInput',
@@ -75,32 +75,24 @@ return [
 
         ],
     ],
+    /***********************************************************************
+     *
+     *                          SHAPES
+     *
+     **********************************************************************/
+
+
     'shapes' => [
-        'Catalog' => [
-            'type' => 'structure',
-            'members' => [
-                'Id' =>  [
-                  'shape' => 'CatalogId',
-                ],
-                'Name' => [
-                    'shape' => 'CatalogName',
-                ],
-                'IsRootLevel' => [
-                    'shape' => 'CatalogIsRootlevel',
-                ],
-                'ForeignId' => [
-                    'shape' => 'CatalogForeignId',
-                ],
-                'ChildCatalogs' => [
-                    'shape' => 'CatalogList',
-                ],
-            ]
-        ],
+
+        /**********************************
+         *      CATALOGS BEGIN
+         *********************************/
+
         'GetCatalogByIdInput' => [
             'type' => 'structure',
             'members' => [
                 'Id' => [
-                    'shape' => 'CatalogId',
+                    'shape' => 'IntegerNoMinMax',
                     'location' => 'uri'
                 ]
             ],
@@ -108,38 +100,35 @@ return [
               'Id',
             ],
         ],
+
         'GetCatalogByIdOutput' => [
             'type' => 'structure',
             'members' => [
                 'Id' =>  [
-                  'shape' => 'CatalogId',
+                  'shape' => 'IntegerNoMinMax',
                 ],
                 'Name' => [
-                    'shape' => 'CatalogName',
+                    'shape' => 'StringMin3Max30',
                 ],
                 'IsRootLevel' => [
-                    'shape' => 'CatalogIsRootlevel',
+                    'shape' => 'Boolean',
                 ],
                 'ForeignId' => [
-                    'shape' => 'CatalogForeignId',
+                    'shape' => 'StringMax255',
                 ],
                 'ChildCatalogs' => [
                     'shape' => 'CatalogList',
                 ],
             ]
         ],
-        'CatalogList' => [
-            'type' => 'list',
-            'member' => [
-                'shape' => 'Catalog'
-            ]
-        ],
+
         'GetCatalogsOutput' => [
             'type' => 'list',
             'member' => [
                 'shape' => 'Catalog',
             ],
         ],
+
         'PostCatalogInput' => [
             'type' => 'structure',
             'required' => [
@@ -148,51 +137,87 @@ return [
             ],
             'members' => [
                 'Name' => [
-                    'shape' => 'CatalogName',
+                    'shape' => 'StringMin3Max30',
                 ],
                 'IsRootLevel' => [
-                    'shape' => 'CatalogIsRootlevel',
+                    'shape' => 'Boolean',
                 ],
                 'ForeignId' => [
-                    'shape' => 'CatalogForeignId',
+                    'shape' => 'StringMax255',
                 ],
                 'ChildCatalogs' => [
                     'shape' => 'CatalogList',
                 ],
             ]
         ],
+
         'PostCatalogOutput' => [
             'type' => 'structure',
             'members' => [
                 'Id' =>  [
-                  'shape' => 'CatalogId',
+                  'shape' => 'IntegerNoMinMax',
                 ],
                 'Name' => [
-                    'shape' => 'CatalogName',
+                    'shape' => 'StringMin3Max30',
                 ],
                 'IsRootLevel' => [
-                    'shape' => 'CatalogIsRootlevel',
+                    'shape' => 'Boolean',
                 ],
                 'ForeignId' => [
-                    'shape' => 'CatalogForeignId',
+                    'shape' => 'StringMax255',
                 ],
                 'ChildCatalogs' => [
                     'shape' => 'CatalogList',
                 ],
             ]
         ],
+
         'PostCatalogsInput' => [
             'type' => 'list',
             'member' => [
                 'shape' => 'PostCatalogInput',
             ],
         ],
+
         'PostCatalogsOutput' => [
             'type' => 'list',
             'member' => [
                 'shape' => 'PostCatalogOutput',
             ],
         ],
+
+        'Catalog' => [
+            'type' => 'structure',
+            'members' => [
+                'Id' =>  [
+                  'shape' => 'IntegerNoMinMax',
+                ],
+                'Name' => [
+                    'shape' => 'StringMin3Max30',
+                ],
+                'IsRootLevel' => [
+                    'shape' => 'Boolean',
+                ],
+                'ForeignId' => [
+                    'shape' => 'StringMax255',
+                ],
+                'ChildCatalogs' => [
+                    'shape' => 'CatalogList',
+                ],
+            ]
+        ],
+
+        'CatalogList' => [
+            'type' => 'list',
+            'member' => [
+                'shape' => 'Catalog'
+            ]
+        ],
+
+        /***************************************
+         *    CATALOGS END | PRODUCTS BEGIN
+         ***************************************/
+
         'PostProductInput' => [
             'type' => 'structure',
             'required' => [
@@ -234,6 +259,7 @@ return [
                 ],
             ]
         ],
+
         'ProductImageList' => [
             'type' => 'list',
             'maxItems' => 1,
@@ -242,6 +268,7 @@ return [
                 'shape' => 'ProductImage'
             ]
         ],
+
         'ProductImage' => [
             'type' => 'structure',
             'required' => [
@@ -262,30 +289,27 @@ return [
             ]
         ],
 
+        /**********************************
+         *      PRODUCTS END
+         *********************************/
 
-        
-        'CatalogForeignId' => [
-            'type' => 'string',
-            'max' => 255,
-        ],
-        'CatalogId' => [
-            'type' => 'string',
-            'max' => 30,
-        ],
-        'CatalogIsRootlevel' => [
+       /***********************************************************************
+        *
+        *                          DATA TYPES
+        *
+        **********************************************************************/
+
+        'Boolean' => [
             'type' => 'boolean',
         ],
-        'CatalogName' => [
-            'type' => 'string',
-            'max' => 30,
-        ],
-
-
 
         'Float' => [
             'type' => 'float',
         ],
-         'IntegerMin1Max1' => [
+        'IntegerNoMinMax' => [
+            'type' => 'integer',
+        ],
+        'IntegerMin1Max1' => [
             'type' => 'integer',
             'min' => 1,
             'max' => 1,
@@ -308,6 +332,11 @@ return [
         ],
         'StringNoMinMax' => [
             'type' => 'string',
+        ],
+        'StringMin3Max30' => [
+            'type' => 'string',
+            'min' => 3,
+            'max' => 30,
         ],
         'StringMin3Max80' => [
             'type' => 'string',

@@ -53,11 +53,11 @@ class EndpointProviderTest extends \PHPUnit_Framework_TestCase
         return [
             [
                 ['region' => 'local', 'service' => 'blackbox'],
-                ['endpoint' => 'https://local.via.de']
+                ['endpoint' => 'https://local.via.de/WebApi/']
             ],
             [
                 ['region' => 'sandbox', 'service' => 'blackbox'],
-                ['endpoint' => 'https://sandbox.api.via.de:8001']
+                ['endpoint' => 'https://sandboxapi.via.de:8001']
             ],
             [
                 ['region' => 'production', 'service' => 'blackbox'],
