@@ -203,31 +203,31 @@ return [
             ],
             'members' => [
                 'ForeignId' => [
-                    'shape' => 'ProductForeignId',
+                    'shape' => 'StringMax255',
                 ],
                 'Title' => [
-                    'shape' => 'ProductTitle',
+                    'shape' => 'StringMin3Max80',
                 ],
                 'Description' => [
-                    'shape' => 'ProductDescription',
+                    'shape' => 'StringNoMinMax',
                 ],
                 'ShortDescription' => [
-                    'shape' => 'ProductShortDescription',
+                    'shape' => 'StringMax2000',
                 ],
                 'Price' => [
                     'shape' => 'Float',
                 ],
                 'Ean' => [
-                    'shape' => 'ProductEan',
+                    'shape' => 'StringEan',
                 ],
                 'Upc' => [
-                    'shape' => 'ProductUpc',
+                    'shape' => 'StringUpc',
                 ],
                 'Isbn' => [
-                    'shape' => 'ProductIsbn',
+                    'shape' => 'StringIsbn',
                 ],
                 'StockAmount' => [
-                    'shape' => 'ProductStockAmount',
+                    'shape' => 'IntegerMax999',
                 ],
                 'ProductImages' => [
                     'shape' => 'ProductImageList',
@@ -247,19 +247,23 @@ return [
             'required' => [
                 'ImageUrl',
                 'ForeignId',
+                'Type',
             ],
             'members' => [
                 'ForeignId' => [
-                    'shape' => 'ProductImageForeignId',
+                    'shape' => 'StringMax255',
                 ],
                 'ImageUrl' => [
-                    'shape' => 'ProductImageUrl',
+                    'shape' => 'Url',
                 ],
                 'Type' => [
-                    'shape' => 'ProductImageType',
+                    'shape' => 'IntegerMin1Max1',
                 ],
             ]
         ],
+
+
+        
         'CatalogForeignId' => [
             'type' => 'string',
             'max' => 255,
@@ -275,60 +279,60 @@ return [
             'type' => 'string',
             'max' => 30,
         ],
+
+
+
         'Float' => [
             'type' => 'float',
         ],
-        'ProductTitle' => [
-            'type' => 'string',
-            'min' => 3,
-            'max' => 80,
-        ],
-        'ProductForeignId' => [
-            'type' => 'string',
-            'max' => 255,
-        ],
-        'ProductDescription' => [
-            'type' => 'string',
-        ],
-        'ProductShortDescription' => [
-            'type' => 'string',
-            'max' => 2000
-        ],
-        'ProductPrice' => [
-            'type' => 'float',
-        ],
-        'ProductEan' => [
-            'type' => 'integer',
-        ],
-        'ProductUpc' => [
-            'type' => 'integer',
-        ],
-        'ProductIsbn' => [
-            'type' => 'string',
-            'pattern' => '^(97(8|9))?\d{9}(\d|X)$', /* /\b(?:ISBN(?:: ?| ))?((?:97[89])?\d{9}[\dx])\b/i */
-        ],
-        'ProductStockAmount' => [
-            'type' => 'integer',
-        ],
-        'ProductImageUrl' => [
-            'type' => 'string',
-            'max' => 255,
-            'filters' => [
-                [
-                    'method' => '\GuzzleHttp\Url::fromString',
-                    'args' => ['array', '@value'],
-                ]
-            ],
-        ],
-        'ProductImageType' => [
+         'IntegerMin1Max1' => [
             'type' => 'integer',
             'min' => 1,
             'max' => 1,
         ],
-        'ProductImageForeignId' => [
+        'IntegerMax999' => [
+            'type' => 'integer',
+            'max' => 999,
+        ],
+        'StringEan' => [
+            'type' => 'string',
+            'pattern' => '#\b[\d\\-]{3,18}\b#',
+        ],
+        'StringUpc' => [
+            'type' => 'string',
+            'pattern' => '#^(\\d{8}|\\d{12,14})$#',
+        ],
+        'StringIsbn' => [
+            'type' => 'string',
+            'pattern' => '#\b(?:ISBN(?:: ?| ))?((?:97[89])?\d{9}[\dx])\b#i',
+        ],
+        'StringNoMinMax' => [
+            'type' => 'string',
+        ],
+        'StringMin3Max80' => [
+            'type' => 'string',
+            'min' => 3,
+            'max' => 80,
+        ],
+        'StringMax2000' => [
+            'type' => 'string',
+            'max' => 2000,
+        ],
+        'StringMax255' => [
             'type' => 'string',
             'max' => 255,
         ],
+        'Url' => [
+            'type' => 'string',
+            'max' => 255,
+            'pattern' => '#^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$#',
+            'filters' => [
+                [
+                    'method' => 'Respect\Validation\Validator::url',
+                    'args' => [true, '@value'],
+                ]
+            ],
+        ]
     ]
 ];
 
