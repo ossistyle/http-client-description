@@ -1,4 +1,6 @@
-<?php namespace Vws\Test\Credentials;
+<?php
+
+namespace Vws\Test\Credentials;
 
 use Vws\Credentials\Provider;
 use Vws\Credentials\Credentials;
