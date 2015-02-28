@@ -17,7 +17,7 @@ class ClientFactoryTest extends \PHPUnit_Framework_TestCase
         $args = [
             'service' => 'blackbox',
             'region'  => 'x',
-            'version' => 'latest'
+            'version' => 'latest',
         ];
         $c = $f->create($args);
         $this->assertInstanceOf('Vws\VwsClientInterface', $c);
@@ -40,7 +40,7 @@ class ClientFactoryTest extends \PHPUnit_Framework_TestCase
             'service'    => 'blackbox',
             'region'     => 'x',
             'class_name' => 'Vws\Blackbox\BlackboxClient',
-            'version'    => 'latest'
+            'version'    => 'latest',
         ]));
     }
 
@@ -55,7 +55,7 @@ class ClientFactoryTest extends \PHPUnit_Framework_TestCase
             'service' => 'blackbox',
             'region'  => 'x',
             'client'  => [0, 1, 2],
-            'version' => 'latest'
+            'version' => 'latest',
         ]);
     }
 
@@ -66,10 +66,9 @@ class ClientFactoryTest extends \PHPUnit_Framework_TestCase
             'service'         => 'blackbox',
             'region'          => 'x',
             'exception_class' => 'Aws\Exception\AwsException',
-            'version' => 'latest'
+            'version'         => 'latest',
         ]);
     }
-
 
     /**
      * @expectedException \InvalidArgumentException
@@ -79,10 +78,10 @@ class ClientFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $f = new ClientFactory();
         $f->create([
-            'service' => 'blackbox',
-            'region' => 'x',
-            'api_provider' => [0, 1, 2],
-            'version' => 'latest'
+            'service'       => 'blackbox',
+            'region'        => 'x',
+            'api_provider'  => [0, 1, 2],
+            'version'       => 'latest',
         ]);
     }
 
@@ -94,10 +93,10 @@ class ClientFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $f = new ClientFactory();
         $f->create([
-            'service' => 'blackbox',
-            'region' => 'x',
+            'service'           => 'blackbox',
+            'region'            => 'x',
             'endpoint_provider' => [0, 1, 2],
-            'version' => 'latest'
+            'version'           => 'latest',
         ]);
     }
 
@@ -109,10 +108,10 @@ class ClientFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $f = new ClientFactory();
         $f->create([
-            'service' => 'blackbox',
-            'region' => 'x',
+            'service'     => 'blackbox',
+            'region'      => 'x',
             'credentials' => new \stdClass(),
-            'version' => 'latest'
+            'version'     => 'latest',
         ]);
     }
 
@@ -120,10 +119,10 @@ class ClientFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $f = new ClientFactory();
         $c = $f->create([
-            'service' => 'blackbox',
-            'region' => 'x',
+            'service'     => 'blackbox',
+            'region'      => 'x',
             'credentials' => false,
-            'version' => 'latest'
+            'version'     => 'latest',
         ]);
         $this->assertInstanceOf(
             'Vws\Credentials\NullCredentials',
@@ -139,7 +138,7 @@ class ClientFactoryTest extends \PHPUnit_Framework_TestCase
             'service'     => 'blackbox',
             'region'      => 'x',
             'credentials' => function () use ($c) { return $c; },
-            'version'     => 'latest'
+            'version'     => 'latest',
         ]);
         $this->assertSame($c, $client->getCredentials());
     }
@@ -149,10 +148,10 @@ class ClientFactoryTest extends \PHPUnit_Framework_TestCase
         $creds = new NullCredentials();
         $f = new ClientFactory();
         $c = $f->create([
-            'service' => 'blackbox',
-            'region' => 'x',
+            'service'     => 'blackbox',
+            'region'      => 'x',
             'credentials' => $creds,
-            'version' => 'latest'
+            'version'     => 'latest',
         ]);
         $this->assertSame($creds, $c->getCredentials());
     }
@@ -160,21 +159,21 @@ class ClientFactoryTest extends \PHPUnit_Framework_TestCase
     public function testCanUseCredentialsArray()
     {
         $credsArray = [
-            'username' => 'foo',
-            'password' => 'bar',
-            'subscription_token' => 'foo_bar'
+            'username'            => 'foo',
+            'password'            => 'bar',
+            'subscription_token'  => 'foo_bar',
         ];
         $creds = new Credentials(
-                $credsArray['username'],
-                $credsArray['password'],
-                $credsArray['subscription_token']
+            $credsArray['username'],
+            $credsArray['password'],
+            $credsArray['subscription_token']
         );
         $f = new ClientFactory();
         $c = $f->create([
-            'service' => 'blackbox',
-            'region' => 'x',
+            'service'     => 'blackbox',
+            'region'      => 'x',
             'credentials' => $credsArray,
-            'version' => 'latest'
+            'version'     => 'latest',
         ]);
         $this->assertEquals($creds, $c->getCredentials());
     }
@@ -186,7 +185,7 @@ class ClientFactoryTest extends \PHPUnit_Framework_TestCase
             'service'         => 'blackbox',
             'region'          => 'x',
             'version'         => 'latest',
-            'client_defaults' => ['foo' => 'bar']
+            'client_defaults' => ['foo' => 'bar'],
         ]);
         $this->assertEquals('bar', $client->getHttpClient()->getDefaultOption('foo'));
     }
@@ -202,7 +201,7 @@ class ClientFactoryTest extends \PHPUnit_Framework_TestCase
             'service'           => 'blackbox',
             'region'            => 'x',
             'version'           => 'latest',
-            'validate_service'  => false
+            'validate_service'  => false,
         ]);
         $command = $c->getCommand('PostCatalog');
         $command->getEmitter()->on('prepared', function () {

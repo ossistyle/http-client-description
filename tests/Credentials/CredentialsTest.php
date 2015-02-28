@@ -16,12 +16,15 @@ class CredentialsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('tok', $creds->getSubscriptionToken());
         $this->assertEquals('foo-baz', $creds->getVendor());
         $this->assertEquals('1.0.0', $creds->getVersion());
-        $this->assertEquals([
+        $this->assertEquals(
+            [
             'Username' => 'foo',
             'Password'=> 'baz',
             'SubscriptionToken' => 'tok',
             'Vendor' => 'foo-baz',
             'Version' => '1.0.0'
-        ], $creds->toArray());
+            ],
+            $creds->toArray()
+        );
     }
 }

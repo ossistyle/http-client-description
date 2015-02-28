@@ -8,7 +8,11 @@ use Vws\Credentials\Credentials;
  */
 class ProviderTest extends \PHPUnit_Framework_TestCase
 {
-    private $workingDir, $username, $password, $subscription_token, $profile;
+    private $workingDir;
+    private $username;
+    private $password;
+    private $subscription_token;
+    private $profile;
 
     private function clearEnv()
     {
@@ -35,12 +39,28 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
         putenv(Provider::ENV_PROFILE . '=' . $this->profile);
     }
 
+    public function testCreatesFromEnvironmentVariables()
+    {
+        $this->clearEnv();
+        putenv(Provider::ENV_USERNAME . '=abc');
+        putenv(Provider::ENV_PASSWORD . '=123');
+        putenv(Provider::ENV_SUBSCRIPTION_TOKEN . '=token');
+        $creds = Provider::resolve(Provider::env());
+        $this->assertEquals('abc', $creds->getUsername());
+        $this->assertEquals('123', $creds->getPassword());
+        $this->assertEquals('token', $creds->getSubscriptionToken());
+    }
+
     /**
      * @expectedException \Vws\Exception\CredentialsException
      */
     public function testEnsuresCredentialsAreFound()
     {
-        Provider::resolve(function () {});
+        Provider::resolve(
+            function () {
+
+            }
+        );
     }
 
     public function testCreatesFromIniFile()
