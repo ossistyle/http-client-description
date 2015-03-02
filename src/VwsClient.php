@@ -172,18 +172,21 @@ class VwsClient extends AbstractClient implements VwsClientInterface
                     // Create an easy to read error message.
                     $serviceError = trim($transaction->context->getPath('vws_error/code')
                         . ' (' . $transaction->context->getPath('vws_error/type')
-                        . ' error): ' . implode('\r\n', $transaction->context->getPath('vws_error/messages')));
+                        . ' error): ' . implode('\r\n', array_column($transaction->context->getPath('vws_error/messages'), 'message'))
+                    );
                 }
             }
         }
 
-        $exceptionClass = $this->commandException;
+        $exceptionClass = $this->commandException;        
+
         return new $exceptionClass(
             sprintf('Error executing %s::%s() on "%s"; %s',
                 get_class($this),
                 lcfirst($transaction->command->getName()),
                 $url,
-                $serviceError),
+                $serviceError
+            ),
             $transaction,
             $transaction->exception
         );
