@@ -33,28 +33,50 @@ class VwsClient extends AbstractClient implements VwsClientInterface
     /** @var string */
     private $commandException;
 
-    public function __construct(array $config)
+    /**
+     * Get an array of client constructor arguments used by the client.
+     *
+     * @return array
+     */
+    public static function getArguments()
     {
-        static $required = ['api', 'credentials', 'client', 'serializer'];
+        return ClientResolver::getDefaultArguments();
+    }
 
-        foreach ($required as $r) {
-            if (!isset($config[$r])) {
-                throw new \InvalidArgumentException("$r is a required option");
-            }
+    public function __construct(array $args)
+    {
+        $service = $this->parseClass();
+        $withResolved = null;
+
+        if (!isset($args['service'])) {
+            $args['service'] = $service;
         }
 
-        $this->serializer = $config['serializer'];
+        $resolver = new ClientResolver(static::getArguments());
+        $config = $resolver->resolve($args, $this->getEmitter());
         $this->api = $config['api'];
-        $this->credentials = $config['credentials'];
-        $this->endpoint = $config['endpoint'];
+        $this->serializer = $config['serializer'];
         $this->errorParser = $config['error_parser'];
+        $this->signatureProvider = $config['signature_provider'];
+        $this->endpoint = $config['endpoint'];
+        $this->credentials = $config['credentials'];
         $this->region = isset($config['region']) ? $config['region'] : null;
-        $this->defaults = isset($config['defaults']) ? $config['defaults'] : [];
-        $this->commandException = isset($config['exception_class'])
-            ? $config['exception_class']
-            : 'Vws\Exception\VwsException';
+        $this->applyParser();
+        $this->initSigners($config['config']['signature_version']);
+        parent::__construct($config['client'], $config['config']);
 
-        parent::__construct($config['client']);
+        // Make sure the user agent is prefixed by the SDK version.
+        $client = $this->getHttpClient();
+        $client->setDefaultOption('allow_redirects', false);
+        $client->setDefaultOption(
+            'headers/User-Agent',
+            'aws-sdk-php/' . Sdk::VERSION . ' ' . Client::getDefaultUserAgent()
+        );
+
+        if (isset($args['with_resolved'])) {
+            /** @var callable $withResolved */
+            $args['with_resolved']($config);
+        }
     }
 
     public static function factory(array $config = [])
@@ -178,7 +200,7 @@ class VwsClient extends AbstractClient implements VwsClientInterface
             }
         }
 
-        $exceptionClass = $this->commandException;        
+        $exceptionClass = $this->commandException;
 
         return new $exceptionClass(
             sprintf('Error executing %s::%s() on "%s"; %s',

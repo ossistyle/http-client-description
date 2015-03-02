@@ -24,25 +24,26 @@ class Vdk
         'blackbox'          => 'Blackbox',
     ];
 
-    /**
-     * Constructs a new VDK object with an associative array of default
-     * client settings.
-     *
-     * @param array $args
-     *
-     * @throws \InvalidArgumentException
-     * @see Via\Vdk::getClient for a list of available options.
-     */
     public function __construct(array $args = [])
     {
         $this->args = $args;
+
+        if (!isset($args['client'])) {
+            $this->args['client'] = static function () {
+                static $handler;
+                if (!$handler) {
+                    $handler = Client::getDefaultHandler();
+                }
+                return new Client(['handler' => $handler]);
+            };
+        }
     }
 
     public function __call($name, array $args = [])
     {
-        if (strpos($name, 'get') === 0) {
-            return $this->getClient(
-                substr($name, 3),
+        if (strpos($name, 'create') === 0) {
+            return $this->createClient(
+                substr($name, 6),
                 isset($args[0]) ? $args[0] : []
             );
         }
@@ -50,32 +51,25 @@ class Vdk
         throw new \BadMethodCallException("Unknown method: {$name}.");
     }
 
-    public function getClient($name, array $args = [])
+    public function createClient($name, array $args = [])
     {
-        // Normalize service name to lower case
-        $name = strtolower($name);
-
-
         // Merge provided args with stored args
         if (isset($this->args[$name])) {
             $args += $this->args[$name];
         }
 
-        // Set the service name and determine if it is linked to a known class
         $args += $this->args;
-        $args['service'] = $name;
-        $factoryName = 'Vws\\ClientFactory';
 
-        if (isset(self::$services[$name])) {
-            $name = self::$services[$name];
-            $args['class_name'] = "Vws\\{$name}\\{$name}Client";
-            $args['exception_class'] = "Vws\\{$name}\\Exception\\{$name}Exception";
-            $check = "Vws\\{$name}\\{$name}Factory";
-            if (class_exists($check)) {
-                $factoryName = $check;
-            }
+        if (!isset($args['service'])) {
+            $args['service'] = self::getEndpointPrefix($name);
         }
 
-        return (new $factoryName)->create($args);
+        $client = "Aws\\{$name}\\{$name}Client";
+
+        if (!class_exists($client)) {
+            $client = 'Aws\\AwsClient';
+        }
+
+        return new $client($args);
     }
 }
