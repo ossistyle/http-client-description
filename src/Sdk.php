@@ -5,10 +5,10 @@ namespace Vws;
 use GuzzleHttp\Client;
 
 /**
- * Via Developer Kit
+ * Software Developer Kit
  *
  */
-class Vdk
+class Sdk
 {
     const VERSION = '0.0.0.1';
 
@@ -20,8 +20,8 @@ class Vdk
      *
      * @var array
      */
-    private static $services = [
-        'blackbox'          => 'Blackbox',
+    private static $aliases = [
+        'blackbox'          => 'blackbox',
     ];
 
     public function __construct(array $args = [])
@@ -51,6 +51,20 @@ class Vdk
         throw new \BadMethodCallException("Unknown method: {$name}.");
     }
 
+    /**
+     * Create an endpoint prefix name from a namespace.
+     *
+     * @param string $name Namespace name
+     *
+     * @return string
+     */
+    public static function getEndpointPrefix($name)
+    {
+        $name = strtolower($name);
+
+        return isset(self::$aliases[$name]) ? self::$aliases[$name] : $name;
+    }
+
     public function createClient($name, array $args = [])
     {
         // Merge provided args with stored args
@@ -64,10 +78,10 @@ class Vdk
             $args['service'] = self::getEndpointPrefix($name);
         }
 
-        $client = "Aws\\{$name}\\{$name}Client";
+        $client = "Vws\\{$name}\\{$name}Client";
 
         if (!class_exists($client)) {
-            $client = 'Aws\\AwsClient';
+            $client = 'Vws\\VwsClient';
         }
 
         return new $client($args);

@@ -1,7 +1,7 @@
 <?php
 namespace Vws\Credentials;
 
-use Vws\Vdk;
+use Vws\Sdk;
 
 class Credentials implements CredentialsInterface
 {
@@ -12,7 +12,7 @@ class Credentials implements CredentialsInterface
     private $vendor;
     private $version;
 
-    public function __construct($username, $password, $token, $vendor = 'vws-php', $version = Vdk::VERSION)
+    public function __construct($username, $password, $token, $vendor = 'vws-php', $version = Sdk::VERSION)
     {
         $this->username = trim($username);
         $this->password = trim($password);

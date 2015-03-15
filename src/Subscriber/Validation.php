@@ -1,7 +1,7 @@
 <?php
 namespace Vws\Subscriber;
 
-use Vws\Api\ServiceModel;
+use Vws\Api\Service;
 use GuzzleHttp\Command\Event\InitEvent;
 use GuzzleHttp\Event\SubscriberInterface;
 
@@ -30,7 +30,7 @@ class Validation implements SubscriberInterface
      * @param Service  $api       API being hit.
      * @param callable $validator Function used to validate input.
      */
-    public function __construct(ServiceModel $api, callable $validator)
+    public function __construct(Service $api, callable $validator)
     {
         $this->validator = $validator;
         $this->api = $api;

@@ -4,7 +4,7 @@ namespace Vws\Api;
 /**
  * Represents a web service API model.
  */
-class ServiceModel extends AbstractModel
+class Service extends AbstractModel
 {
     /** @var callable */
     private $apiProvider;
@@ -19,37 +19,33 @@ class ServiceModel extends AbstractModel
     private $operations = [];
 
     /**
-     * @param callable $apiProvider
+     * @param callable $provider
      * @param string   $serviceName
      * @param string   $apiVersion
-     * @param array    $options     Hash of options
      *
      * @internal param array $definition Service description
      */
-    public function __construct(
-        callable $apiProvider,
-        $serviceName,
-        $apiVersion,
-        array $options = []
-    ) {
-        $definition = $apiProvider('api', $serviceName, $apiVersion);
-        $this->apiProvider = $apiProvider;
-        $this->serviceName = $serviceName;
-        $this->apiVersion = $apiVersion;
+    public function __construct(callable $provider, $serviceName, $apiVersion)
+    {
+      static $defaults = [
+          'operations' => [],
+          'shapes'     => [],
+          'metadata'   => []
+      ], $defaultMeta = [
+          'serviceFullName'  => null,
+          'apiVersion'       => null,
+          'endpointPrefix'   => null,
+          'signingName'      => null,
+          'signatureVersion' => null,
+          'protocol'         => null
+      ];
 
-        if (!isset($definition['operations'])) {
-            $definition['operations'] = [];
-        }
-
-        if (!isset($definition['shapes'])) {
-            $definition['shapes'] = [];
-        }
-
-        if (!isset($options['shape_map'])) {
-            $options['shape_map'] = new ShapeMap($definition['shapes']);
-        }
-
-        parent::__construct($definition, $options['shape_map']);
+      $this->apiProvider = $provider;
+      $this->serviceName = $serviceName;
+      $this->apiVersion = $apiVersion;
+      $definition = ApiProvider::resolve($provider, 'api', $serviceName, $apiVersion) + $defaults;
+      $definition['metadata'] += $defaultMeta;
+      parent::__construct($definition, new ShapeMap($definition['shapes']));
     }
 
     /**
@@ -61,7 +57,7 @@ class ServiceModel extends AbstractModel
      * @return callable
      * @throws \UnexpectedValueException
      */
-    public static function createSerializer(ServiceModel $api, $endpoint)
+    public static function createSerializer(Service $api, $endpoint)
     {
         static $mapping = [
             'json'      => 'Vws\Api\Serializer\JsonRpcSerializer',
@@ -108,7 +104,7 @@ class ServiceModel extends AbstractModel
      * @return callable
      * @throws \UnexpectedValueException
      */
-    public static function createParser(ServiceModel $api)
+    public static function createParser(Service $api)
     {
         static $mapping = [
             'json'      => 'Vws\Api\Parser\JsonRpcParser',
@@ -132,7 +128,7 @@ class ServiceModel extends AbstractModel
      */
     public function getServiceFullName()
     {
-        return $this->getMetadata('serviceFullName');
+        return $this->definition['metadata']['serviceFullName'];
     }
 
     /**
@@ -142,7 +138,40 @@ class ServiceModel extends AbstractModel
      */
     public function getApiVersion()
     {
-        return $this->getMetadata('apiVersion');
+        return $this->definition['metadata']['apiVersion'];
+    }
+
+    /**
+     * Get the API version of the service
+     *
+     * @return string
+     */
+    public function getEndpointPrefix()
+    {
+        return $this->definition['metadata']['endpointPrefix'];
+    }
+
+    /**
+     * Get the signing name used by the service.
+     *
+     * @return string
+     */
+    public function getSigningName()
+    {
+        return $this->definition['metadata']['signingName']
+            ?: $this->definition['metadata']['endpointPrefix'];
+    }
+
+    /**
+     * Get the default signature version of the service.
+     *
+     * Note: this method assumes "v4" when not specified in the model.
+     *
+     * @return string
+     */
+    public function getSignatureVersion()
+    {
+        return $this->definition['metadata']['signatureVersion'] ?: 'v4';
     }
 
     /**
@@ -152,7 +181,7 @@ class ServiceModel extends AbstractModel
      */
     public function getProtocol()
     {
-        return $this->getMetadata('protocol');
+        return $this->definition['metadata']['protocol'];
     }
 
     /**
@@ -179,10 +208,8 @@ class ServiceModel extends AbstractModel
     {
         if (!isset($this->operations[$name])) {
             if (!isset($this->definition['operations'][$name])) {
-                throw new \InvalidArgumentException('Unknown operation: '
-                    . $name);
+                throw new \InvalidArgumentException("Unknown operation: $name");
             }
-
             $this->operations[$name] = new Operation(
                 $this->definition['operations'][$name],
                 $this->shapeMap
@@ -217,16 +244,61 @@ class ServiceModel extends AbstractModel
     public function getMetadata($key = null)
     {
         if (!$key) {
-            if (!isset($this->definition['metadata'])) {
-                $this->definition['metadata'] = [];
-            }
             return $this['metadata'];
-        }
-
-        if (isset($this->definition['metadata'][$key])) {
+        } elseif (isset($this->definition['metadata'][$key])) {
             return $this->definition['metadata'][$key];
         }
 
         return null;
+    }
+
+    /**
+     * Determines if the service has a paginator by name.
+     *
+     * @param string $name Name of the paginator.
+     *
+     * @return bool
+     */
+    public function hasPaginator($name)
+    {
+        if (!isset($this->paginators)) {
+            $res = call_user_func(
+                $this->apiProvider,
+                'paginator',
+                $this->serviceName,
+                $this->apiVersion
+            );
+            $this->paginators = isset($res['pagination']) ? $res['pagination'] : [];
+        }
+
+        return isset($this->paginators[$name]);
+    }
+
+    /**
+     * Retrieve a paginator by name.
+     *
+     * @param string $name Paginator to retrieve by name. This argument is
+     *                     typically the operation name.
+     * @return array
+     * @throws \UnexpectedValueException if the paginator does not exist.
+     */
+    public function getPaginatorConfig($name)
+    {
+        static $defaults = [
+            'input_token'  => null,
+            'output_token' => null,
+            'limit_key'    => null,
+            'result_key'   => null,
+            'more_results' => null,
+        ];
+
+        if ($this->hasPaginator($name)) {
+            return $this->paginators[$name] + $defaults;
+        }
+
+        throw new \UnexpectedValueException(
+            "There is no {$name} "
+            . "paginator defined for the {$this->serviceName} service."
+        );
     }
 }

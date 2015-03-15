@@ -1,7 +1,7 @@
 <?php
 namespace Vws\Api\Serializer;
 
-use Vws\Api\ServiceModel;
+use Vws\Api\Service;
 use GuzzleHttp\Command\CommandTransaction;
 
 /**
@@ -28,7 +28,7 @@ class JsonRpcSerializer
      * @param JsonBody $jsonFormatter Optional JSON formatter to use
      */
     public function __construct(
-        ServiceModel $api,
+        Service $api,
         $endpoint,
         JsonBody $jsonFormatter = null
     ) {

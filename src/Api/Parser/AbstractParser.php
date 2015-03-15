@@ -1,20 +1,20 @@
 <?php
 namespace Vws\Api\Parser;
 
-use Vws\Api\ServiceModel;
+use Vws\Api\Service;
 
 /**
  * @internal
  */
 abstract class AbstractParser
 {
-    /** @var \Aws\Api\Service Representation of the service API*/
+    /** @var \Vws\Api\Service Representation of the service API*/
     protected $api;
 
     /**
-     * @param ServiceModel $api Service description
+     * @param Service $api Service description
      */
-    public function __construct(ServiceModel $api)
+    public function __construct(Service $api)
     {
         $this->api = $api;
     }

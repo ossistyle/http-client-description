@@ -1,7 +1,7 @@
 <?php
 namespace Vws\Api\Serializer;
 
-use Vws\Api\ServiceModel;
+use Vws\Api\Service;
 use Vws\Api\Shape;
 use GuzzleHttp\Stream\Stream;
 use GuzzleHttp\Message\RequestInterface;
@@ -24,7 +24,7 @@ class RestJsonSerializer extends RestSerializer
      * @param JsonBody $jsonFormatter Optional JSON formatter to use
      */
     public function __construct(
-        ServiceModel $api,
+        Service $api,
         $endpoint,
         JsonBody $jsonFormatter = null
     ) {

@@ -4,7 +4,7 @@ namespace Vws\Test\Subscriber;
 
 use Vws\Api\Validator;
 use Vws\Subscriber\Validation;
-use Vws\Test\ClientTrait;
+use Vws\Test\UsesServiceTrait;
 use GuzzleHttp\Command\CommandTransaction;
 use GuzzleHttp\Command\Event\InitEvent;
 
@@ -13,14 +13,15 @@ use GuzzleHttp\Command\Event\InitEvent;
  */
 class ValidationTest extends \PHPUnit_Framework_TestCase
 {
-    use ClientTrait;
+    use UsesServiceTrait;
+
     /**
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Found 2 errors while validating the input provided for the PostCatalog operation:
      */
     public function testValdiatesBeforeSerialization()
     {
-        $blackbox = $this->getVdk()->getClient('blackbox');
+        $blackbox = $this->getTestClient('blackbox');
         $api = $blackbox->getApi();
         $command = $blackbox->getCommand('PostCatalog');
         $trans = new CommandTransaction($blackbox, $command);

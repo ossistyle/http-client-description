@@ -4,7 +4,7 @@ namespace Vws;
 
 use GuzzleHttp\Event\EmitterInterface;
 use Vws\Api\ApiProvider;
-use Vws\Api\ServiceModel;
+use Vws\Api\Service;
 use Vws\Api\Validator;
 use Vws\Credentials\Credentials;
 use Vws\Credentials\CredentialsInterface;
@@ -15,6 +15,7 @@ use Vws\Endpoint\EndpointProvider;
 use Vws\Credentials\CredentialProvider;
 use GuzzleHttp\Client;
 use GuzzleHttp\Subscriber\Log\SimpleLogger;
+use GuzzleHttp\Subscriber\Retry\RetrySubscriber;
 use GuzzleHttp\Command\Subscriber\Debug;
 use GuzzleHttp\Ring\Core;
 
@@ -41,7 +42,7 @@ class ClientResolver
         'service' => [
             'type'     => 'value',
             'valid'    => ['string'],
-            'doc'      => 'Name of the service to utilize. This value will be supplied by default when using one of the SDK clients (e.g., Vws\\S3\\S3Client).',
+            'doc'      => 'Name of the service to utilize. This value will be supplied by default when using one of the SDK clients (e.g., Vws\\Blackbox\\BlackboxClient).',
             'required' => true,
         ],
         'scheme' => [
@@ -59,7 +60,7 @@ class ClientResolver
             'type'     => 'value',
             'valid'    => ['string'],
             'required' => [__CLASS__, '_missing_region'],
-            'doc'      => 'Region to connect to. See http://docs.Vws.amazon.com/general/latest/gr/rande.html for a list of available regions.',
+            'doc'      => 'Region to connect to.',
         ],
         'version' => [
             'type'     => 'value',
@@ -299,26 +300,30 @@ class ClientResolver
         } elseif (is_callable($value)) {
             // Invoke the credentials provider and throw if it does not resolve.
             $args['credentials'] = CredentialProvider::resolve($value);
-        } elseif (is_array($value) && isset($value['key']) && isset($value['secret'])) {
+        } elseif (is_array($value)
+                    && isset($value['username'])
+                    && isset($value['password'])
+                    && isset($value['subscription_token'])) {
             $args['credentials'] = new Credentials(
-                $value['key'],
-                $value['secret'],
-                isset($value['token']) ? $value['token'] : null,
-                isset($value['expires']) ? $value['expires'] : null
+                $value['username'],
+                $value['password'],
+                $value['subscription_token']
             );
         } elseif ($value === false) {
             $args['credentials'] = new NullCredentials();
         } else {
             throw new \InvalidArgumentException('Credentials must be an instance of '
                 . 'Vws\Credentials\CredentialsInterface, an associative '
-                . 'array that contains "username", "password", "subscriptiontoken", "vendor" and "version" '
-                . 'key-value pairs, a credentials provider function, or false.');
+                . 'array that contains "username", "password",
+                . "subscriptiontoken", "vendor" and "version" '
+                . 'key-value pairs, a credentials provider function, or false.'
+            );
         }
     }
 
     public static function _apply_api_provider($value, array &$args)
     {
-        $api = new ServiceModel($value, $args['service'], $args['version']);
+        $api = new Service($value, $args['service'], $args['version']);
         $args['api'] = $api;
         $args['error_parser'] = Service::createErrorParser($api->getProtocol());
         $args['serializer'] = Service::createSerializer($api, $args['endpoint']);
@@ -409,7 +414,7 @@ ensures that your code will not be affected by a breaking change made to the
 service. For example, when using Vws Blackbox, you can lock your API version to
 "2015-01-01".
 
-Your build of the VDK has the following version(s) of "{$service}": {$versions}
+Your build of the Sdk has the following version(s) of "{$service}": {$versions}
 
 You may provide "latest" to the "version" configuration value to utilize the
 most recent available API version that your client's API provider can find.
@@ -425,5 +430,20 @@ EOT;
 A "region" configuration value is required for the "{$service}" service
 (e.g., "sandbox" or "production").
 EOT;
+    }
+
+    public static function _wrapDebugLogger(array $clientArgs, array $conf)
+    {
+        // Add retry logger
+        if (isset($clientArgs['retry_logger'])) {
+            $conf['delay'] = RetrySubscriber::createLoggingDelay(
+                $conf['delay'],
+                ($clientArgs['retry_logger'] === 'debug')
+                    ? new SimpleLogger()
+                    : $clientArgs['retry_logger']
+            );
+        }
+
+        return $conf;
     }
 }

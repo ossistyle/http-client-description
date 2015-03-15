@@ -1,7 +1,7 @@
 <?php
 namespace Vws\Api\Serializer;
 
-use Vws\Api\ServiceModel;
+use Vws\Api\Service;
 use Vws\Api\Shape;
 
 /**
@@ -12,7 +12,7 @@ class JsonBody
 {
     private $api;
 
-    public function __construct(ServiceModel $api)
+    public function __construct(Service $api)
     {
         $this->api = $api;
     }
@@ -24,7 +24,7 @@ class JsonBody
      *
      * @return string
      */
-    public static function getContentType(ServiceModel $service)
+    public static function getContentType(Service $service)
     {
         return 'application/json';
 

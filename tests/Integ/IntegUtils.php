@@ -3,10 +3,10 @@ namespace Vws\Test\Integ;
 
 trait IntegUtils
 {
-    private static function getVdk()
+    private static function getSdk()
     {
-        return new \Vws\Vdk([
-            'region'  => 'local',
+        return new \Vws\Sdk([
+            'region'  => 'sandbox',
             'profile' => 'integ-sandbox',
             'version' => 'latest',
         ]);

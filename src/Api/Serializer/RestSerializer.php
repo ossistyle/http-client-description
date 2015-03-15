@@ -1,7 +1,7 @@
 <?php
 namespace Vws\Api\Serializer;
 
-use Vws\Api\ServiceModel;
+use Vws\Api\Service;
 use Vws\Api\Operation;
 use Vws\Api\Shape;
 use Vws\Api\StructureShape;
@@ -31,7 +31,7 @@ abstract class RestSerializer
      * @param Service $api      Service API description
      * @param string  $endpoint Endpoint to connect to
      */
-    public function __construct(ServiceModel $api, $endpoint)
+    public function __construct(Service $api, $endpoint)
     {
         $this->api = $api;
         $this->endpoint = Url::fromString($endpoint);

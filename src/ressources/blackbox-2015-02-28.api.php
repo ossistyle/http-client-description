@@ -150,22 +150,13 @@ return [
         'PostCatalogOutput' => [
             'type' => 'structure',
             'members' => [
-                'Id' =>  [
-                  'shape' => 'IntegerNoMinMax',
+                'EntityList' =>  [
+                  'shape' => 'CatalogList',
                 ],
-                'Name' => [
-                    'shape' => 'StringMin3Max30',
+                'Messages' =>  [
+                    'shape' => 'MessageList',
                 ],
-                'IsRootLevel' => [
-                    'shape' => 'Boolean',
-                ],
-                'ForeignId' => [
-                    'shape' => 'StringMax255',
-                ],
-                'ChildCatalogs' => [
-                    'shape' => 'CatalogList',
-                ],
-            ]
+            ],
         ],
 
         'PostCatalogsInput' => [
@@ -176,10 +167,15 @@ return [
         ],
 
         'PostCatalogsOutput' => [
-            'type' => 'list',
-            'member' => [
-                'shape' => 'PostCatalogOutput',
-            ],
+          'type' => 'structure',
+          'members' => [
+              'EntityList' =>  [
+                'shape' => 'CatalogList',
+              ],
+              'Messages' =>  [
+                  'shape' => 'MessageList',
+              ],
+          ],
         ],
 
         'Catalog' => [
