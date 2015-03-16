@@ -6,6 +6,7 @@ return [
         'serviceFullName' => 'Via Blackbox Service',
         'timestampFormat' => 'rfc822',
         'protocol' => 'rest-json',
+        'endpointPrefix' => 'blackbox',
         'jsonVersion' => '1.1'
     ],
     'operations' => [
