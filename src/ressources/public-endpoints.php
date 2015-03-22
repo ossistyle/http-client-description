@@ -11,6 +11,9 @@ return [
         'sandbox/blackbox' => [
             'endpoint' => 'sandboxapi.via.de:8001'
         ],
+        'sandbox-old/blackbox' => [
+            'endpoint' => 'sandboxapi.via.de/publicapi/v1/api.svc/'
+        ],
         'production/blackbox' => [
             'endpoint' => 'ebay.api.via.de'
         ],
