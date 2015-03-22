@@ -44,7 +44,6 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
         $client = $this->getSdk()->createClient('blackbox', $options);
         $response = $client->getCatalogById(['Id' => 117702]);
 
-
         $this->assertSame(
             117702,
             $response->search('EntityList[0].Id'),
@@ -146,13 +145,14 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
 
         $toDeleteCatalogId = [];
         $toDeleteCatalogId[] = $response->search('EntityList[0].Id');
+
         return $toDeleteCatalogId;
     }
 
     /**
      * { "Code": "XXXX", "Severity": 2, "Message": "######" }
      */
-    public function testPostCatalogNoForeignIdEnsureResponseContainsCorrectMessageAndCodeXXXXAndSeverityXXXX()
+    public function testPostCatalogNoForeignIdEnsureBodyContainsCorrectMessageAndCodeXXXXAndSeverityXXXX()
     {
         $options = ['validate' => false];
         $client = $this->getSdk()->createClient('blackbox', $options);
@@ -183,6 +183,7 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
 
         $toDeleteCatalogId = [];
         $toDeleteCatalogId[] = $response->search('EntityList[0].Id');
+
         return $toDeleteCatalogId;
     }
 
@@ -229,6 +230,7 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
         $toDeleteCatalogId = [];
         $toDeleteCatalogId[] = $response->search('EntityList[0].Id');
         $toDeleteCatalogId[] = $response->search('EntityList[0].ChildCatalogs[0].Id');
+
         return $toDeleteCatalogId;
     }
 
@@ -238,19 +240,34 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
      * @depends testPostCatalogChildCatalogHasIsRootLevelTrueEnsureBodyContainsCorrectMessageAndCode3105AndSeverityWarning
      *
      */
-    public function testDeleteCatalogByIdEnsureCatalogIsDeleted()
+    public function testDeleteCatalogByIdEnsureBodyIsEmptyAndCatalogIsDeleted()
     {
         $args = func_get_args();
 
-        #$options = ['validate' => false, 'debug' => true];
-        #$client = $this->getSdk()->createClient('blackbox', $options);
+        $options = [
+            'validate' => false,
+            //'debug' => true
+        ];
+        $client = $this->getSdk()->createClient('blackbox', $options);
 
-          print_r($args);
+        foreach ($args as $key => $values) {
+            foreach ($values as $innerKey => $value) {
+                $deleteResponse = $client->deleteCatalogById(['Id' => $value]);
 
-        // foreach ($array as $key => $id) {
-        //   echo $id;
-        //     $response = $client->deleteCatalogById(['Id' => $id]);
-        // }
-        $this->assertTrue(true);
+                $getResponse = $client->getCatalogById(['Id' => $value]);
+
+                $this->assertSame(
+                    '3000',
+                    $getResponse->search('Messages[0].Code'),
+                    'Messages[0].Code is not 3000'
+                );
+                $this->assertSame(
+                    2,
+                    $getResponse->search('Messages[0].Severity'),
+                    'Messages[0].Severity is not Error (2)'
+                );
+                $this->assertEmpty($getResponse->search('EntityList'), 'EntityList is not empty');
+            }
+        }
     }
 }
