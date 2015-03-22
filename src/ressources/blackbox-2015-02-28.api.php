@@ -20,6 +20,19 @@ return [
               'shape' => 'GetCatalogsOutput',
             ],
         ],
+        'DeleteCatalogById' => [
+            'name' => 'DeleteCatalogById',
+            'http' => [
+              'method' => 'DELETE',
+              'requestUri' => 'api/Catalogs/{Id}',
+            ],
+            'input' => [
+              'shape' => 'DeleteCatalogByIdInput',
+            ],
+            'output' => [
+              'shape' => 'GetCatalogByIdOutput',
+            ],
+        ],
         'GetCatalogById' => [
             'name' => 'GetCatalogById',
             'http' => [
@@ -75,6 +88,19 @@ return [
             ]
 
         ],
+        'ReviseInventory' => [
+            'name' => 'ReviseInventory',
+            'http' => [
+              'method' => 'POST',
+              'requestUri' => 'ReviseInventoryStatus?productId={productId}L&price={price}m&stockAmount={stockAmount}&productVariationId={productVariationId}L&{discountOfferPrice}m',
+            ],
+            'input' => [
+              'shape' => 'ReviseInventoryInput',
+            ],
+            'output' => [
+              'shape' => 'ReviseInventoryOutput',
+            ]
+        ],
     ],
     /***********************************************************************
      *
@@ -88,6 +114,19 @@ return [
         /**********************************
          *      CATALOGS BEGIN
          *********************************/
+
+         'DeleteCatalogByIdInput' => [
+             'type' => 'structure',
+             'members' => [
+                 'Id' => [
+                     'shape' => 'IntegerNoMinMax',
+                     'location' => 'uri'
+                 ]
+             ],
+             'required' => [
+               'Id',
+             ],
+         ],
 
         'GetCatalogByIdInput' => [
             'type' => 'structure',
@@ -306,6 +345,35 @@ return [
                     'shape' => 'StringMax2000',
                 ],
             ]
+        ],
+
+        'ReviseInventoryInput' => [
+            'type' => 'structure',
+            'members' => [
+                'productId' => [
+                    'shape' => 'IntegerNoMinMax',
+                    'location' => 'uri'
+                ],
+                'price' => [
+                    'shape' => 'Float',
+                    'location' => 'uri'
+                ],
+                'stockAmount' => [
+                    'shape' => 'IntegerNoMinMax',
+                    'location' => 'uri'
+                ],
+                'productVariationId' => [
+                    'shape' => 'IntegerNoMinMax',
+                    'location' => 'uri'
+                ],
+                'discountOfferPrice' => [
+                    'shape' => 'Float',
+                    'location' => 'uri'
+                ],
+            ],
+            'productId' => [
+                'Id',
+            ],
         ],
 
        /***********************************************************************
