@@ -2,7 +2,7 @@
 
 namespace Vws\Test;
 
-use Vws\AwsClientInterface;
+use Vws\VwsClientInterface;
 use Vws\Result;
 use Vws\Sdk;
 use Vws\Api\Service;
@@ -19,7 +19,7 @@ use GuzzleHttp\Subscriber\Mock;
 trait UsesServiceTrait
 {
     /**
-     * Creates an instance of the AWS SDK for a test
+     * Creates an instance of the Vws SDK for a test
      *
      * @param array $args
      *
@@ -40,7 +40,7 @@ trait UsesServiceTrait
      * @param string $service
      * @param array  $args
      *
-     * @return AwsClientInterface
+     * @return VwsClientInterface
      */
     private function getTestClient($service, array $args = [])
     {
@@ -61,12 +61,12 @@ trait UsesServiceTrait
     /**
      * Queues up mock Result objects for a client
      *
-     * @param AwsClientInterface $client
+     * @param VwsClientInterface $client
      * @param Result[]|array[]   $results
      *
-     * @return AwsClientInterface
+     * @return VwsClientInterface
      */
-    private function addMockResults(AwsClientInterface $client, array $results)
+    private function addMockResults(VwsClientInterface $client, array $results)
     {
         $client->getEmitter()->on('prepared',
             function (PreparedEvent $event) use (&$results) {
@@ -95,11 +95,11 @@ trait UsesServiceTrait
     /**
      * Queues up mock HTTP Response objects for a client
      *
-     * @param AwsClientInterface $client
+     * @param VwsClientInterface $client
      * @param Response[]         $responses
      * @param bool               $readBodies
      *
-     * @return AwsClientInterface
+     * @return VwsClientInterface
      * @throws \InvalidArgumentException
      */
     private function addMockResponses(
