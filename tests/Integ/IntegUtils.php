@@ -1,14 +1,19 @@
 <?php
+
 namespace Vws\Test\Integ;
+
+use Vws\Sdk;
 
 trait IntegUtils
 {
-    private static function getSdk()
+    private static function getSdk(array $args = [])
     {
-        return new \Vws\Sdk([
+        return new Sdk($args + [
             'region'  => 'sandbox',
             'profile' => 'integ-sandbox',
             'version' => 'latest',
+            'scheme'  => 'http',
+            //'debug'   => true
         ]);
     }
 
