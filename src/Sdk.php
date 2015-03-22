@@ -21,7 +21,7 @@ class Sdk
      * @var array
      */
     private static $aliases = [
-        'blackbox'          => 'blackbox',
+        //'blackbox'          => 'Blackbox',
     ];
 
     public function __construct(array $args = [])
@@ -77,6 +77,8 @@ class Sdk
         if (!isset($args['service'])) {
             $args['service'] = self::getEndpointPrefix($name);
         }
+
+        $name = ucfirst(strtolower($name));
 
         $client = "Vws\\{$name}\\{$name}Client";
 
