@@ -37,7 +37,9 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
             // CreateTable requires actual input parameters.
             $c->PostCatalog([]);
             $this->fail('Did not validate');
-        } catch (VwsException $e) {}
+        } catch (VwsException $e) {
+          
+        }
     }
 
     /**

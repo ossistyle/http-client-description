@@ -19,10 +19,10 @@ class CredentialProviderTest extends \PHPUnit_Framework_TestCase
 
     private function clearEnv()
     {
-      putenv(CredentialProvider::ENV_USERNAME . '=');
-      putenv(CredentialProvider::ENV_PASSWORD . '=');
-      putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN . '=');
-      putenv(CredentialProvider::ENV_PROFILE . '=');
+        putenv(CredentialProvider::ENV_USERNAME . '=');
+        putenv(CredentialProvider::ENV_PASSWORD . '=');
+        putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN . '=');
+        putenv(CredentialProvider::ENV_PROFILE . '=');
     }
 
     public function setUp()
@@ -51,7 +51,9 @@ class CredentialProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testEnsuresCredentialsAreFound()
     {
-        CredentialProvider::resolve(function () {});
+        CredentialProvider::resolve(function () {
+          
+        });
     }
 
     public function testCreatesFromEnvironmentVariables()
