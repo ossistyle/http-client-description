@@ -146,7 +146,8 @@ return [
              'members' => [
                  'Id' => [
                      'shape' => 'IntegerNoMinMax',
-                     'location' => 'uri'
+                     'location' => 'uri',
+                     'locationName' => 'Id',
                  ]
              ],
              'required' => [
@@ -159,11 +160,12 @@ return [
             'members' => [
                 'Id' => [
                     'shape' => 'IntegerNoMinMax',
-                    'location' => 'uri'
+                    'location' => 'uri',
+                    'locationName' => 'Id',
                 ]
             ],
             'required' => [
-              'Id',
+              'Id'
             ],
         ],
 
@@ -305,10 +307,6 @@ return [
                   'locationName' => 'PageNumber',
                 ],
             ],
-            'required' => [
-                'limit',
-                'page',
-            ],
         ],
 
 
@@ -366,7 +364,8 @@ return [
             'members' => [
                 'Id' => [
                     'shape' => 'IntegerNoMinMax',
-                    'location' => 'uri'
+                    'location' => 'uri',
+                    'locationName' => 'Id',
                 ]
             ],
             'required' => [
@@ -512,27 +511,32 @@ return [
             'members' => [
                 'productId' => [
                     'shape' => 'IntegerNoMinMax',
-                    'location' => 'uri'
+                    'location' => 'querystring',
+                    'locationName' => 'productId',
                 ],
                 'price' => [
                     'shape' => 'Float',
-                    'location' => 'uri'
+                    'location' => 'querystring',
+                    'locationName' => 'price',
                 ],
                 'stockAmount' => [
                     'shape' => 'IntegerNoMinMax',
-                    'location' => 'uri'
+                    'location' => 'querystring',
+                    'locationName' => 'stockAmount',
                 ],
                 'productVariationId' => [
                     'shape' => 'IntegerNoMinMax',
-                    'location' => 'uri'
+                    'location' => 'querystring',
+                    'locationName' => 'productVariationId',
                 ],
                 'discountOfferPrice' => [
                     'shape' => 'Float',
-                    'location' => 'uri'
+                    'location' => 'querystring',
+                    'locationName' => 'discountOfferPrice',
                 ],
             ],
-            'productId' => [
-                'Id',
+            'required' => [
+                'productId',
             ],
         ],
 
