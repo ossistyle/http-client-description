@@ -112,7 +112,7 @@ class VwsClient extends AbstractClient implements VwsClientInterface
     public function __construct(array $args)
     {
         $service = $this->parseClass();
-        
+
         if (!isset($args['service'])) {
             $args['service'] = $service;
         }
@@ -246,18 +246,13 @@ class VwsClient extends AbstractClient implements VwsClientInterface
     public function getIterator($name, array $args = [])
     {
         $config = $this->api->getPaginatorConfig($name);
-        if (!$config['result_key']) {
-            throw new \UnexpectedValueException(sprintf(
-                'There are no resources to iterate for the %s operation of %s',
-                $name, $this->api['serviceFullName']
-            ));
-        }
-        $key = is_array($config['result_key'])
-            ? $config['result_key'][0]
-            : $config['result_key'];
-        if ($config['output_token'] && $config['input_token']) {
+
+        $key = $config['result_key'];
+
+        if ($config['more_results']) {
             return $this->getPaginator($name, $args)->search($key);
         }
+
         $result = $this->getCommand($name, $args)->search($key);
 
         return new \ArrayIterator((array) $result);
@@ -336,11 +331,11 @@ class VwsClient extends AbstractClient implements VwsClientInterface
 
     private function parseClass()
     {
-        $klass = get_class($this);
-        if ($klass === __CLASS__) {
+        $class = get_class($this);
+        if ($class === __CLASS__) {
             return '';
         }
-        $service = substr($klass, strrpos($klass, '\\') + 1, -6);
+        $service = substr($class, strrpos($class, '\\') + 1, -6);
         $this->commandException = "Vws\\{$service}\\Exception\\{$service}Exception";
 
         return strtolower($service);

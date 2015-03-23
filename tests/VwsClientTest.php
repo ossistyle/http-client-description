@@ -139,47 +139,47 @@ class VwsClientTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    // public function testCanGetIterator()
-    // {
-    //     $client = $this->getTestClient('blackbox');
-    //     $this->assertInstanceOf(
-    //         'Generator',
-    //         $client->getIterator('ListObjects', ['Bucket' => 'foobar'])
-    //     );
-    // }
+    public function testCanGetIterator()
+    {
+        $client = $this->getTestClient('blackbox');
+        $this->assertInstanceOf(
+            'Generator',
+            $client->getIterator('GetProducts', ['PageNumber' => 2])
+        );
+    }
 
     /**
      * @expectedException \UnexpectedValueException
      */
-    // public function testGetIteratorFailsForMissingConfig()
-    // {
-    //     $client = $this->createClient();
-    //     $client->getIterator('ListObjects');
-    // }
-    //
-    // public function testCanGetPaginator()
-    // {
-    //     $client = $this->createClient(['pagination' => [
-    //         'ListObjects' => [
-    //             'input_token' => 'foo',
-    //             'output_token' => 'foo',
-    //         ]
-    //     ]]);
-    //
-    //     $this->assertInstanceOf(
-    //         'Aws\ResultPaginator',
-    //         $client->getPaginator('ListObjects', ['Bucket' => 'foobar'])
-    //     );
-    // }
-    //
-    // /**
-    //  * @expectedException \UnexpectedValueException
-    //  */
-    // public function testGetPaginatorFailsForMissingConfig()
-    // {
-    //     $client = $this->createClient();
-    //     $client->getPaginator('ListObjects');
-    // }
+    public function testGetIteratorFailsForMissingConfig()
+    {
+        $client = $this->createClient();
+        $client->getIterator('GetCatalogs');
+    }
+
+    public function testCanGetPaginator()
+    {
+        $client = $this->createClient(['pagination' => [
+            'GetProducts' => [
+                'EntriesPerPage' => 50,
+                'PageNumber' => 3,
+            ]
+        ]]);
+
+        $this->assertInstanceOf(
+            'Vws\ResultPaginator',
+            $client->getPaginator('GetProducts', ['PageNumber' => 2])
+        );
+    }
+
+    /**
+     * @expectedException \UnexpectedValueException
+     */
+    public function testGetPaginatorFailsForMissingConfig()
+    {
+        $client = $this->createClient();
+        $client->getPaginator('GetProducts');
+    }
 
     /**
      * [testCreatesClientsFromFactoryMethod description]

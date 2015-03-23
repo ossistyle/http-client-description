@@ -152,29 +152,6 @@ class Service extends AbstractModel
     }
 
     /**
-     * Get the signing name used by the service.
-     *
-     * @return string
-     */
-    public function getSigningName()
-    {
-        return $this->definition['metadata']['signingName']
-            ?: $this->definition['metadata']['endpointPrefix'];
-    }
-
-    /**
-     * Get the default signature version of the service.
-     *
-     * Note: this method assumes "v4" when not specified in the model.
-     *
-     * @return string
-     */
-    public function getSignatureVersion()
-    {
-        return $this->definition['metadata']['signatureVersion'] ?: 'v4';
-    }
-
-    /**
      * Get the protocol used by the service.
      *
      * @return string
@@ -285,11 +262,8 @@ class Service extends AbstractModel
     public function getPaginatorConfig($name)
     {
         static $defaults = [
-            'input_token'  => null,
-            'output_token' => null,
-            'limit_key'    => null,
-            'result_key'   => null,
-            'more_results' => null,
+            'limit' => null,
+            'page'  => null,
         ];
 
         if ($this->hasPaginator($name)) {
