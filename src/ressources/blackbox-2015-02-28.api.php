@@ -74,6 +74,32 @@ return [
             ]
 
         ],
+        'GetProductById' => [
+            'name' => 'GetProductById',
+            'http' => [
+              'method' => 'GET',
+              'requestUri' => 'api/Products/{Id}',
+            ],
+            'input' => [
+              'shape' => 'GetProductByIdInput',
+            ],
+            'output' => [
+              'shape' => 'GetProductByIdOutput',
+            ],
+        ],
+        'GetProducts' => [
+            'name' => 'GetProducts',
+            'http' => [
+              'method' => 'GET',
+              'requestUri' => 'api/Products',
+            ],
+            'input' => [
+              'shape' => 'GetProductsInput',
+            ],
+            'output' => [
+              'shape' => 'GetProductsOutput',
+            ],
+        ],
         'PostProduct' => [
             'name' => 'PostProduct',
             'http' => [
@@ -250,6 +276,116 @@ return [
          *    CATALOGS END | PRODUCTS BEGIN
          ***************************************/
 
+         'GetProductsOutput' => [
+             'type' => 'structure',
+             'members' => [
+                 'EntityList' =>  [
+                   'shape' => 'ProductList',
+                 ],
+                 'Messages' =>  [
+                     'shape' => 'MessageList',
+                 ],
+                 'Pagination' => [
+                     'shape' => 'Paging'
+                 ]
+             ],
+         ],
+
+        'GetProductsInput' => [
+            'type' => 'structure',
+            'members' => [
+                'limit' => [
+                  'shape' => 'IntegerMin1Max100Default100',
+                  'location' => 'querystring',
+                  'locationName' => 'EntriesPerPage',
+                ],
+                'page' => [
+                  'shape' => 'IntegerMin1NoMaxDefault1',
+                  'location' => 'querystring',
+                  'locationName' => 'PageNumber',
+                ],
+            ],
+            'required' => [
+                'limit',
+                'page',
+            ],
+        ],
+
+
+         'ProductList' => [
+             'type' => 'list',
+             'member' => [
+                 'shape' => 'Product'
+             ]
+        ],
+
+        'Product' => [
+            'type' => 'structure',
+            'required' => [
+                'Title',
+                'ForeignId',
+                'Price',
+                'StockAmount'
+            ],
+            'members' => [
+                'ForeignId' => [
+                    'shape' => 'StringMax255',
+                ],
+                'Title' => [
+                    'shape' => 'StringMin3Max80',
+                ],
+                'Description' => [
+                    'shape' => 'StringNoMinMax',
+                ],
+                'ShortDescription' => [
+                    'shape' => 'StringMax2000',
+                ],
+                'Price' => [
+                    'shape' => 'Float',
+                ],
+                'Ean' => [
+                    'shape' => 'StringEan',
+                ],
+                'Upc' => [
+                    'shape' => 'StringUpc',
+                ],
+                'Isbn' => [
+                    'shape' => 'StringIsbn',
+                ],
+                'StockAmount' => [
+                    'shape' => 'IntegerMax999',
+                ],
+                'ProductImages' => [
+                    'shape' => 'ProductImageList',
+                ],
+            ]
+        ],
+
+        'GetProductByIdInput' => [
+            'type' => 'structure',
+            'members' => [
+                'Id' => [
+                    'shape' => 'IntegerNoMinMax',
+                    'location' => 'uri'
+                ]
+            ],
+            'required' => [
+              'Id',
+            ],
+        ],
+
+        'GetProductByIdOutput' => [
+            'type' => 'structure',
+            'members' => [
+                'EntityList' =>  [
+                  'shape' => 'CatalogList',
+                ],
+                'Messages' =>  [
+                    'shape' => 'MessageList',
+                ],
+            ],
+        ],
+
         'PostProductInput' => [
             'type' => 'structure',
             'required' => [
@@ -347,6 +483,30 @@ return [
             ]
         ],
 
+        'Paging' => [
+            'type' => 'structure',
+            'members' => [
+                'EntriesPerPage' => [
+                    'shape' => 'IntegerNoMinMax',
+                ],
+                'PageNumber' => [
+                    'shape' => 'IntegerNoMinMax',
+                ],
+                'TotalNumberOfPages' => [
+                    'shape' => 'IntegerNoMinMax',
+                ],
+                'TotalNumberOfEntries' => [
+                    'shape' => 'IntegerNoMinMax',
+                ],
+                'HasPreviousPage' => [
+                    'shape' => 'Boolean',
+                ],
+                'HasNextPage' => [
+                    'shape' => 'Boolean',
+                ],
+            ]
+        ],
+
         'ReviseInventoryInput' => [
             'type' => 'structure',
             'members' => [
@@ -399,8 +559,20 @@ return [
             'min' => 1,
             'max' => 1,
         ],
+        'IntegerMin1Max100Default100' => [
+            'type' => 'integer',
+            'min' => 1,
+            'max' => 100,
+            'default' => 50
+        ],
+        'IntegerMin1NoMaxDefault1' => [
+            'type' => 'integer',
+            'min' => 1,
+            'default' => 1
+        ],
         'IntegerMax999' => [
             'type' => 'integer',
+            'min' => 0,
             'max' => 999,
         ],
         'StringEan' => [
