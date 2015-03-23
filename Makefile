@@ -2,7 +2,7 @@ test:
 	vendor/bin/phpunit --debug --testsuite=unit
 
 coverage:
-	vendor/bin/phpunit --coverage-html=build/artifacts/coverage
+	vendor/bin/phpunit --testsuite=unit --coverage-html=build/artifacts/coverage
 
 view-coverage:
 	open build/artifacts/coverage/index.html
