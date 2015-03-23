@@ -10,6 +10,8 @@ use GuzzleHttp\Command\Event\PreparedEvent;
  */
 class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
 {
+    use IntegUtils;
+
    /**
     * @expectedException \Vws\Blackbox\Exception\BlackboxException
     * @expectedExceptionMessage (client error): The header parameter "Username" or "Password" is not valid or empty
@@ -22,7 +24,7 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
           'version' => 'latest',
           'scheme'  => 'http',
         ];
-        $client = (new Sdk())->createClient('blackbox', $args);
+        $client = $this->getSdk()->createClient('blackbox', $args);
         $response = $client->getCatalogs();
 
         $this->assertSame(
@@ -122,7 +124,7 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
            'version' => 'latest',
            'scheme'  => 'http',
          ];
-         $client = (new Sdk())->createClient('blackbox', $args);
+         $client = $this->getSdk()->createClient('blackbox', $args);
          $response = $client->getCatalogs();
 
          $this->assertSame(
@@ -222,7 +224,7 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
            'version' => 'latest',
            'scheme'  => 'http',
          ];
-         $client = (new Sdk())->createClient('blackbox', $args);
+         $client = $this->getSdk()->createClient('blackbox', $args);
          $response = $client->getCatalogs();
 
          $this->assertSame(
@@ -322,7 +324,7 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
            'version' => 'latest',
            'scheme'  => 'http',
          ];
-         $client = (new Sdk())->createClient('blackbox', $args);
+         $client = $this->getSdk()->createClient('blackbox', $args);
 
          $client->getEmitter()->on('prepared', function (PreparedEvent $event) {
              $request = $event->getRequest();
@@ -395,7 +397,7 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
            'version' => 'latest',
            'scheme'  => 'http',
          ];
-         $client = (new Sdk())->createClient('blackbox', $args);
+         $client = $this->getSdk()->createClient('blackbox', $args);
 
          $client->getEmitter()->on('prepared', function (PreparedEvent $event) {
              $request = $event->getRequest();

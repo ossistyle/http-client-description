@@ -5,11 +5,12 @@ namespace Vws\Test\Integ;
 use Vws\Exception\VwsException;
 use GuzzleHttp\Event\BeforeEvent;
 
+/**
+ *
+ */
 class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
 {
     use IntegUtils;
-
-    private $toDeleteCatalogId = [];
 
     /**
      *
@@ -112,6 +113,7 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * { "Code": "3102", "Severity": 1, "Message": "The value of the property "Name" is too long for eBay. We have cut the value short to 30 chars." }
+     * @return array
      */
     public function testPostCatalogNameTooLongEnsureBodyContainsCorrectMessageAndCode3102AndSeverityWarning()
     {
@@ -151,6 +153,7 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * { "Code": "XXXX", "Severity": 2, "Message": "######" }
+     * @return array
      */
     public function testPostCatalogNoForeignIdEnsureBodyContainsCorrectMessageAndCodeXXXXAndSeverityXXXX()
     {
@@ -189,6 +192,7 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * { "Code": "3105", "Severity": 1, "Message": "The value of the property "IsRootLevel" was changed to false." }
+     * @return array
      */
     public function testPostCatalogChildCatalogHasIsRootLevelTrueEnsureBodyContainsCorrectMessageAndCode3105AndSeverityWarning()
     {
@@ -250,10 +254,9 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
         ];
         $client = $this->getSdk()->createClient('blackbox', $options);
 
-        foreach ($args as $key => $values) {
-            foreach ($values as $innerKey => $value) {
-                $deleteResponse = $client->deleteCatalogById(['Id' => $value]);
-
+        foreach ($args as $values) {
+            foreach ($values as $value) {
+                $client->deleteCatalogById(['Id' => $value]);
                 $getResponse = $client->getCatalogById(['Id' => $value]);
 
                 $this->assertSame(

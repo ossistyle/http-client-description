@@ -13,6 +13,7 @@ trait IntegUtils
             'profile' => 'integ-sandbox',
             'version' => 'latest',
             'scheme'  => 'http',
+            'validate' => false,
             //'debug'   => true
         ]);
     }
