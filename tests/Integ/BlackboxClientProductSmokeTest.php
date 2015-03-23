@@ -3,7 +3,7 @@
 namespace Vws\Test\Integ;
 
 use Vws\Sdk;
-use GuzzleHttp\Command\Event\PreparedEvent;
+use GuzzleHttp\Command\Event\ProcessEvent;
 
 /**
  *
@@ -11,6 +11,57 @@ use GuzzleHttp\Command\Event\PreparedEvent;
 class BlackboxClientProductSmokeTest extends \PHPUnit_Framework_TestCase
 {
     use IntegUtils;
+
+    /**
+     *
+     */
+    public function testGetProductParallelRequest10 ()
+    {
+
+        $args = [
+            'region'  => 'sandbox',
+            'profile' => 'integ-sandbox',
+            'version' => 'latest',
+            //'debug' => true
+        ];
+        $client = $this->getSdk()->createBlackbox($args);
+
+        $commands = [
+            $client->getCommand('GetProducts', ['page' => 1]),
+            $client->getCommand('GetProducts', ['page' => 2]),
+            $client->getCommand('GetProducts', ['page' => 3]),
+            $client->getCommand('GetProducts', ['page' => 4]),
+            $client->getCommand('GetProducts', ['page' => 5]),
+            $client->getCommand('GetProducts', ['page' => 6]),
+            $client->getCommand('GetProducts', ['page' => 7]),
+            $client->getCommand('GetProducts', ['page' => 8]),
+            $client->getCommand('GetProducts', ['page' => 9]),
+            $client->getCommand('GetProducts', ['page' => 10]),
+        ];
+
+        $processResults = [];
+        $client->executeAll($commands, [
+            'process' => function (ProcessEvent $e) use (&$processResults) {
+                $processResults[] = $e->getResult();
+            }
+        ]);
+
+        // fetch all ForeignIds
+        $results = \JmesPath\search('[*].EntityList[*].ForeignId', $processResults);
+
+        $tmpResults = [];
+        foreach ($results as $result) {
+            $tmpResults = array_merge($tmpResults, $result);
+        }
+        // set ForeignIds as array key
+        $actual = array_flip($tmpResults);
+
+        $this->assertArrayHasKey('KS8803101', $actual);
+        $this->assertArrayHasKey('SO6002816', $actual);
+        $this->assertArrayHasKey('KK10C02701', $actual);
+        $this->assertArrayHasKey('SJW237106', $actual);
+        $this->assertCount(1000, $actual);
+    }
 
     /**
      *
@@ -36,7 +87,7 @@ class BlackboxClientProductSmokeTest extends \PHPUnit_Framework_TestCase
     /**
      *
      */
-    public function testGetProductsEnsureBodyContainsCorrectIdsAndHasEmptyMessages ()
+    public function testGetProductsWithoutQueryParamsEnsureBodyContainsCorrectResult ()
     {
         $args = [
             'region'  => 'sandbox',
@@ -44,17 +95,98 @@ class BlackboxClientProductSmokeTest extends \PHPUnit_Framework_TestCase
             'version' => 'latest',
         ];
         $client = $this->getSdk()->createBlackbox($args);
-        $response = $client->getProducts(['limit' => 10, 'page' => 1]);
+        $paginator = $client->getPaginator('GetProducts');
+        $paginator->next();
 
         $this->assertSame(
-            117697,
-            $response->search('EntityList[0].Id'),
-            'EntityList[0].Id is not equal to 117697'
+            'KS8803101',
+            $paginator->current()->search('EntityList[0].ForeignId'),
+            'EntityList[0].ForeignId is not equal to KS8803101'
         );
         $this->assertSame(
-            117702,
-            $response->search('EntityList[1].ChildCatalogs[0].ChildCatalogs[0].Id'),
-            'EntityList[1].ChildCatalogs[0].ChildCatalogs[0].Id is not equal to 117702'
+            'SO6002816',
+            $paginator->current()->search('EntityList[23].ForeignId'),
+            'EntityList[23].ForeignId is not equal to SO6002816'
         );
+        $this->assertSame(
+            'KK10C02701',
+            $paginator->current()->search('EntityList[42].ForeignId'),
+            'EntityList[42].ForeignId is not equal to KK10C02701'
+        );
+        $this->assertSame(
+            'SJW237106',
+            $paginator->current()->search('EntityList[99].ForeignId'),
+            'EntityList[99].ForeignId is not equal to SJW237106'
+        );
+        $this->assertSame(
+            100,
+            $paginator->current()->search('Pagination.EntriesPerPage'),
+            'Pagination.EntriesPerPage is not equal to 100 (default)'
+        );
+        $this->assertSame(
+            1,
+            $paginator->current()->search('Pagination.PageNumber'),
+            'Pagination.PageNumber is not equal to 1 (default)'
+        );
+        $this->assertSame(
+            false,
+            $paginator->current()->search('Pagination.HasPreviousPage'),
+            'Pagination.HasPreviousPage is not equal to false'
+        );
+        $this->assertSame(
+            true,
+            $paginator->current()->search('Pagination.HasNextPage'),
+            'Pagination.HasNextPage is not equal to true'
+        );
+        $this->assertEmpty($paginator->current()->search('Messages'), 'Messages is not empty');
     }
+
+    /**
+     *
+     */
+    public function testGetProductsEntriesPerPage10PageNumber10EnsureBodyContainsCorrectResult ()
+    {
+        $args = [
+            'region'  => 'sandbox',
+            'profile' => 'integ-sandbox',
+            'version' => 'latest'
+        ];
+        $client = $this->getSdk()->createBlackbox($args);
+        $paginator = $client->getPaginator('GetProducts', ['limit' => 10, 'page' => 10]);
+        $paginator->next();
+
+        $this->assertSame(
+            'SHW233605',
+            $paginator->current()->search('EntityList[0].ForeignId'),
+            'EntityList[0].ForeignId is not equal to SHW233605'
+        );
+        $this->assertSame(
+            'SJW237106',
+            $paginator->current()->search('EntityList[9].ForeignId'),
+            'EntityList[9].ForeignId is not equal to SJW237106'
+        );
+        $this->assertSame(
+            10,
+            $paginator->current()->search('Pagination.EntriesPerPage'),
+            'Pagination.EntriesPerPage is not equal to given 10'
+        );
+        $this->assertSame(
+            10,
+            $paginator->current()->search('Pagination.PageNumber'),
+            'Pagination.PageNumber is not equal to given 10'
+        );
+        $this->assertSame(
+            true,
+            $paginator->current()->search('Pagination.HasPreviousPage'),
+            'Pagination.HasPreviousPage is not equal to true'
+        );
+        $this->assertSame(
+            true,
+            $paginator->current()->search('Pagination.HasNextPage'),
+            'Pagination.HasNextPage is not equal to true'
+        );
+        $this->assertEmpty($paginator->current()->search('Messages'), 'Messages is not empty');
+    }
+
+
 }
