@@ -3,7 +3,6 @@
 namespace Vws\Test;
 
 use Vws\Result;
-use Vws\Test\UsesServiceTrait;
 
 /**
  * @covers Vws\ResultPaginator
@@ -29,7 +28,7 @@ class ResultPaginatorTest extends \PHPUnit_Framework_TestCase
         $paginator = $client->getPaginator('GetProducts', ['limit' => 10, 'page' => 1], $config + [
             'process' => function () use (&$requestCount) {
                 $requestCount++;
-            }
+            },
         ]);
 
         // Iterate over the paginator and keep track of the keys and values
@@ -63,38 +62,38 @@ class ResultPaginatorTest extends \PHPUnit_Framework_TestCase
                         'Pagination' => [
                             'EntriesPerPage' => 10,
                             'PageNumber' => 1,
-                            'HasNextPage' => true
+                            'HasNextPage' => true,
                         ],
                         'EntityList' => [
                             [
                                 'Title' => 'test1',
                             ],
                             [
-                                'Title' => 'test2'
-                            ]
-                        ]
+                                'Title' => 'test2',
+                            ],
+                        ],
                     ]),
                     new Result([
                         'Pagination' => [
                             'EntriesPerPage' => 10,
                             'PageNumber' => 1,
-                            'HasNextPage' => false
+                            'HasNextPage' => false,
                         ],
                         'EntityList' => [
 
-                        ]
+                        ],
                     ]),
                     new Result([
                         'Pagination' => [
                             'EntriesPerPage' => 10,
                             'PageNumber' => 1,
-                            'HasNextPage' => false
+                            'HasNextPage' => false,
                         ],
                         'EntityList' => [
                             [
-                                'Title' => 'test3'
+                                'Title' => 'test3',
                             ],
-                        ]
+                        ],
                     ]),
                 ],
                 // Request count
@@ -105,7 +104,7 @@ class ResultPaginatorTest extends \PHPUnit_Framework_TestCase
                         'Title' => 'test1',
                     ],
                     [
-                        'Title' => 'test2'
+                        'Title' => 'test2',
                     ],
 
                 ],
@@ -122,33 +121,33 @@ class ResultPaginatorTest extends \PHPUnit_Framework_TestCase
                 'Pagination' => [
                     'EntriesPerPage' => 10,
                     'PageNumber' => 1,
-                    'HasNextPage' => true
+                    'HasNextPage' => true,
                 ],
                 'EntityList' => [
                     [
                         'Title' => 'test1',
                     ],
                     [
-                        'Title' => 'test2'
-                    ]
-                ]
+                        'Title' => 'test2',
+                    ],
+                ],
             ]),
             new Result([
                 'Pagination' => [
                     'EntriesPerPage' => 10,
                     'PageNumber' => 1,
-                    'HasNextPage' => true
+                    'HasNextPage' => true,
                 ],
                 'EntityList' => [
 
-                ]
+                ],
             ]),
             new Result([
                 'EntityList' => [
                     [
                         'Title' => 'test3',
                     ],
-                ]
+                ],
             ]),
             #new Result(['TableNames' => ['d4']]),
         ]);
@@ -160,7 +159,7 @@ class ResultPaginatorTest extends \PHPUnit_Framework_TestCase
             'page' => 'Pagination.PageNumber',
             'process'      => function () use (&$requestCount) {
                 $requestCount++;
-            }
+            },
         ]);
 
         $tableNames = [];
@@ -174,7 +173,7 @@ class ResultPaginatorTest extends \PHPUnit_Framework_TestCase
                 'Title' => 'test1',
             ],
             [
-                'Title' => 'test2'
+                'Title' => 'test2',
             ],
             [
                 'Title' => 'test3',

@@ -26,10 +26,10 @@ class UtilsTest extends \PHPUnit_Framework_TestCase
     public function testComposesOrFunctions()
     {
         $a = function ($a, $b) {
-            return null;
+            return;
         };
         $b = function ($a, $b) {
-            return $a . $b;
+            return $a.$b;
         };
         $c = function ($a, $b) {
             return 'C';

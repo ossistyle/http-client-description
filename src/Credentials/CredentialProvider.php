@@ -42,6 +42,7 @@ class CredentialProvider
      * @param callable $provider Credential provider function
      *
      * @return CredentialsInterface
+     *
      * @throws CredentialsException
      */
     public static function resolve(callable $provider)
@@ -90,12 +91,12 @@ class CredentialProvider
     public static function ini($profile = null, $filename = null)
     {
         //$filename = $filename ?: (self::getHomeDir() . '/.Vws/credentials');
-        $filename = $filename ?: (self::getWorkingDir() . '/.vws/credentials');
+        $filename = $filename ?: (self::getWorkingDir().'/.vws/credentials');
         $profile = $profile ?: (getenv(self::ENV_PROFILE) ?: 'default');
 
         return function () use ($profile, $filename) {
             if (!file_exists($filename)) {
-                return null;
+                return;
             }
             if (!is_readable($filename)) {
                 throw new CredentialsException("Cannot read credentials from $filename");
@@ -107,7 +108,7 @@ class CredentialProvider
                 || !isset($data[$profile]['vws_password'])
                 || !isset($data[$profile]['vws_subscription_token'])
             ) {
-                return null;
+                return;
             }
 
             return new Credentials(
@@ -126,6 +127,7 @@ class CredentialProvider
      *
      * @param array $config Optional array of instance profile credentials
      *                      provider options.
+     *
      * @return callable
      */
     public static function defaultProvider(array $config = [])
@@ -159,6 +161,6 @@ class CredentialProvider
         $homeDrive = getenv('HOMEDRIVE');
         $homePath = getenv('HOMEPATH');
 
-        return ($homeDrive && $homePath) ? $homeDrive . $homePath : null;
+        return ($homeDrive && $homePath) ? $homeDrive.$homePath : null;
     }
 }

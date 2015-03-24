@@ -2,8 +2,6 @@
 
 namespace Vws\Test\Integ;
 
-use Vws\Exception\VwsException;
-use GuzzleHttp\Event\BeforeEvent;
 
 /**
  *
@@ -37,7 +35,6 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
 
     /**
      *
-     *
      */
     public function testGetCatalogById117702EnsureBodyContainsGivenIdAndHasEmptyMessages()
     {
@@ -54,7 +51,6 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     *
      *
      */
     public function testGetCatalogById4711EnsureBodyContainsCorrectMessageAndHasEmptyEntityList()
@@ -78,7 +74,7 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * { "Code": "3103", "Severity": 2, "Message": "Name is empty." }
+     * { "Code": "3103", "Severity": 2, "Message": "Name is empty." }.
      */
     public function testPostCatalogEmptyNameEnsureBodyContainsCorrectMessageAndCode3103AndSeverity()
     {
@@ -88,7 +84,7 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
             [
                 'Name' => '',
                 'IsRootLevel' => true,
-                'ForeignId' => 'root_1'
+                'ForeignId' => 'root_1',
             ]
         );
 
@@ -107,12 +103,13 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
             '"Name" is empty.',
             $response->search('Messages[0].Message'),
             'Messages[0].Message does not contains '
-            . '""Name" is empty."'
+            .'""Name" is empty."'
         );
     }
 
     /**
-     * { "Code": "3102", "Severity": 1, "Message": "The value of the property "Name" is too long for eBay. We have cut the value short to 30 chars." }
+     * { "Code": "3102", "Severity": 1, "Message": "The value of the property "Name" is too long for eBay. We have cut the value short to 30 chars." }.
+     *
      * @return array
      */
     public function testPostCatalogNameTooLongEnsureBodyContainsCorrectMessageAndCode3102AndSeverityWarning()
@@ -123,7 +120,7 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
             [
                 'Name' => 'Name_too_long_Name_too_long_Name_too_long',
                 'IsRootLevel' => true,
-                'ForeignId' => 'root_catalog'
+                'ForeignId' => 'root_catalog',
             ]
         );
 
@@ -142,7 +139,7 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
             'The value of the property "Name" is too long for eBay. We have cut the value short to 30 chars.',
             $response->search('Messages[0].Message'),
             'Messages[0].Message does not contains '
-            . '"The value of the property "Name" is too long for eBay. We have cut the value short to 30 chars.""'
+            .'"The value of the property "Name" is too long for eBay. We have cut the value short to 30 chars.""'
         );
 
         $toDeleteCatalogId = [];
@@ -152,7 +149,8 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * { "Code": "XXXX", "Severity": 2, "Message": "######" }
+     * { "Code": "XXXX", "Severity": 2, "Message": "######" }.
+     *
      * @return array
      */
     public function testPostCatalogNoForeignIdEnsureBodyContainsCorrectMessageAndCodeXXXXAndSeverityXXXX()
@@ -163,7 +161,7 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
             [
                 'Name' => 'Root Catalog',
                 'IsRootLevel' => true,
-                'ForeignId' => ''
+                'ForeignId' => '',
             ]
         );
 
@@ -191,7 +189,8 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * { "Code": "3105", "Severity": 1, "Message": "The value of the property "IsRootLevel" was changed to false." }
+     * { "Code": "3105", "Severity": 1, "Message": "The value of the property "IsRootLevel" was changed to false." }.
+     *
      * @return array
      */
     public function testPostCatalogChildCatalogHasIsRootLevelTrueEnsureBodyContainsCorrectMessageAndCode3105AndSeverityWarning()
@@ -209,7 +208,7 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
                         'ForeignId' => 'child_1_1',
                         'IsRootLevel' => true,
                     ],
-                ]
+                ],
             ]
         );
 
@@ -228,7 +227,7 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
             'The value of the property "IsRootLevel" was changed to false.',
             $response->search('Messages[0].Message'),
             'Messages[0].Message does not contains '
-            . '"The value of the property "IsRootLevel" was changed to false."'
+            .'"The value of the property "IsRootLevel" was changed to false."'
         );
 
         $toDeleteCatalogId = [];
@@ -242,7 +241,6 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
      * @depends testPostCatalogNameTooLongEnsureBodyContainsCorrectMessageAndCode3102AndSeverityWarning
      * #depends testPostCatalogNoForeignIdEnsureResponseContainsCorrectMessageAndCodeXXXXAndSeverityXXXX
      * @depends testPostCatalogChildCatalogHasIsRootLevelTrueEnsureBodyContainsCorrectMessageAndCode3105AndSeverityWarning
-     *
      */
     public function testDeleteCatalogByIdEnsureBodyIsEmptyAndCatalogIsDeleted()
     {

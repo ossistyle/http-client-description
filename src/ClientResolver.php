@@ -10,7 +10,6 @@ use Vws\Credentials\Credentials;
 use Vws\Credentials\CredentialsInterface;
 use Vws\Credentials\NullCredentials;
 use Vws\Subscriber\Validation;
-use Vws\Api\FilesystemApiProvider;
 use Vws\Endpoint\EndpointProvider;
 use Vws\Credentials\CredentialProvider;
 use GuzzleHttp\Client;
@@ -100,7 +99,7 @@ class ClientResolver
             'valid'   => ['callable', 'GuzzleHttp\ClientInterface'],
             'default' => [__CLASS__, '_default_client'],
             'fn'      => [__CLASS__, '_apply_client'],
-            'doc'     => 'A function that accepts an array of options and returns a GuzzleHttp\ClientInterface, or a Guzzle client used to transfer requests over the wire.'
+            'doc'     => 'A function that accepts an array of options and returns a GuzzleHttp\ClientInterface, or a Guzzle client used to transfer requests over the wire.',
         ],
         'validate' => [
             'type'    => 'value',
@@ -125,7 +124,7 @@ class ClientResolver
 
     /**
      * Gets an array of default client arguments, each argument containing a
-     * hash of the following:
+     * hash of the following:.
      *
      * - type: (string, required) option type described as follows:
      *   - value: The default option type.
@@ -169,7 +168,9 @@ class ClientResolver
      * @param EmitterInterface $emitter Emitter to augment..
      *
      * @return array Returns the array of provided options.
+     *
      * @throws \InvalidArgumentException
+     *
      * @see Vws\VwsClient::__construct for a list of available options.
      */
     public function resolve(array $args, EmitterInterface $emitter)
@@ -225,6 +226,7 @@ class ClientResolver
      * @param array  $args        Provided arguments
      * @param bool   $useRequired Set to true to show the required fn text if
      *                            available instead of the documentation.
+     *
      * @return string
      */
     private function getArgMessage($name, $args = [], $useRequired = false)
@@ -236,10 +238,10 @@ class ClientResolver
             $modifiers[] = implode('|', $arg['valid']);
         }
         if (isset($arg['choice'])) {
-            $modifiers[] = 'One of ' . implode(', ', $arg['choice']);
+            $modifiers[] = 'One of '.implode(', ', $arg['choice']);
         }
         if ($modifiers) {
-            $msg .= '(' . implode('; ', $modifiers) . ')';
+            $msg .= '('.implode('; ', $modifiers).')';
         }
         $msg = wordwrap("{$name}: {$msg}", 75, "\n  ");
 
@@ -258,15 +260,16 @@ class ClientResolver
      *
      * @param string $name     Name of the value being validated.
      * @param mixed  $provided The provided value.
+     *
      * @throws \InvalidArgumentException
      */
     private function invalidType($name, $provided)
     {
         $expected = implode('|', $this->argDefinitions[$name]['valid']);
         $msg = "Invalid configuration value "
-            . "provided for \"{$name}\". Expected {$expected}, but got "
-            . Core::describeType($provided) . "\n\n"
-            . $this->getArgMessage($name);
+            ."provided for \"{$name}\". Expected {$expected}, but got "
+            .Core::describeType($provided)."\n\n"
+            .$this->getArgMessage($name);
         throw new \InvalidArgumentException($msg);
     }
 
@@ -274,6 +277,7 @@ class ClientResolver
      * Throws an exception for missing required arguments.
      *
      * @param array $args Passed in arguments.
+     *
      * @throws \InvalidArgumentException
      */
     private function throwRequired(array $args)
@@ -313,10 +317,10 @@ class ClientResolver
             $args['credentials'] = new NullCredentials();
         } else {
             throw new \InvalidArgumentException('Credentials must be an instance of '
-                . 'Vws\Credentials\CredentialsInterface, an associative '
-                . 'array that contains "username", "password",
+                .'Vws\Credentials\CredentialsInterface, an associative '
+                .'array that contains "username", "password",
                 . "subscriptiontoken", "vendor" and "version" '
-                . 'key-value pairs, a credentials provider function, or false.'
+                .'key-value pairs, a credentials provider function, or false.'
             );
         }
     }
@@ -336,7 +340,7 @@ class ClientResolver
             $result = EndpointProvider::resolve($value, [
                 'service' => $args['service'],
                 'region'  => $args['region'],
-                'scheme'  => $args['scheme']
+                'scheme'  => $args['scheme'],
             ]);
 
             $args['endpoint'] = $result['endpoint'];
@@ -383,7 +387,7 @@ class ClientResolver
         }
     }
 
-    public static function _default_client (array &$args)
+    public static function _default_client(array &$args)
     {
         return new Client();
     }

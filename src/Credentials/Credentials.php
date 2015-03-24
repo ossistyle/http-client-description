@@ -5,7 +5,6 @@ use Vws\Sdk;
 
 class Credentials implements CredentialsInterface
 {
-
     private $username;
     private $password;
     private $token;
@@ -58,7 +57,7 @@ class Credentials implements CredentialsInterface
             'Password'  => $this->password,
             'SubscriptionToken'   => $this->token,
             'Vendor' => $this->vendor,
-            'Version' => $this->version
+            'Version' => $this->version,
         ];
     }
 }

@@ -30,7 +30,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
     {
         $c = new BlackboxClient([
             'region'  => 'x',
-            'version' => 'latest'
+            'version' => 'latest',
         ]);
 
         try {
@@ -38,7 +38,6 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
             $c->PostCatalog([]);
             $this->fail('Did not validate');
         } catch (VwsException $e) {
-          
         }
     }
 
@@ -51,7 +50,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
         $c = new BlackboxClient([
             'region'   => 'x',
             'version'  => 'latest',
-            'validate' => false
+            'validate' => false,
         ]);
         $command = $c->getCommand('PostCatalog');
         $command->getEmitter()->on('prepared', function () {
@@ -70,7 +69,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
             'service'      => 'blackbox',
             'region'       => 'x',
             'api_provider' => $provider,
-            'version'      => 'latest'
+            'version'      => 'latest',
         ], new Emitter());
         $this->assertArrayHasKey('api', $conf);
         $this->assertArrayHasKey('error_parser', $conf);
@@ -86,8 +85,8 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
         $r = new ClientResolver([
             'foo' => [
                 'type'  => 'value',
-                'valid' => ['string']
-            ]
+                'valid' => ['string'],
+            ],
         ]);
         $r->resolve(['foo' => -1], new Emitter());
     }
@@ -101,12 +100,11 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
         $r = new ClientResolver([
             'foo' => [
                 'type'   => 'value',
-                'valid'  => ['callable']
-            ]
+                'valid'  => ['callable'],
+            ],
         ]);
         $r->resolve(['foo' => 'c'], new Emitter());
     }
-
 
     /**
      * @expectedException \InvalidArgumentException
@@ -115,7 +113,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
     public function testValidatesCredentials()
     {
         $r = new ClientResolver([
-            'credentials' => ClientResolver::getDefaultArguments()['credentials']
+            'credentials' => ClientResolver::getDefaultArguments()['credentials'],
         ]);
         $r->resolve(['credentials' => []], new Emitter());
     }
@@ -125,23 +123,23 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
         $username = getenv(CredentialProvider::ENV_USERNAME);
         $password = getenv(CredentialProvider::ENV_PASSWORD);
         $token = getenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN);
-        putenv(CredentialProvider::ENV_USERNAME . '=foo');
-        putenv(CredentialProvider::ENV_PASSWORD . '=bar');
-        putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN . '=foo_bar');
+        putenv(CredentialProvider::ENV_USERNAME.'=foo');
+        putenv(CredentialProvider::ENV_PASSWORD.'=bar');
+        putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN.'=foo_bar');
         $r = new ClientResolver(ClientResolver::getDefaultArguments());
         $conf = $r->resolve([
             'service' => 'blackbox',
             'region' => 'x',
-            'version' => 'latest'
+            'version' => 'latest',
         ], new Emitter());
         $c = $conf['credentials'];
         $this->assertInstanceOf('Vws\Credentials\CredentialsInterface', $c);
         $this->assertEquals('foo', $c->getUsername());
         $this->assertEquals('bar', $c->getPassword());
         $this->assertEquals('foo_bar', $c->getSubscriptionToken());
-        putenv(CredentialProvider::ENV_USERNAME . "=$username");
-        putenv(CredentialProvider::ENV_PASSWORD . "=$password");
-        putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN . "=$token");
+        putenv(CredentialProvider::ENV_USERNAME."=$username");
+        putenv(CredentialProvider::ENV_PASSWORD."=$password");
+        putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN."=$token");
     }
 
     public function testCreatesFromArray()
@@ -155,8 +153,8 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
             'credentials' => [
                 'username'     => 'foo',
                 'password'  => 'baz',
-                'subscription_token'   => 'tok'
-            ]
+                'subscription_token'   => 'tok',
+            ],
         ], new Emitter());
         $creds = $conf['credentials'];
         $this->assertEquals('foo', $creds->getUsername());
@@ -171,7 +169,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
             'service' => 'blackbox',
             'region' => 'x',
             'credentials' => false,
-            'version' => 'latest'
+            'version' => 'latest',
         ], new Emitter());
         $this->assertInstanceOf(
             'Vws\Credentials\NullCredentials',
@@ -187,7 +185,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
             'service'     => 'blackbox',
             'region'      => 'x',
             'credentials' => function () use ($c) { return $c; },
-            'version'     => 'latest'
+            'version'     => 'latest',
         ], new Emitter());
         $this->assertSame($c, $conf['credentials']);
     }
@@ -226,7 +224,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
             'service'     => 'blackbox',
             'region'      => 'x',
             'credentials' => $c,
-            'version'     => 'latest'
+            'version'     => 'latest',
         ], new Emitter());
         $this->assertSame($c, $conf['credentials']);
     }
@@ -277,7 +275,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
             'region'   => 'x',
             'debug'    => true,
             'endpoint' => 'http://sandboxapi.via.de:8001',
-            'version'  => 'latest'
+            'version'  => 'latest',
         ], $em);
         $this->assertTrue(SdkTest::hasListener(
             $em,
@@ -295,7 +293,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
             'region'   => 'x',
             'debug'    => false,
             'endpoint' => 'http://sandboxapi.via.de:8001',
-            'version'  => 'latest'
+            'version'  => 'latest',
         ], $em);
         $this->assertFalse(SdkTest::hasListener(
             $em,
@@ -319,9 +317,9 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
                 return new Client([
                     'handler' => function () {
                         throw new \UnexpectedValueException('foo');
-                    }
+                    },
                 ]);
-            }
+            },
         ], new Emitter());
 
         $conf['client']->get('http://localhost:123');
@@ -334,7 +332,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
             'service' => 'blackbox',
             'region'  => 'x',
             'version' => 'latest',
-            'http'    => ['foo' => 'bar']
+            'http'    => ['foo' => 'bar'],
         ], new Emitter());
         $this->assertEquals('bar', $conf['client']->getDefaultOption('foo'));
     }
@@ -344,8 +342,8 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
         $r = new ClientResolver([
             'foo' => [
                 'valid' => ['int'],
-                'type'  => 'value'
-            ]
+                'type'  => 'value',
+            ],
         ]);
         $r->resolve([], new Emitter());
     }

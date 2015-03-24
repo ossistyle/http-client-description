@@ -6,6 +6,7 @@ use Vws\Api\Shape;
 
 /**
  * Formats the JSON body of a JSON-REST or JSON-RPC operation.
+ *
  * @internal
  */
 class JsonBody
@@ -18,7 +19,7 @@ class JsonBody
     }
 
     /**
-     * Gets the JSON Content-Type header for a service API
+     * Gets the JSON Content-Type header for a service API.
      *
      * @param Service $service
      *
@@ -60,6 +61,7 @@ class JsonBody
                         );
                     }
                 }
+
                 return $data;
 
             case 'list':
@@ -67,6 +69,7 @@ class JsonBody
                 foreach ($value as &$v) {
                     $data[] = $this->format($items, $v);
                 }
+
                 return $value;
 
             case 'map':

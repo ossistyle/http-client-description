@@ -2,7 +2,6 @@
 
 namespace Vws\Test\Integ;
 
-use Vws\Sdk;
 
 /**
  *
@@ -14,7 +13,7 @@ class BlackboxClientProductSmokeTest extends \PHPUnit_Framework_TestCase
     /**
      *
      */
-    public function testGetProductById1599237EnsureBodyContainsGivenIdAndHasEmptyMessages ()
+    public function testGetProductById1599237EnsureBodyContainsGivenIdAndHasEmptyMessages()
     {
         $args = [
             'region'  => 'sandbox',
@@ -35,7 +34,7 @@ class BlackboxClientProductSmokeTest extends \PHPUnit_Framework_TestCase
     /**
      *
      */
-    public function testGetProductsWithoutQueryParamsEnsureBodyContainsCorrectResult ()
+    public function testGetProductsWithoutQueryParamsEnsureBodyContainsCorrectResult()
     {
         $args = [
             'region'  => 'sandbox',
@@ -92,12 +91,12 @@ class BlackboxClientProductSmokeTest extends \PHPUnit_Framework_TestCase
     /**
      *
      */
-    public function testGetProductsEntriesPerPage10PageNumber10EnsureBodyContainsCorrectResult ()
+    public function testGetProductsEntriesPerPage10PageNumber10EnsureBodyContainsCorrectResult()
     {
         $args = [
             'region'  => 'sandbox',
             'profile' => 'integ-sandbox',
-            'version' => 'latest'
+            'version' => 'latest',
         ];
         $client = $this->getSdk()->createBlackbox($args);
         $paginator = $client->getPaginator('GetProducts', ['limit' => 10, 'page' => 10]);
@@ -135,6 +134,4 @@ class BlackboxClientProductSmokeTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEmpty($paginator->current()->search('Messages'), 'Messages is not empty');
     }
-
-
 }

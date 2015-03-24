@@ -13,6 +13,7 @@ class Shape extends AbstractModel
      * @param ShapeMap $shapeMap
      *
      * @return mixed
+     *
      * @throws \RuntimeException if the type is invalid
      */
     public static function create(array $definition, ShapeMap $shapeMap)
@@ -29,7 +30,7 @@ class Shape extends AbstractModel
             'byte'      => 'Vws\Api\Shape',
             'character' => 'Vws\Api\Shape',
             'blob'      => 'Vws\Api\Shape',
-            'boolean'   => 'Vws\Api\Shape'
+            'boolean'   => 'Vws\Api\Shape',
         ];
 
         if (isset($definition['shape'])) {
@@ -46,7 +47,7 @@ class Shape extends AbstractModel
     }
 
     /**
-     * Get the type of the shape
+     * Get the type of the shape.
      *
      * @return string
      */
@@ -56,7 +57,7 @@ class Shape extends AbstractModel
     }
 
     /**
-     * Get the name of the shape
+     * Get the name of the shape.
      *
      * @return string
      */
@@ -65,27 +66,30 @@ class Shape extends AbstractModel
         return $this->definition['name'];
     }
 
-    public function getMin ()
+    public function getMin()
     {
         if (!isset($this->definition['min'])) {
             return false;
         }
+
         return $this->definition['min'];
     }
 
-    public function getMax ()
+    public function getMax()
     {
         if (!isset($this->definition['max'])) {
             return false;
         }
+
         return $this->definition['max'];
     }
 
-    public function getPattern ()
+    public function getPattern()
     {
         if (!isset($this->definition['pattern'])) {
             return false;
         }
+
         return $this->definition['pattern'];
     }
 }

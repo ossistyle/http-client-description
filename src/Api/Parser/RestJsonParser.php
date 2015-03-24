@@ -2,7 +2,6 @@
 namespace Vws\Api\Parser;
 
 use Vws\Api\Service;
-use Vws\Api\StructureShape;
 use Vws\Api\Shape;
 use GuzzleHttp\Message\ResponseInterface;
 

@@ -27,25 +27,25 @@ class Service extends AbstractModel
      */
     public function __construct(callable $provider, $serviceName, $apiVersion)
     {
-      static $defaults = [
+        static $defaults = [
           'operations' => [],
           'shapes'     => [],
-          'metadata'   => []
+          'metadata'   => [],
       ], $defaultMeta = [
           'serviceFullName'  => null,
           'apiVersion'       => null,
           'endpointPrefix'   => null,
           'signingName'      => null,
           'signatureVersion' => null,
-          'protocol'         => null
+          'protocol'         => null,
       ];
 
-      $this->apiProvider = $provider;
-      $this->serviceName = $serviceName;
-      $this->apiVersion = $apiVersion;
-      $definition = ApiProvider::resolve($provider, 'api', $serviceName, $apiVersion) + $defaults;
-      $definition['metadata'] += $defaultMeta;
-      parent::__construct($definition, new ShapeMap($definition['shapes']));
+        $this->apiProvider = $provider;
+        $this->serviceName = $serviceName;
+        $this->apiVersion = $apiVersion;
+        $definition = ApiProvider::resolve($provider, 'api', $serviceName, $apiVersion) + $defaults;
+        $definition['metadata'] += $defaultMeta;
+        parent::__construct($definition, new ShapeMap($definition['shapes']));
     }
 
     /**
@@ -55,6 +55,7 @@ class Service extends AbstractModel
      * @param string  $endpoint Endpoint to send requests to.
      *
      * @return callable
+     *
      * @throws \UnexpectedValueException
      */
     public static function createSerializer(Service $api, $endpoint)
@@ -70,7 +71,7 @@ class Service extends AbstractModel
             return new $mapping[$proto]($api, $endpoint);
         } else {
             throw new \UnexpectedValueException(
-                'Unknown protocol: ' . $api->getProtocol()
+                'Unknown protocol: '.$api->getProtocol()
             );
         }
     }
@@ -81,6 +82,7 @@ class Service extends AbstractModel
      * @param string $protocol Protocol to parse (e.g., query, json, etc.)
      *
      * @return callable
+     *
      * @throws \UnexpectedValueException
      */
     public static function createErrorParser($protocol)
@@ -101,7 +103,9 @@ class Service extends AbstractModel
      * Applies the listeners needed to parse client models.
      *
      * @param Service $api API to create a parser for
+     *
      * @return callable
+     *
      * @throws \UnexpectedValueException
      */
     public static function createParser(Service $api)
@@ -116,13 +120,13 @@ class Service extends AbstractModel
             return new $mapping[$proto]($api);
         } else {
             throw new \UnexpectedValueException(
-                'Unknown protocol: ' . $api->getProtocol()
+                'Unknown protocol: '.$api->getProtocol()
             );
         }
     }
 
     /**
-     * Get the full name of the service
+     * Get the full name of the service.
      *
      * @return string
      */
@@ -132,7 +136,7 @@ class Service extends AbstractModel
     }
 
     /**
-     * Get the API version of the service
+     * Get the API version of the service.
      *
      * @return string
      */
@@ -142,7 +146,7 @@ class Service extends AbstractModel
     }
 
     /**
-     * Get the API version of the service
+     * Get the API version of the service.
      *
      * @return string
      */
@@ -179,6 +183,7 @@ class Service extends AbstractModel
      * @param string $name Operation to retrieve by name
      *
      * @return Operation
+     *
      * @throws \InvalidArgumentException If the operation is not found
      */
     public function getOperation($name)
@@ -226,7 +231,7 @@ class Service extends AbstractModel
             return $this->definition['metadata'][$key];
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -256,7 +261,9 @@ class Service extends AbstractModel
      *
      * @param string $name Paginator to retrieve by name. This argument is
      *                     typically the operation name.
+     *
      * @return array
+     *
      * @throws \UnexpectedValueException if the paginator does not exist.
      */
     public function getPaginatorConfig($name)
@@ -272,7 +279,7 @@ class Service extends AbstractModel
 
         throw new \UnexpectedValueException(
             "There is no {$name} "
-            . "paginator defined for the {$this->serviceName} service."
+            ."paginator defined for the {$this->serviceName} service."
         );
     }
 }

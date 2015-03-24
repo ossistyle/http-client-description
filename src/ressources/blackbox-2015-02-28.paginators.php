@@ -6,7 +6,7 @@ return [
             'limit' => 'Pagination.EntriesPerPage',
             'page' => 'Pagination.PageNumber',
             'more_results' => 'Pagination.HasNextPage',
-            'result_key' => 'EntityList'
+            'result_key' => 'EntityList',
         ],
-    ]
+    ],
 ];

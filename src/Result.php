@@ -34,6 +34,7 @@ class Result implements ResultInterface
     public function __toString()
     {
         $jsonData = json_encode($this->toArray(), JSON_PRETTY_PRINT);
+
         return <<<EOT
 Model Data
 ----------

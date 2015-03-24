@@ -2,7 +2,6 @@
 
 namespace Vws;
 
-use GuzzleHttp\Command\CommandInterface;
 use GuzzleHttp\Command\ServiceClientInterface;
 
 interface VwsClientInterface extends ServiceClientInterface

@@ -31,11 +31,12 @@ class ShapeMap
     }
 
     /**
-     * Resolve a shape reference
+     * Resolve a shape reference.
      *
      * @param array $shapeRef Shape reference shape
      *
      * @return Shape
+     *
      * @throws \InvalidArgumentException
      */
     public function resolve(array $shapeRef)
@@ -43,7 +44,7 @@ class ShapeMap
         $shape = $shapeRef['shape'];
 
         if (!isset($this->definitions[$shape])) {
-            throw new \InvalidArgumentException('Shape not found: ' . $shape);
+            throw new \InvalidArgumentException('Shape not found: '.$shape);
         }
 
         $isSimple = count($shapeRef) == 1;

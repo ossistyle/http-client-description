@@ -2,7 +2,6 @@
 
 namespace Vws\Test\Integ;
 
-use Vws\Sdk;
 use GuzzleHttp\Command\Event\ProcessEvent;
 
 /**
@@ -15,9 +14,8 @@ class BlackboxClientProductConcurrencyTest extends \PHPUnit_Framework_TestCase
     /**
      *
      */
-    public function testGetProductParallelRequest10 ()
+    public function testGetProductParallelRequest10()
     {
-
         $args = [
             'region'  => 'sandbox',
             'profile' => 'integ-sandbox',
@@ -42,7 +40,7 @@ class BlackboxClientProductConcurrencyTest extends \PHPUnit_Framework_TestCase
         $client->executeAll($commands, [
             'process' => function (ProcessEvent $e) use (&$processResults) {
                 $processResults[] = $e->getResult();
-            }
+            },
         ]);
 
         // fetch all ForeignIds
@@ -65,9 +63,8 @@ class BlackboxClientProductConcurrencyTest extends \PHPUnit_Framework_TestCase
     /**
      *
      */
-    public function testPostProductParallelRequests10AndDeleteProductParallelRequests10 ()
+    public function testPostProductParallelRequests10AndDeleteProductParallelRequests10()
     {
-
         $args = [
             'region'  => 'sandbox',
             'profile' => 'integ-sandbox',
@@ -91,7 +88,7 @@ class BlackboxClientProductConcurrencyTest extends \PHPUnit_Framework_TestCase
         $client->executeAll($commands, [
             'process' => function (ProcessEvent $e) use (&$processResults) {
                 $processResults[] = $e->getResult();
-            }
+            },
         ]);
     }
 }

@@ -120,7 +120,7 @@ class ResultPaginator implements \Iterator
         $this->next();
     }
 
-    public function hasMoreResults ()
+    public function hasMoreResults()
     {
         return $this->hasMoreResults;
     }
@@ -150,11 +150,9 @@ class ResultPaginator implements \Iterator
 
         // If there is no more_results to check or more_results is true
         if ($this->config['more_results'] === null
-            || $this->hasMoreResults)
-        {
+            || $this->hasMoreResults) {
             // Get the next page value
-            if ($key = $this->config['page'])
-            {
+            if ($key = $this->config['page']) {
                 $this->nextPage = $this->result->search($key) + 1;
             }
             // Get the next page value

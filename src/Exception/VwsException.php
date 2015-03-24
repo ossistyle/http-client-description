@@ -27,7 +27,7 @@ class VwsException extends CommandException
     }
 
     /**
-     * If available, gets the HTTP status code of the corresponding response
+     * If available, gets the HTTP status code of the corresponding response.
      *
      * @return int|null
      */

@@ -2,7 +2,6 @@
 
 namespace Vws\Test\Integ;
 
-use Vws\Sdk;
 use GuzzleHttp\Command\Event\PreparedEvent;
 
 /**
@@ -12,10 +11,10 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
 {
     use IntegUtils;
 
-   /**
-    * @expectedException \Vws\Blackbox\Exception\BlackboxException
-    * @expectedExceptionMessage (client error): The header parameter "Username" or "Password" is not valid or empty
-    */
+    /**
+     * @expectedException \Vws\Blackbox\Exception\BlackboxException
+     * @expectedExceptionMessage (client error): The header parameter "Username" or "Password" is not valid or empty
+     */
     public function testAuthorizationInvalidEmptyOrMissingUsernameEnsureHeaderIsCorrectAndBodyContainsCorrectMessage()
     {
         $args = [
@@ -46,7 +45,7 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
             'The header parameter "Username" or "Password" is not valid or empty.',
             $response->search('Messages[0].Message'),
             'Messages[0].Message does not contains '
-            . '"The header parameter "Username" or "Password" is not valid or empty."'
+            .'"The header parameter "Username" or "Password" is not valid or empty."'
         );
 
         // empty username
@@ -77,7 +76,7 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
             'The header parameter "Username" or "Password" is not valid or empty.',
             $response->search('Messages[0].Message'),
             'Messages[0].Message does not contains '
-            . '"The header parameter "Username" or "Password" is not valid or empty."'
+            .'"The header parameter "Username" or "Password" is not valid or empty."'
         );
 
         // no username
@@ -108,7 +107,7 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
             'The header parameter "Username" or "Password" is not valid or empty.',
             $response->search('Messages[0].Message'),
             'Messages[0].Message does not contains '
-            . '"The header parameter "Username" or "Password" is not valid or empty."'
+            .'"The header parameter "Username" or "Password" is not valid or empty."'
         );
     }
 
@@ -118,35 +117,35 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
      */
     public function testAuthorizationInvalidEmptyOrMissingPasswordEnsureHeaderIsCorrectAndBodyContainsCorrectMessage()
     {
-         $args = [
+        $args = [
            'region'  => 'sandbox',
            'profile' => 'integ-sandbox-invalid-password',
            'version' => 'latest',
            'scheme'  => 'http',
          ];
-         $client = $this->getSdk()->createClient('blackbox', $args);
-         $response = $client->getCatalogs();
+        $client = $this->getSdk()->createClient('blackbox', $args);
+        $response = $client->getCatalogs();
 
-         $this->assertSame(
+        $this->assertSame(
              401,
              $response->getStatusCode(),
              'Response StatusCode is not 401'
          );
-         $this->assertSame(
+        $this->assertSame(
              1000,
              $response->search('Messages[0].Code'),
              'Messages[0].Code is not 1000'
          );
-         $this->assertSame(
+        $this->assertSame(
              2,
              $response->search('Messages[0].Severity'),
              'Messages[0].Severity is not Error (2)'
          );
-         $this->assertSame(
+        $this->assertSame(
              'The header parameter "Username" or "Password" is not valid or empty.',
              $response->search('Messages[0].Message'),
              'Messages[0].Message does not contains '
-             . '"The header parameter "Username" or "Password" is not valid or empty."'
+             .'"The header parameter "Username" or "Password" is not valid or empty."'
          );
 
          // empty password
@@ -156,28 +155,28 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
              $request->setHeader('Password', '');
          }, 'last');
 
-         $response = $client->getCatalogs();
+        $response = $client->getCatalogs();
 
-         $this->assertSame(
+        $this->assertSame(
              401,
              $response->getStatusCode(),
              'Response StatusCode is not 401'
          );
-         $this->assertSame(
+        $this->assertSame(
              1000,
              $response->search('Messages[0].Code'),
              'Messages[0].Code is not 1000'
          );
-         $this->assertSame(
+        $this->assertSame(
              2,
              $response->search('Messages[0].Severity'),
              'Messages[0].Severity is not Error (2)'
          );
-         $this->assertSame(
+        $this->assertSame(
              'The header parameter "Username" or "Password" is not valid or empty.',
              $response->search('Messages[0].Message'),
              'Messages[0].Message does not contains '
-             . '"The header parameter "Username" or "Password" is not valid or empty."'
+             .'"The header parameter "Username" or "Password" is not valid or empty."'
          );
 
          // no username
@@ -187,28 +186,28 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
              $request->removeHeader('Password');
          }, 'last');
 
-         $response = $client->getCatalogs();
+        $response = $client->getCatalogs();
 
-         $this->assertSame(
+        $this->assertSame(
              401,
              $response->getStatusCode(),
              'Response StatusCode is not 401'
          );
-         $this->assertSame(
+        $this->assertSame(
              1000,
              $response->search('Messages[0].Code'),
              'Messages[0].Code is not 1000'
          );
-         $this->assertSame(
+        $this->assertSame(
              2,
              $response->search('Messages[0].Severity'),
              'Messages[0].Severity is not Error (2)'
          );
-         $this->assertSame(
+        $this->assertSame(
              'The header parameter "Username" or "Password" is not valid or empty.',
              $response->search('Messages[0].Message'),
              'Messages[0].Message does not contains '
-             . '"The header parameter "Username" or "Password" is not valid or empty."'
+             .'"The header parameter "Username" or "Password" is not valid or empty."'
          );
     }
 
@@ -218,35 +217,35 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
      */
     public function testAuthorizationInvalidEmptyOrMissingSubscriptionTokenEnsureHeaderIsCorrectAndBodyContainsCorrectMessage()
     {
-         $args = [
+        $args = [
            'region'  => 'sandbox',
            'profile' => 'integ-sandbox-invalid-subscription_token',
            'version' => 'latest',
            'scheme'  => 'http',
          ];
-         $client = $this->getSdk()->createClient('blackbox', $args);
-         $response = $client->getCatalogs();
+        $client = $this->getSdk()->createClient('blackbox', $args);
+        $response = $client->getCatalogs();
 
-         $this->assertSame(
+        $this->assertSame(
              401,
              $response->getStatusCode(),
              'Response StatusCode is not 401'
          );
-         $this->assertSame(
+        $this->assertSame(
              1001,
              $response->search('Messages[0].Code'),
              'Messages[0].Code is not 1001'
          );
-         $this->assertSame(
+        $this->assertSame(
              2,
              $response->search('Messages[0].Severity'),
              'Messages[0].Severity is not Error (2)'
          );
-         $this->assertSame(
+        $this->assertSame(
              'The header parameter "SubscriptionToken" is not valid or empty',
              $response->search('Messages[0].Message'),
              'Messages[0].Message does not contains '
-             . '"The header parameter "SubscriptionToken" is not valid or empty"'
+             .'"The header parameter "SubscriptionToken" is not valid or empty"'
          );
 
          // empty SubscriptionToken
@@ -256,28 +255,28 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
              $request->setHeader('SubscriptionToken', '');
          }, 'last');
 
-         $response = $client->getCatalogs();
+        $response = $client->getCatalogs();
 
-         $this->assertSame(
+        $this->assertSame(
              401,
              $response->getStatusCode(),
              'Response StatusCode is not 401'
          );
-         $this->assertSame(
+        $this->assertSame(
              1001,
              $response->search('Messages[0].Code'),
              'Messages[0].Code is not 1001'
          );
-         $this->assertSame(
+        $this->assertSame(
              2,
              $response->search('Messages[0].Severity'),
              'Messages[0].Severity is not Error (2)'
          );
-         $this->assertSame(
+        $this->assertSame(
              'The header parameter "SubscriptionToken" is not valid or empty',
              $response->search('Messages[0].Message'),
              'Messages[0].Message does not contains '
-             . '"The header parameter "SubscriptionToken" is not valid or empty"'
+             .'"The header parameter "SubscriptionToken" is not valid or empty"'
          );
 
          // no SubscriptionToken
@@ -287,28 +286,28 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
              $request->removeHeader('SubscriptionToken');
          }, 'last');
 
-         $response = $client->getCatalogs();
+        $response = $client->getCatalogs();
 
-         $this->assertSame(
+        $this->assertSame(
              401,
              $response->getStatusCode(),
              'Response StatusCode is not 401'
          );
-         $this->assertSame(
+        $this->assertSame(
              1001,
              $response->search('Messages[0].Code'),
              'Messages[0].Code is not 1001'
          );
-         $this->assertSame(
+        $this->assertSame(
              2,
              $response->search('Messages[0].Severity'),
              'Messages[0].Severity is not Error (2)'
          );
-         $this->assertSame(
+        $this->assertSame(
              'The header parameter "SubscriptionToken" is not valid or empty',
              $response->search('Messages[0].Message'),
              'Messages[0].Message does not contains '
-             . '"The header parameter "SubscriptionToken" is not valid or empty"'
+             .'"The header parameter "SubscriptionToken" is not valid or empty"'
          );
     }
 
@@ -318,70 +317,70 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
      */
     public function testAuthorizationEmptyOrMissingVendorEnsureHeaderIsCorrectAndResponseContainsCorrectMessage()
     {
-         $args = [
+        $args = [
            'region'  => 'sandbox',
            'profile' => 'integ-sandbox',
            'version' => 'latest',
            'scheme'  => 'http',
          ];
-         $client = $this->getSdk()->createClient('blackbox', $args);
+        $client = $this->getSdk()->createClient('blackbox', $args);
 
-         $client->getEmitter()->on('prepared', function (PreparedEvent $event) {
+        $client->getEmitter()->on('prepared', function (PreparedEvent $event) {
              $request = $event->getRequest();
              $request->setHeader('Vendor', '');
          }, 'last');
 
-         $response = $client->getCatalogs();
+        $response = $client->getCatalogs();
 
-         $this->assertSame(
+        $this->assertSame(
              401,
              $response->getStatusCode(),
              'Response StatusCode is not 401'
          );
-         $this->assertSame(
+        $this->assertSame(
              1001,
              $response->search('Messages[0].Code'),
              'Messages[0].Code is not 1001'
          );
-         $this->assertSame(
+        $this->assertSame(
              2,
              $response->search('Messages[0].Severity'),
              'Messages[0].Severity is not Error (2)'
          );
-         $this->assertSame(
+        $this->assertSame(
              'The header parameter "Vendor" is not valid or empty.',
              $response->search('Messages[0].Message'),
              'Messages[0].Message does not contains '
-             . '"The header parameter "Vendor" is not valid or empty."'
+             .'"The header parameter "Vendor" is not valid or empty."'
          );
 
-         $client->getEmitter()->on('prepared', function (PreparedEvent $event) {
+        $client->getEmitter()->on('prepared', function (PreparedEvent $event) {
              $request = $event->getRequest();
              $request->removeHeader('Vendor');
          }, 'last');
 
-         $response = $client->getCatalogs();
+        $response = $client->getCatalogs();
 
-         $this->assertSame(
+        $this->assertSame(
              401,
              $response->getStatusCode(),
              'Response StatusCode is not 401'
          );
-         $this->assertSame(
+        $this->assertSame(
              1002,
              $response->search('Messages[0].Code'),
              'Messages[0].Code is not 1002'
          );
-         $this->assertSame(
+        $this->assertSame(
              2,
              $response->search('Messages[0].Severity'),
              'Messages[0].Severity is not Error (2)'
          );
-         $this->assertSame(
+        $this->assertSame(
              'The header parameter "Vendor" is not valid or empty.',
              $response->search('Messages[0].Message'),
              'Messages[0].Message does not contains '
-             . '"The header parameter "Vendor" is not valid or empty."'
+             .'"The header parameter "Vendor" is not valid or empty."'
          );
     }
 
@@ -391,70 +390,70 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
      */
     public function testAuthorizationEmptyOrMissingVersionEnsureHeaderIsCorrectAndResponseContainsCorrectMessage()
     {
-         $args = [
+        $args = [
            'region'  => 'sandbox',
            'profile' => 'integ-sandbox',
            'version' => 'latest',
            'scheme'  => 'http',
          ];
-         $client = $this->getSdk()->createClient('blackbox', $args);
+        $client = $this->getSdk()->createClient('blackbox', $args);
 
-         $client->getEmitter()->on('prepared', function (PreparedEvent $event) {
+        $client->getEmitter()->on('prepared', function (PreparedEvent $event) {
              $request = $event->getRequest();
              $request->setHeader('Version', '');
          }, 'last');
 
-         $response = $client->getCatalogs();
+        $response = $client->getCatalogs();
 
-         $this->assertSame(
+        $this->assertSame(
              401,
              $response->getStatusCode(),
              'Response StatusCode is not 401'
          );
-         $this->assertSame(
+        $this->assertSame(
              1003,
              $response->search('Messages[0].Code'),
              'Messages[0].Code is not 1003'
          );
-         $this->assertSame(
+        $this->assertSame(
              2,
              $response->search('Messages[0].Severity'),
              'Messages[0].Severity is not Error (2)'
          );
-         $this->assertSame(
+        $this->assertSame(
              'The header parameter "Vendor" is not valid or empty.',
              $response->search('Messages[0].Message'),
              'Messages[0].Message does not contains '
-             . '"The header parameter "Vendor" is not valid or empty."'
+             .'"The header parameter "Vendor" is not valid or empty."'
          );
 
-         $client->getEmitter()->on('prepared', function (PreparedEvent $event) {
+        $client->getEmitter()->on('prepared', function (PreparedEvent $event) {
              $request = $event->getRequest();
              $request->removeHeader('Version');
          }, 'last');
 
-         $response = $client->getCatalogs();
+        $response = $client->getCatalogs();
 
-         $this->assertSame(
+        $this->assertSame(
              401,
              $response->getStatusCode(),
              'Response StatusCode is not 401'
          );
-         $this->assertSame(
+        $this->assertSame(
              1003,
              $response->search('Messages[0].Code'),
              'Messages[0].Code is not 1003'
          );
-         $this->assertSame(
+        $this->assertSame(
              2,
              $response->search('Messages[0].Severity'),
              'Messages[0].Severity is not Error (2)'
          );
-         $this->assertSame(
+        $this->assertSame(
              'The header parameter "Version" is not valid or empty.',
              $response->search('Messages[0].Message'),
              'Messages[0].Message does not contains '
-             . '"The header parameter "Version" is not valid or empty."'
+             .'"The header parameter "Version" is not valid or empty."'
          );
     }
 }

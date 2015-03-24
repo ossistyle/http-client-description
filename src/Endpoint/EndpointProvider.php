@@ -37,6 +37,7 @@ class EndpointProvider
      * @param array    $args     Endpoint arguments to pass to the provider.
      *
      * @return array
+     *
      * @throws UnresolvedEndpointException
      */
     public static function resolve(callable $provider, array $args = [])
@@ -48,9 +49,9 @@ class EndpointProvider
 
         throw new UnresolvedEndpointException(
             'Unable to resolve an endpoint using the provider arguments: '
-            . json_encode($args) . '. Note: you can provide an "endpoint" '
-            . 'option to a client constructor to bypass invoking an endpoint '
-            . 'provider.'
+            .json_encode($args).'. Note: you can provide an "endpoint" '
+            .'option to a client constructor to bypass invoking an endpoint '
+            .'provider.'
         );
     }
 
@@ -61,7 +62,7 @@ class EndpointProvider
      */
     public static function defaultProvider()
     {
-        $data = require __DIR__ . '/../ressources/public-endpoints.php';
+        $data = require __DIR__.'/../ressources/public-endpoints.php';
 
         return new PatternEndpointProvider($data['endpoints']);
     }
