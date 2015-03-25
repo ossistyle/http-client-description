@@ -140,6 +140,19 @@ return [
               'shape' => 'GetSalesOrdersByIdOutput',
             ],
         ],
+        'GetNewSalesOrders' => [
+            'name' => 'GetNewSalesOrders',
+            'http' => [
+              'method' => 'GET',
+              'requestUri' => 'api/SalesOrders',
+            ],
+            'input' => [
+              'shape' => 'GetNewSalesOrdersInput',
+            ],
+            'output' => [
+              'shape' => 'GetNewSalesOrdersOutput',
+            ],
+        ],
     ],
     /***********************************************************************
      *
@@ -305,7 +318,7 @@ return [
              ],
         ],
 
-        'GetProductsInput' => [
+        'GetNewSalesOrdersInput' => [
             'type' => 'structure',
             'members' => [
                 'limit' => [
@@ -319,6 +332,21 @@ return [
                   'locationName' => 'PageNumber',
                 ],
             ],
+        ],
+
+        'GetNewSalesOrdersOutput' => [
+             'type' => 'structure',
+             'members' => [
+                 'EntityList' =>  [
+                   'shape' => 'SalesOrderList',
+                 ],
+                 'Messages' =>  [
+                     'shape' => 'MessageList',
+                 ],
+                 'Pagination' => [
+                     'shape' => 'Paging',
+                 ],
+             ],
         ],
 
         'ProductList' => [
