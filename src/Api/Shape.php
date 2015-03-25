@@ -22,6 +22,7 @@ class Shape extends AbstractModel
             'structure' => 'Vws\Api\StructureShape',
             'map'       => 'Vws\Api\MapShape',
             'list'      => 'Vws\Api\ListShape',
+            'timestamp' => 'Vws\Api\TimestampShape',
             'integer'   => 'Vws\Api\Shape',
             'double'    => 'Vws\Api\Shape',
             'float'     => 'Vws\Api\Shape',
