@@ -166,7 +166,7 @@ return [
          *      CATALOGS BEGIN
          *********************************/
 
-         'DeleteCatalogByIdInput' => [
+        'DeleteCatalogByIdInput' => [
              'type' => 'structure',
              'members' => [
                  'Id' => [
@@ -316,6 +316,22 @@ return [
                      'shape' => 'Paging',
                  ],
              ],
+        ],
+
+        'GetProductsInput' => [
+            'type' => 'structure',
+            'members' => [
+                'limit' => [
+                  'shape' => 'IntegerMin1Max100Default100',
+                  'location' => 'querystring',
+                  'locationName' => 'EntriesPerPage',
+                ],
+                'page' => [
+                  'shape' => 'IntegerMin1NoMaxDefault1',
+                  'location' => 'querystring',
+                  'locationName' => 'PageNumber',
+                ],
+            ],
         ],
 
         'GetNewSalesOrdersInput' => [
