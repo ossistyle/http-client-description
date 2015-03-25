@@ -74,6 +74,12 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
             $response->search('Messages[0].Severity'),
             'Messages[0].Severity is not Error (2)'
         );
+        $this->assertSame(
+            'The specified CatalogId 4711 was not found.',
+            $response->search('Messages[0].Message'),
+            'Messages[0].Message doea not contains '
+            . 'The specified CatalogId 4711 was not found.'
+        );
         $this->assertEmpty($response->search('EntityList'), 'EntityList is not empty');
     }
 
