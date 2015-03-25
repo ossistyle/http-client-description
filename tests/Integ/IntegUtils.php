@@ -18,6 +18,18 @@ trait IntegUtils
         ]);
     }
 
+    private function createClient ($args = [])
+    {
+        $args = [
+            'region'  => 'sandbox',
+            'profile' => 'integ-sandbox',
+            'version' => 'latest',
+        ];
+        $client = $this->getSdk()->createBlackbox($args);
+
+        return $client;
+    }
+
     public static function log($message)
     {
         fwrite(STDERR, date('c').': '.$message."\n");
