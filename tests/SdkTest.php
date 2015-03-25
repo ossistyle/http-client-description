@@ -12,7 +12,7 @@ use JmesPath\Env as JmesPath;
 class SdkTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Check if the given emitter has the provided event listener
+     * Check if the given emitter has the provided event listener.
      *
      * @param EmitterInterface $emitter Emitter to search
      * @param string|object    $value   Can be a class name or listener object
@@ -24,8 +24,7 @@ class SdkTest extends \PHPUnit_Framework_TestCase
         EmitterInterface $emitter,
         $value,
         $event = null
-    )
-    {
+    ) {
         $expression = $event
             ? '[*][0]'
             : '*[*][0]';
@@ -37,7 +36,7 @@ class SdkTest extends \PHPUnit_Framework_TestCase
         $result = JmesPath::search($expression, $listeners) ?: [];
 
         if (!is_object($value)) {
-            $result = array_map(function($o) {
+            $result = array_map(function ($o) {
                 return get_class($o);
             }, $result);
         }
@@ -54,7 +53,7 @@ class SdkTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * [testHasMagicMethods description]
+     * [testHasMagicMethods description].
      */
     public function testHasMagicMethods()
     {
@@ -68,7 +67,7 @@ class SdkTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * [testCreatesClients description]
+     * [testCreatesClients description].
      */
     public function testCreatesClients()
     {
@@ -76,13 +75,13 @@ class SdkTest extends \PHPUnit_Framework_TestCase
             'Vws\VwsClientInterface',
             (new Sdk())->createBlackbox([
                 'region'  => 'sandbox',
-                'version' => 'latest'
+                'version' => 'latest',
             ])
         );
     }
 
     /**
-     * [testCreatesClientsWithAlias description]
+     * [testCreatesClientsWithAlias description].
      */
     public function testCreatesClientsWithAlias()
     {
@@ -90,7 +89,7 @@ class SdkTest extends \PHPUnit_Framework_TestCase
             'Vws\VwsClientInterface',
             (new Sdk())->createBlackbox([
                 'region'  => 'sandbox',
-                'version' => 'latest'
+                'version' => 'latest',
             ])
         );
     }
@@ -98,7 +97,8 @@ class SdkTest extends \PHPUnit_Framework_TestCase
 
 class FooFactory
 {
-    function create($args) {
+    public function create($args)
+    {
         return $args;
     }
 }

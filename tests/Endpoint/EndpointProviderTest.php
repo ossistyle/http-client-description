@@ -14,7 +14,7 @@ class EndpointProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowsWhenUnresolved()
     {
-        EndpointProvider::resolve(function() {}, []);
+        EndpointProvider::resolve(function () {}, []);
     }
 
     /**
@@ -22,7 +22,7 @@ class EndpointProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowsWhenNotArray()
     {
-        EndpointProvider::resolve(function() { return 'foo'; }, []);
+        EndpointProvider::resolve(function () { return 'foo'; }, []);
     }
 
     public function testCreatesDefaultProvider()
@@ -34,7 +34,7 @@ class EndpointProviderTest extends \PHPUnit_Framework_TestCase
     public function testCreatesProviderFromPatterns()
     {
         $p = EndpointProvider::patterns([
-            '*/*' => ['endpoint' => 'foo.com']
+            '*/*' => ['endpoint' => 'foo.com'],
         ]);
         $this->assertInstanceOf('Vws\Endpoint\PatternEndpointProvider', $p);
         $result = EndpointProvider::resolve($p, []);

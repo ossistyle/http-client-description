@@ -19,6 +19,7 @@ class JsonParser
                         $target[$name] = $this->parse($member, $value[$name]);
                     }
                 }
+
                 return $target;
 
             case 'list':
@@ -27,6 +28,7 @@ class JsonParser
                 foreach ($value as $v) {
                     $target[] = $this->parse($member, $v);
                 }
+
                 return $target;
 
             case 'map':
@@ -35,6 +37,7 @@ class JsonParser
                 foreach ($value as $k => $v) {
                     $target[$k] = $this->parse($values, $v);
                 }
+
                 return $target;
 
             case 'blob':

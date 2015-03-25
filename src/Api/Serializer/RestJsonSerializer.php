@@ -8,6 +8,7 @@ use GuzzleHttp\Message\RequestInterface;
 
 /**
  * Serializes requests for the REST-JSON protocol.
+ *
  * @internal
  */
 class RestJsonSerializer extends RestSerializer

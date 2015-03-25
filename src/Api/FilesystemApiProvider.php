@@ -15,7 +15,8 @@ class FilesystemApiProvider
     private $latestVersions = [];
 
     /**
-     * @param string $path     Path to the service description files on disk.
+     * @param string $path Path to the service description files on disk.
+     *
      * @throws \InvalidArgumentException if the path is not found.
      */
     public function __construct($path)
@@ -37,6 +38,7 @@ class FilesystemApiProvider
      * @param string $version Version of the document to retrieve.
      *
      * @return array
+     *
      * @throws \InvalidArgumentException when the type is unknown.
      */
     public function __invoke($type, $service, $version)
@@ -45,7 +47,7 @@ class FilesystemApiProvider
             case 'api':
                 return $this->getService($service, $version);
             default:
-                throw new \InvalidArgumentException('Unknown type: ' . $type);
+                throw new \InvalidArgumentException('Unknown type: '.$type);
         }
     }
 
@@ -63,7 +65,7 @@ class FilesystemApiProvider
         $files = $this->getServiceFiles('.api.');
         $search = [$this->path, '.api.php', '.api.json'];
         $results = [];
-        $needle = $service . '-';
+        $needle = $service.'-';
         $len = strlen($needle);
 
         foreach ($files as $f) {
@@ -92,7 +94,7 @@ class FilesystemApiProvider
             return Utils::jsonDecode(file_get_contents($path), true);
         }
 
-        throw new \RuntimeException('Cannot load file: ' . $path);
+        throw new \RuntimeException('Cannot load file: '.$path);
     }
 
     private function getServiceFiles($substr)
@@ -116,7 +118,7 @@ class FilesystemApiProvider
                 $this->latestVersions[$service] = $versions[0];
             } else {
                 throw new \RuntimeException('There are no versions of the '
-                    . $service . ' service available.');
+                    .$service.' service available.');
             }
         }
 

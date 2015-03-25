@@ -36,15 +36,15 @@ class PatternEndpointProvider
             }
         }
 
-        return null;
+        return;
     }
 
     private function expand(array $config, $scheme, $service, $region)
     {
-        $config['endpoint'] = $scheme . '://'
-            . strtr($config['endpoint'], [
+        $config['endpoint'] = $scheme.'://'
+            .strtr($config['endpoint'], [
                 '{service}' => $service,
-                '{region}'  => $region
+                '{region}'  => $region,
             ]);
 
         return $config;

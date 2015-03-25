@@ -7,7 +7,7 @@ return [
         'timestampFormat' => 'rfc822',
         'protocol' => 'rest-json',
         'endpointPrefix' => 'blackbox',
-        'jsonVersion' => '1.1'
+        'jsonVersion' => '1.1',
     ],
     'operations' => [
         'GetCatalogs' => [
@@ -57,7 +57,7 @@ return [
             ],
             'output' => [
               'shape' => 'PostCatalogOutput',
-            ]
+            ],
 
         ],
         'PostCatalogs' => [
@@ -71,7 +71,7 @@ return [
             ],
             'output' => [
               'shape' => 'PostCatalogsOutput',
-            ]
+            ],
 
         ],
         'GetProductById' => [
@@ -111,7 +111,7 @@ return [
             ],
             'output' => [
               'shape' => 'PostProductOutput',
-            ]
+            ],
 
         ],
         'ReviseInventory' => [
@@ -125,7 +125,7 @@ return [
             ],
             'output' => [
               'shape' => 'ReviseInventoryOutput',
-            ]
+            ],
         ],
     ],
     /***********************************************************************
@@ -133,7 +133,6 @@ return [
      *                          SHAPES
      *
      **********************************************************************/
-
 
     'shapes' => [
 
@@ -148,7 +147,7 @@ return [
                      'shape' => 'IntegerNoMinMax',
                      'location' => 'uri',
                      'locationName' => 'Id',
-                 ]
+                 ],
              ],
              'required' => [
                'Id',
@@ -162,10 +161,10 @@ return [
                     'shape' => 'IntegerNoMinMax',
                     'location' => 'uri',
                     'locationName' => 'Id',
-                ]
+                ],
             ],
             'required' => [
-              'Id'
+              'Id',
             ],
         ],
 
@@ -212,7 +211,7 @@ return [
                 'ChildCatalogs' => [
                     'shape' => 'CatalogList',
                 ],
-            ]
+            ],
         ],
 
         'PostCatalogOutput' => [
@@ -264,14 +263,14 @@ return [
                 'ChildCatalogs' => [
                     'shape' => 'CatalogList',
                 ],
-            ]
+            ],
         ],
 
         'CatalogList' => [
             'type' => 'list',
             'member' => [
-                'shape' => 'Catalog'
-            ]
+                'shape' => 'Catalog',
+            ],
         ],
 
         /***************************************
@@ -288,8 +287,8 @@ return [
                      'shape' => 'MessageList',
                  ],
                  'Pagination' => [
-                     'shape' => 'Paging'
-                 ]
+                     'shape' => 'Paging',
+                 ],
              ],
          ],
 
@@ -309,12 +308,11 @@ return [
             ],
         ],
 
-
          'ProductList' => [
              'type' => 'list',
              'member' => [
-                 'shape' => 'Product'
-             ]
+                 'shape' => 'Product',
+             ],
         ],
 
         'Product' => [
@@ -323,7 +321,7 @@ return [
                 'Title',
                 'ForeignId',
                 'Price',
-                'StockAmount'
+                'StockAmount',
             ],
             'members' => [
                 'ForeignId' => [
@@ -356,7 +354,7 @@ return [
                 'ProductImages' => [
                     'shape' => 'ProductImageList',
                 ],
-            ]
+            ],
         ],
 
         'GetProductByIdInput' => [
@@ -366,7 +364,7 @@ return [
                     'shape' => 'IntegerNoMinMax',
                     'location' => 'uri',
                     'locationName' => 'Id',
-                ]
+                ],
             ],
             'required' => [
               'Id',
@@ -391,7 +389,7 @@ return [
                 'Title',
                 'ForeignId',
                 'Price',
-                'StockAmount'
+                'StockAmount',
             ],
             'members' => [
                 'ForeignId' => [
@@ -424,7 +422,7 @@ return [
                 'ProductImages' => [
                     'shape' => 'ProductImageList',
                 ],
-            ]
+            ],
         ],
 
         'ProductImageList' => [
@@ -432,8 +430,8 @@ return [
             'maxItems' => 1,
             'minItems' => 1,
             'member' => [
-                'shape' => 'ProductImage'
-            ]
+                'shape' => 'ProductImage',
+            ],
         ],
 
         'ProductImage' => [
@@ -453,7 +451,7 @@ return [
                 'Type' => [
                     'shape' => 'IntegerMin1Max1',
                 ],
-            ]
+            ],
         ],
 
         /**********************************
@@ -479,7 +477,7 @@ return [
                 'Message' => [
                     'shape' => 'StringMax2000',
                 ],
-            ]
+            ],
         ],
 
         'Paging' => [
@@ -503,7 +501,7 @@ return [
                 'HasNextPage' => [
                     'shape' => 'Boolean',
                 ],
-            ]
+            ],
         ],
 
         'ReviseInventoryInput' => [
@@ -546,8 +544,6 @@ return [
         *
         **********************************************************************/
 
-
-
         'Boolean' => [
             'type' => 'boolean',
         ],
@@ -567,12 +563,12 @@ return [
             'type' => 'integer',
             'min' => 1,
             'max' => 100,
-            'default' => 50
+            'default' => 50,
         ],
         'IntegerMin1NoMaxDefault1' => [
             'type' => 'integer',
             'min' => 1,
-            'default' => 1
+            'default' => 1,
         ],
         'IntegerMax999' => [
             'type' => 'integer',
@@ -620,8 +616,8 @@ return [
                 [
                     'method' => 'Respect\Validation\Validator::url',
                     'args' => [true, '@value'],
-                ]
+                ],
             ],
-        ]
-    ]
+        ],
+    ],
 ];

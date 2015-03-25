@@ -14,6 +14,7 @@ use GuzzleHttp\Stream\Stream;
 
 /**
  * Serializes HTTP locations like header, uri, payload, etc...
+ *
  * @internal
  */
 abstract class RestSerializer
@@ -164,7 +165,7 @@ abstract class RestSerializer
     ) {
         $prefix = $member['locationName'];
         foreach ($value as $k => $v) {
-            $request->setHeader($prefix . $k, $v);
+            $request->setHeader($prefix.$k, $v);
         }
     }
 

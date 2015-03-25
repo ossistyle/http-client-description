@@ -5,8 +5,7 @@ namespace Vws;
 use GuzzleHttp\Client;
 
 /**
- * Software Developer Kit
- *
+ * Software Developer Kit.
  */
 class Sdk
 {
@@ -34,6 +33,7 @@ class Sdk
                 if (!$handler) {
                     $handler = Client::getDefaultHandler();
                 }
+
                 return new Client(['handler' => $handler]);
             };
         }

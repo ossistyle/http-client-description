@@ -10,7 +10,7 @@ use GuzzleHttp\Event\SubscriberInterface;
  */
 class Validation implements SubscriberInterface
 {
-    /** @var \Aws\Api\Validator */
+    /** @var \Vws\Api\Validator */
     private $validator;
 
     /** @var Service */
@@ -18,10 +18,10 @@ class Validation implements SubscriberInterface
 
     /**
      * The provided validator function is a callable that accepts the
-     * following positional arguments:
+     * following positional arguments:.
      *
      * - string, name of the operation
-     * - Aws\Api\Shape, shape being validated against
+     * - Vws\Api\Shape, shape being validated against
      * - array, input data being validated
      *
      * The callable is expected to throw an \InvalidArgumentException when the

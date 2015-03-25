@@ -7,8 +7,6 @@ use GuzzleHttp\Command\AbstractClient;
 use GuzzleHttp\Command\Command;
 use GuzzleHttp\Command\CommandInterface;
 use GuzzleHttp\Command\CommandTransaction;
-use GuzzleHttp\Event\BeforeEvent;
-use GuzzleHttp\Event\RequestEvents;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Command\Event\ProcessEvent;
 use Vws\Api\Service;
@@ -51,7 +49,7 @@ class VwsClient extends AbstractClient implements VwsClientInterface
     }
 
     /**
-     * The client constructor accepts the following options:
+     * The client constructor accepts the following options:.
      *
      * - api_provider: (callable) An optional PHP callable that accepts a
      *   type, service, and version argument, and returns an array of
@@ -135,17 +133,18 @@ class VwsClient extends AbstractClient implements VwsClientInterface
         $client->setDefaultOption('allow_redirects', false);
         $client->setDefaultOption(
             'headers/User-Agent',
-            'vws-sdk-php/' . Sdk::VERSION . ' ' . Client::getDefaultUserAgent()
+            'vws-sdk-php/'.Sdk::VERSION.' '.Client::getDefaultUserAgent()
         );
 
         if (isset($args['with_resolved'])) {
-            /** @var callable $withResolved */
+            /* @var callable $withResolved */
             $args['with_resolved']($config);
         }
     }
 
     /**
-     * [getCredentials description]
+     * [getCredentials description].
+     *
      * @return
      */
     public function getCredentials()
@@ -154,7 +153,8 @@ class VwsClient extends AbstractClient implements VwsClientInterface
     }
 
     /**
-     * [getEndpoint description]
+     * [getEndpoint description].
+     *
      * @return
      */
     public function getEndpoint()
@@ -163,7 +163,8 @@ class VwsClient extends AbstractClient implements VwsClientInterface
     }
 
     /**
-     * [getRegion description]
+     * [getRegion description].
+     *
      * @return
      */
     public function getRegion()
@@ -172,7 +173,8 @@ class VwsClient extends AbstractClient implements VwsClientInterface
     }
 
     /**
-     * [getApi description]
+     * [getApi description].
+     *
      * @return
      */
     public function getApi()
@@ -186,6 +188,7 @@ class VwsClient extends AbstractClient implements VwsClientInterface
      * @param CommandInterface $command Command to execute
      *
      * @return mixed Returns the result of the command
+     *
      * @throws VwsException when an error occurs during transfer
      */
     public function execute(CommandInterface $command)
@@ -210,9 +213,11 @@ class VwsClient extends AbstractClient implements VwsClientInterface
     }
 
     /**
-     * [getCommand description]
+     * [getCommand description].
+     *
      * @param [type] $name [description]
      * @param [type] $args [description]
+     *
      * @return
      */
     public function getCommand($name, array $args = [])
@@ -233,14 +238,16 @@ class VwsClient extends AbstractClient implements VwsClientInterface
 
         return new Command($name, $args, [
             'emitter' => clone $this->getEmitter(),
-            'future' => $future
+            'future' => $future,
         ]);
     }
 
     /**
-     * [getIterator description]
+     * [getIterator description].
+     *
      * @param [type] $name [description]
      * @param [type] $args [description]
+     *
      * @return
      */
     public function getIterator($name, array $args = [])
@@ -259,10 +266,12 @@ class VwsClient extends AbstractClient implements VwsClientInterface
     }
 
     /**
-     * [getPaginator description]
+     * [getPaginator description].
+     *
      * @param [type] $name   [description]
      * @param [type] $args   [description]
      * @param [type] $config [description]
+     *
      * @return
      */
     public function getPaginator($name, array $args = [], array $config = [])
@@ -280,8 +289,10 @@ class VwsClient extends AbstractClient implements VwsClientInterface
     }
 
     /**
-     * [createCommandException description]
+     * [createCommandException description].
+     *
      * @param CommandTransaction $transaction [description]
+     *
      * @return
      */
     public function createCommandException(CommandTransaction $transaction)
@@ -308,8 +319,8 @@ class VwsClient extends AbstractClient implements VwsClientInterface
                 } else {
                     // Create an easy to read error message.
                     $serviceError = trim($transaction->context->getPath('vws_error/code')
-                        . ' (' . $transaction->context->getPath('vws_error/type')
-                        . ' error): ' . implode('\r\n', array_column($transaction->context->getPath('vws_error/messages'), 'message'))
+                        .' ('.$transaction->context->getPath('vws_error/type')
+                        .' error): '.implode('\r\n', array_column($transaction->context->getPath('vws_error/messages'), 'message'))
                     );
                 }
             }

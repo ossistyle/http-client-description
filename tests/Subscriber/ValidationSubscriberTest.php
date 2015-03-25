@@ -11,7 +11,7 @@ use GuzzleHttp\Command\Event\InitEvent;
 /**
  * @covers Vws\Subscriber\Validation
  */
-class ValidationTest extends \PHPUnit_Framework_TestCase
+class ValidationSubscriberTest extends \PHPUnit_Framework_TestCase
 {
     use UsesServiceTrait;
 

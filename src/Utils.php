@@ -20,7 +20,7 @@ final class Utils
     {
         $dh = $context ? opendir($path, $context) : opendir($path);
         if (!$dh) {
-            throw new \InvalidArgumentException('File not found: ' . $path);
+            throw new \InvalidArgumentException('File not found: '.$path);
         }
         while (($file = readdir($dh)) !== false) {
             yield $file;
@@ -86,6 +86,7 @@ final class Utils
     public static function orFn()
     {
         $fns = func_get_args();
+
         return function () use ($fns) {
             $args = func_get_args();
             foreach ($fns as $fn) {
@@ -94,7 +95,8 @@ final class Utils
                     return $result;
                 }
             }
-            return null;
+
+            return;
         };
     }
 }

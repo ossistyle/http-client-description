@@ -26,7 +26,7 @@ class Operation extends AbstractModel
     }
 
     /**
-     * Returns an associative array of the HTTP attribute of the operation:
+     * Returns an associative array of the HTTP attribute of the operation:.
      *
      * - method: HTTP method of the operation
      * - requestUri: URI of the request (can include URI template placeholders)

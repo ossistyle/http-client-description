@@ -19,7 +19,7 @@ use GuzzleHttp\Subscriber\Mock;
 trait UsesServiceTrait
 {
     /**
-     * Creates an instance of the Vws SDK for a test
+     * Creates an instance of the Vws SDK for a test.
      *
      * @param array $args
      *
@@ -30,12 +30,12 @@ trait UsesServiceTrait
         return new Sdk($args + [
             'region'      => 'sandbox',
             'version'     => 'latest',
-            'retries'     => 0
+            'retries'     => 0,
         ]);
     }
 
     /**
-     * Creates an instance of a service client for a test
+     * Creates an instance of a service client for a test.
      *
      * @param string $service
      * @param array  $args
@@ -59,7 +59,7 @@ trait UsesServiceTrait
     }
 
     /**
-     * Queues up mock Result objects for a client
+     * Queues up mock Result objects for a client.
      *
      * @param VwsClientInterface $client
      * @param Result[]|array[]   $results
@@ -82,7 +82,7 @@ trait UsesServiceTrait
                 } else {
                     throw new \Exception(
                         'There are no more mock results left. '
-                        . 'This client executed more commands than expected.'
+                        .'This client executed more commands than expected.'
                     );
                 }
             },
@@ -93,21 +93,21 @@ trait UsesServiceTrait
     }
 
     /**
-     * Queues up mock HTTP Response objects for a client
+     * Queues up mock HTTP Response objects for a client.
      *
      * @param VwsClientInterface $client
      * @param Response[]         $responses
      * @param bool               $readBodies
      *
      * @return VwsClientInterface
+     *
      * @throws \InvalidArgumentException
      */
     private function addMockResponses(
         $client,
         array $responses,
         $readBodies = true
-    )
-    {
+    ) {
         $mock = new Mock($responses, $readBodies);
         $client->getHttpClient()->getEmitter()->attach($mock);
 
@@ -115,10 +115,10 @@ trait UsesServiceTrait
     }
 
     /**
-     * Creates a mock CommandException with a given error code
+     * Creates a mock CommandException with a given error code.
      *
-     * @param string $code
-     * @param string $type
+     * @param string      $code
+     * @param string      $type
      * @param string|null $message
      *
      * @return CommandException
@@ -127,8 +127,7 @@ trait UsesServiceTrait
         $code = null,
         $type = null,
         $message = null
-    )
-    {
+    ) {
         $code = $code ?: 'ERROR';
         $type = $type ?: 'Vws\Exception\VwsException';
 
@@ -153,8 +152,8 @@ trait UsesServiceTrait
             [
                 'Vws_error' => [
                     'message' => $message ?: 'Test error',
-                    'code'    => $code
-                ]
+                    'code'    => $code,
+                ],
             ]
         );
 

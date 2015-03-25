@@ -7,10 +7,7 @@ use Vws\Credentials\Credentials;
 use Vws\Blackbox\BlackboxClient;
 use GuzzleHttp\Client;
 use GuzzleHttp\Command\Event\PreparedEvent;
-use GuzzleHttp\Event\BeforeEvent;
-use GuzzleHttp\Event\RequestEvents;
 use GuzzleHttp\Message\Request;
-use GuzzleHttp\Message\Response;
 
 /**
  * @covers Vws\VwsClient
@@ -25,14 +22,14 @@ class VwsClientTest extends \PHPUnit_Framework_TestCase
             return [
                 'metadata' => [
                     'protocol'       => 'rest-json',
-                    'endpointPrefix' => 'foo'
-                ]
+                    'endpointPrefix' => 'foo',
+                ],
             ];
         };
     }
 
     /**
-     * [testHasGetters description]
+     * [testHasGetters description].
      */
     public function testHasGetters()
     {
@@ -45,7 +42,7 @@ class VwsClientTest extends \PHPUnit_Framework_TestCase
             'api_provider' => $this->getApiProvider(),
             'service'      => 'foo',
             'error_parser' => function () {},
-            'version'      => 'latest'
+            'version'      => 'latest',
         ];
 
         $client = new VwsClient($config);
@@ -65,16 +62,16 @@ class VwsClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * [testReturnsCommandForOperation description]
+     * [testReturnsCommandForOperation description].
      */
     public function testReturnsCommandForOperation()
     {
         $client = $this->createClient([
             'operations' => [
                 'foo' => [
-                    'http' => ['method' => 'POST']
-                ]
-            ]
+                    'http' => ['method' => 'POST'],
+                ],
+            ],
         ]);
 
         $this->assertInstanceOf(
@@ -112,7 +109,7 @@ class VwsClientTest extends \PHPUnit_Framework_TestCase
                 'serializer' => function () use ($r) {
                     return $r;
                 },
-                'endpoint'   => 'http://foo.com'
+                'endpoint'   => 'http://foo.com',
             ]
         );
         $command = $client->getCommand('foo');
@@ -125,12 +122,12 @@ class VwsClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * [testChecksBothLowercaseAndUppercaseOperationNames description]
+     * [testChecksBothLowercaseAndUppercaseOperationNames description].
      */
     public function testChecksBothLowercaseAndUppercaseOperationNames()
     {
         $client = $this->createClient(['operations' => ['Foo' => [
-            'http' => ['method' => 'POST']
+            'http' => ['method' => 'POST'],
         ]]]);
 
         $this->assertInstanceOf(
@@ -163,7 +160,7 @@ class VwsClientTest extends \PHPUnit_Framework_TestCase
             'GetProducts' => [
                 'EntriesPerPage' => 50,
                 'PageNumber' => 3,
-            ]
+            ],
         ]]);
 
         $this->assertInstanceOf(
@@ -182,20 +179,20 @@ class VwsClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * [testCreatesClientsFromFactoryMethod description]
+     * [testCreatesClientsFromFactoryMethod description].
      */
     public function testCreatesClientsFromFactoryMethod()
     {
         $client = new BlackboxClient([
             'region'  => 'sandbox',
-            'version' => 'latest'
+            'version' => 'latest',
         ]);
         $this->assertInstanceOf('Vws\Blackbox\BlackboxClient', $client);
         $this->assertEquals('sandbox', $client->getRegion());
     }
 
     /**
-     * [testCanGetEndpoint description]
+     * [testCanGetEndpoint description].
      */
     public function testCanGetEndpoint()
     {
@@ -236,8 +233,7 @@ class VwsClientTest extends \PHPUnit_Framework_TestCase
             'api_provider' => $apiProvider,
             'serializer'   => function () {},
             'error_parser' => function () {},
-            'version'      => 'latest'
+            'version'      => 'latest',
         ]);
     }
-
 }

@@ -27,6 +27,7 @@ trait JsonParserTrait
                         ];
             }
         }
+
         return $data;
     }
 }

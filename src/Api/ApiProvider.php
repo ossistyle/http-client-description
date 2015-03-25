@@ -5,7 +5,6 @@ namespace Vws\Api;
 use Vws\Exception\UnresolvedApiException;
 use GuzzleHttp\Utils;
 
-
 /**
  * API providers.
  *
@@ -48,6 +47,7 @@ class ApiProvider
      * @param string   $version  API version.
      *
      * @return array
+     *
      * @throws UnresolvedApiException
      */
     public static function resolve(callable $provider, $type, $service, $version)
@@ -59,7 +59,7 @@ class ApiProvider
         }
         // Throw an exception with a message depending on the inputs.
         if (!isset(self::$typeMap[$type])) {
-            $msg = "The type must be one of: " . join(', ', self::$typeMap);
+            $msg = "The type must be one of: ".implode(', ', self::$typeMap);
         } elseif ($service) {
             $msg = "The {$service} service does not have version: {$version}.";
         } else {
@@ -76,9 +76,9 @@ class ApiProvider
      */
     public static function defaultProvider()
     {
-        $dir = __DIR__ . '/../ressources';
+        $dir = __DIR__.'/../ressources';
 
-        return new self($dir, require $dir . '/api-version-manifest.php');
+        return new self($dir, require $dir.'/api-version-manifest.php');
     }
     /**
      * Loads API data after resolving the version to the latest, compatible,
@@ -116,6 +116,7 @@ class ApiProvider
      * @param string $dir Directory containing service models.
      *
      * @return self
+     *
      * @throws \InvalidArgumentException if the provided `$dir` is invalid.
      */
     public static function filesystem($dir)
@@ -137,6 +138,7 @@ class ApiProvider
             }
             $this->buildVersionsList($service);
         }
+
         return array_values(array_unique($this->versions[$service]));
     }
     /**
@@ -154,14 +156,14 @@ class ApiProvider
         if (isset(self::$typeMap[$type])) {
             $type = self::$typeMap[$type];
         } else {
-            return null;
+            return;
         }
         // Resolve the version or return null.
         if (!isset($this->versions[$service]) && !$this->hasManifest) {
             $this->buildVersionsList($service);
         }
         if (!isset($this->versions[$service][$version])) {
-            return null;
+            return;
         }
         $version = $this->versions[$service][$version];
         // Return the loaded API data for the specified type.
@@ -205,7 +207,7 @@ class ApiProvider
      */
     private function loadApiData($type, $service, $version)
     {
-       // First check for PHP files, then fall back to JSON.
+        // First check for PHP files, then fall back to JSON.
         $path = "{$this->modelsDir}/{$service}-{$version}.{$type}.php";
         if (file_exists($path)) {
             return require $path;
@@ -214,6 +216,7 @@ class ApiProvider
         if (file_exists($path)) {
             return Utils::jsonDecode(file_get_contents($path), true);
         }
-        return null;
+
+        return;
     }
 }

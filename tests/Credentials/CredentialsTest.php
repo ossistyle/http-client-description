@@ -19,10 +19,10 @@ class CredentialsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             [
             'Username' => 'foo',
-            'Password'=> 'baz',
+            'Password' => 'baz',
             'SubscriptionToken' => 'tok',
             'Vendor' => 'foo-baz',
-            'Version' => '1.0.0'
+            'Version' => '1.0.0',
             ],
             $creds->toArray()
         );

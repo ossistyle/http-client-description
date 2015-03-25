@@ -19,10 +19,10 @@ class CredentialProviderTest extends \PHPUnit_Framework_TestCase
 
     private function clearEnv()
     {
-        putenv(CredentialProvider::ENV_USERNAME . '=');
-        putenv(CredentialProvider::ENV_PASSWORD . '=');
-        putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN . '=');
-        putenv(CredentialProvider::ENV_PROFILE . '=');
+        putenv(CredentialProvider::ENV_USERNAME.'=');
+        putenv(CredentialProvider::ENV_PASSWORD.'=');
+        putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN.'=');
+        putenv(CredentialProvider::ENV_PROFILE.'=');
     }
 
     public function setUp()
@@ -38,12 +38,12 @@ class CredentialProviderTest extends \PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
-        putenv('HOME=' . $this->home);
-        putenv('HOMEDRIVE=' . $this->homedrive);
-        putenv('HOMEPATH=' . $this->homepath);
-        putenv(CredentialProvider::ENV_USERNAME . '=' . $this->username);
-        putenv(CredentialProvider::ENV_PASSWORD . '=' . $this->password);
-        putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN . '=' . $this->token);
+        putenv('HOME='.$this->home);
+        putenv('HOMEDRIVE='.$this->homedrive);
+        putenv('HOMEPATH='.$this->homepath);
+        putenv(CredentialProvider::ENV_USERNAME.'='.$this->username);
+        putenv(CredentialProvider::ENV_PASSWORD.'='.$this->password);
+        putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN.'='.$this->token);
     }
 
     /**
@@ -52,16 +52,16 @@ class CredentialProviderTest extends \PHPUnit_Framework_TestCase
     public function testEnsuresCredentialsAreFound()
     {
         CredentialProvider::resolve(function () {
-          
+
         });
     }
 
     public function testCreatesFromEnvironmentVariables()
     {
         $this->clearEnv();
-        putenv(CredentialProvider::ENV_USERNAME . '=abc');
-        putenv(CredentialProvider::ENV_PASSWORD . '=123');
-        putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN . '=1to2ken3');
+        putenv(CredentialProvider::ENV_USERNAME.'=abc');
+        putenv(CredentialProvider::ENV_PASSWORD.'=123');
+        putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN.'=1to2ken3');
         $creds = CredentialProvider::resolve(CredentialProvider::env());
         $this->assertEquals('abc', $creds->getUsername());
         $this->assertEquals('123', $creds->getPassword());
@@ -72,7 +72,7 @@ class CredentialProviderTest extends \PHPUnit_Framework_TestCase
     {
         $this->clearEnv();
 
-        $dir = sys_get_temp_dir() . '/.Vws';
+        $dir = sys_get_temp_dir().'/.Vws';
         if (!is_dir($dir)) {
             mkdir($dir, 0777, true);
         }
@@ -82,13 +82,13 @@ vws_username = foo
 vws_password = baz
 vws_subscription_token = tok
 EOT;
-        file_put_contents($dir . '/credentials', $ini);
+        file_put_contents($dir.'/credentials', $ini);
         //putenv('HOME=' . dirname($dir));
-        $creds = CredentialProvider::resolve(CredentialProvider::ini(null, $dir . '/credentials'));
+        $creds = CredentialProvider::resolve(CredentialProvider::ini(null, $dir.'/credentials'));
         $this->assertEquals('foo', $creds->getUsername());
         $this->assertEquals('baz', $creds->getPassword());
         $this->assertEquals('tok', $creds->getSubscriptionToken());
-        unlink($dir . '/credentials');
+        unlink($dir.'/credentials');
     }
 
     // /**
@@ -131,20 +131,20 @@ EOT;
     public function testEnsuresProfileIsNotEmpty()
     {
         $this->clearEnv();
-        $dir = sys_get_temp_dir() . '/.vws';
+        $dir = sys_get_temp_dir().'/.vws';
         if (!is_dir($dir)) {
             mkdir($dir, 0777, true);
         }
         $ini = "[default]\vws_username = foo\n"
-            . "vws_password = baz\n"
-            . "vws_subscription_token = foo_baz\n[foo]";
-        file_put_contents($dir . '/credentials', $ini);
+            ."vws_password = baz\n"
+            ."vws_subscription_token = foo_baz\n[foo]";
+        file_put_contents($dir.'/credentials', $ini);
         //putenv('HOME=' . dirname($dir));
 
         try {
-            CredentialProvider::resolve(CredentialProvider::ini('foo', $dir . '/credentials'));
+            CredentialProvider::resolve(CredentialProvider::ini('foo', $dir.'/credentials'));
         } catch (\Exception $e) {
-            unlink($dir . '/credentials');
+            unlink($dir.'/credentials');
             throw $e;
         }
     }
@@ -153,14 +153,14 @@ EOT;
         $u = getenv(CredentialProvider::ENV_USERNAME);
         $p = getenv(CredentialProvider::ENV_PASSWORD);
         $s = getenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN);
-        putenv(CredentialProvider::ENV_USERNAME . '=abc');
-        putenv(CredentialProvider::ENV_PASSWORD . '=123');
-        putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN . '=1to2ken3');
+        putenv(CredentialProvider::ENV_USERNAME.'=abc');
+        putenv(CredentialProvider::ENV_PASSWORD.'=123');
+        putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN.'=1to2ken3');
         $provider = CredentialProvider::defaultProvider();
         $creds = $provider();
-        putenv(CredentialProvider::ENV_USERNAME . "={$u}");
-        putenv(CredentialProvider::ENV_PASSWORD . "={$p}");
-        putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN . "={$s}");
+        putenv(CredentialProvider::ENV_USERNAME."={$u}");
+        putenv(CredentialProvider::ENV_PASSWORD."={$p}");
+        putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN."={$s}");
         $this->assertEquals('abc', $creds->getUsername());
         $this->assertEquals('123', $creds->getPassword());
         $this->assertEquals('1to2ken3', $creds->getSubscriptionToken());

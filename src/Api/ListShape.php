@@ -16,6 +16,7 @@ class ListShape extends Shape
 
     /**
      * @return Shape
+     *
      * @throws \RuntimeException if no member is specified
      */
     public function getMember()
