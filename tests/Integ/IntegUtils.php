@@ -9,7 +9,7 @@ trait IntegUtils
     private static function getSdk(array $args = [])
     {
         return new Sdk($args + [
-            'region'  => 'local',
+            'region'  => 'sandbox',
             'profile' => 'integ-sandbox',
             'version' => 'latest',
             'scheme'  => 'http',
