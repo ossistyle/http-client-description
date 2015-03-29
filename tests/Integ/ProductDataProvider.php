@@ -11,15 +11,27 @@ trait ProductDataProvider
             $this->missingForeignId(),
             $this->emptyStockAmount(),
             $this->missingStockAmount(),
-            $this->zeroStockAmount()
-            // $this->emptyPrice(),
-            // $this->missingPrice(),
-            // $this->zeroPrice(),
-            // $this->missingImages(),
-            // $this->emptyImages(),
-            // $this->missingSpecifics(),
-            // $this->emptySpecifics(),
-            // $this->missingImagesAndSpecifics()
+            $this->zeroStockAmount(),
+            $this->emptyPrice(),
+            $this->missingPrice(),
+            $this->zeroPrice(),
+            $this->missingImages(),
+            $this->emptyImages(),
+            $this->missingSpecifics(),
+            $this->emptySpecifics(),
+            $this->missingImagesAndSpecifics(),
+            $this->missingImageUrl(),
+            $this->whitespacesAndTabsImageUrl(),
+            $this->invalidImageTypeOne(),
+            $this->invalidImageTypeZero(),
+            $this->invalidImageType13(),
+            $this->moreThanOneValidImage(),
+            $this->emptySpecifics(),
+            $this->missingSpecificsName(),
+            $this->greater40CharsSpecificsName(),
+            $this->emptySpecificsValue(),
+            $this->missingSpecificsValue(),
+            $this->greaterThan50charsSpecificsValue()
         );
     }
 
@@ -28,10 +40,10 @@ trait ProductDataProvider
         return
         [
             [
-                // productData empty ForeignId
+
                 [
                     'ForeignId' => '',
-                    'Title' => 'Integration-Smoke-Test 1',
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
                     'Description' => 'Beschreibung',
                     'ShortDescription' => 'Kurzbeschreibung',
                     'Price' => 1.23,
@@ -41,13 +53,13 @@ trait ProductDataProvider
                         [
                             'ForeignId' => $this->getGUID(),
                             'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
-                            'Type' => 2
+                            'Type' => 2,
                         ],
                     ],
                     'Specifics' => [
                         [
                             'Name' => 'Marke',
-                            'Value' => 'VIA-Ebay'
+                            'Value' => 'VIA-Ebay',
                         ],
                     ],
                 ],
@@ -55,7 +67,7 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty ForeignId: Response not correct ',
+                    'ReturnMessage' => 'Empty ForeignId: Response contains not correct ',
                     'Messages' => [
                         [
                             'Code' => 4003,
@@ -64,8 +76,8 @@ trait ProductDataProvider
                             'Description' => 'The ForeignId of the product with with the title ForeignId: <EMPTY> is empty. It is recommended to send a unique ForeignId.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ],
 
@@ -77,9 +89,9 @@ trait ProductDataProvider
         return
         [
             [
-                // productData empty ForeignId
+
                 [
-                    'Title' => 'Integration-Smoke-Test 1',
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
                     'Description' => 'Beschreibung',
                     'ShortDescription' => 'Kurzbeschreibung',
                     'Price' => 1.23,
@@ -89,13 +101,13 @@ trait ProductDataProvider
                         [
                             'ForeignId' => $this->getGUID(),
                             'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
-                            'Type' => 2
+                            'Type' => 2,
                         ],
                     ],
                     'Specifics' => [
                         [
                             'Name' => 'Marke',
-                            'Value' => 'VIA-Ebay'
+                            'Value' => 'VIA-Ebay',
                         ],
                     ],
                 ],
@@ -103,7 +115,7 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing ForeignId: Response not correct ',
+                    'ReturnMessage' => 'Missing ForeignId: Response contains not correct ',
                     'Messages' => [
                         [
                             'Code' => 4003,
@@ -112,8 +124,8 @@ trait ProductDataProvider
                             'Description' => 'The ForeignId of the product with with the title ForeignId: <EMPTY> is empty. It is recommended to send a unique ForeignId.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ],
 
@@ -125,10 +137,10 @@ trait ProductDataProvider
         return
         [
             [
-                // productData empty ForeignId
+
                 [
                     'ForeignId' => $this->getGUID(),
-                    'Title' => 'Integration-Smoke-Test 1',
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
                     'Description' => 'Beschreibung',
                     'ShortDescription' => 'Kurzbeschreibung',
                     'Price' => 1.23,
@@ -138,13 +150,13 @@ trait ProductDataProvider
                         [
                             'ForeignId' => $this->getGUID(),
                             'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
-                            'Type' => 2
+                            'Type' => 2,
                         ],
                     ],
                     'Specifics' => [
                         [
                             'Name' => 'Marke',
-                            'Value' => 'VIA-Ebay'
+                            'Value' => 'VIA-Ebay',
                         ],
                     ],
                 ],
@@ -152,7 +164,7 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty StockAmount: Response not correct ',
+                    'ReturnMessage' => 'Empty StockAmount: Response contains not correct ',
                     'Messages' => [
                         [
                             'Code' => 4004,
@@ -161,8 +173,8 @@ trait ProductDataProvider
                             'Description' => 'The StockAmount of the product with ForeignId: (.+) cannot be empty or must be greater\/equal than zero.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ],
 
@@ -174,10 +186,10 @@ trait ProductDataProvider
         return
         [
             [
-                // productData empty ForeignId
+
                 [
                     'ForeignId' => $this->getGUID(),
-                    'Title' => 'Integration-Smoke-Test 1',
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
                     'Description' => 'Beschreibung',
                     'ShortDescription' => 'Kurzbeschreibung',
                     'Price' => 1.23,
@@ -186,21 +198,21 @@ trait ProductDataProvider
                         [
                             'ForeignId' => $this->getGUID(),
                             'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
-                            'Type' => 2
+                            'Type' => 2,
                         ],
                     ],
                     'Specifics' => [
                         [
                             'Name' => 'Marke',
-                            'Value' => 'VIA-Ebay'
+                            'Value' => 'VIA-Ebay',
                         ],
                     ],
                 ],
                 [
-                    'Succeeded' => true,
+                    'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing StockAmount: Response not correct ',
+                    'ReturnMessage' => 'Missing StockAmount: Response contains not correct ',
                     'Messages' => [
                         [
                             'Code' => 4004,
@@ -209,8 +221,8 @@ trait ProductDataProvider
                             'Description' => 'The StockAmount of the product with ForeignId: (.+) cannot be empty or must be greater\/equal than zero.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ],
 
@@ -222,10 +234,10 @@ trait ProductDataProvider
         return
         [
             [
-                // productData empty ForeignId
+
                 [
                     'ForeignId' => $this->getGUID(),
-                    'Title' => 'Integration-Smoke-Test 1',
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
                     'Description' => 'Beschreibung',
                     'ShortDescription' => 'Kurzbeschreibung',
                     'Price' => 1.23,
@@ -235,21 +247,21 @@ trait ProductDataProvider
                         [
                             'ForeignId' => $this->getGUID(),
                             'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
-                            'Type' => 2
+                            'Type' => 2,
                         ],
                     ],
                     'Specifics' => [
                         [
                             'Name' => 'Marke',
-                            'Value' => 'VIA-Ebay'
+                            'Value' => 'VIA-Ebay',
                         ],
                     ],
                 ],
                 [
                     'Succeeded' => true,
                     'StatusCode' => 201,
-                    'ReturnMessage' => 'Zero StockAmount: Response not correct ',
-                    'EntityListCount' => 0
+                    'ReturnMessage' => 'Zero StockAmount: Response contains not correct ',
+                    'EntityListCount' => 0,
                 ],
             ],
 
@@ -261,10 +273,10 @@ trait ProductDataProvider
         return
         [
             [
-                // productData empty ForeignId
+
                 [
                     'ForeignId' => $this->getGUID(),
-                    'Title' => 'Integration-Smoke-Test 1',
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
                     'Description' => 'Beschreibung',
                     'ShortDescription' => 'Kurzbeschreibung',
                     'Price' => 1.23,
@@ -274,21 +286,21 @@ trait ProductDataProvider
                         [
                             'ForeignId' => $this->getGUID(),
                             'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
-                            'Type' => 2
+                            'Type' => 2,
                         ],
                     ],
                     'Specifics' => [
                         [
                             'Name' => 'Marke',
-                            'Value' => 'VIA-Ebay'
+                            'Value' => 'VIA-Ebay',
                         ],
                     ],
                 ],
                 [
-                    'Succeeded' => true,
+                    'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Negativ StockAmount: Response not correct ',
+                    'ReturnMessage' => 'Negativ StockAmount: Response contains not correct ',
                     'Messages' => [
                         [
                             'Code' => 4004,
@@ -297,8 +309,8 @@ trait ProductDataProvider
                             'Description' => 'The StockAmount of the product with ForeignId: (.+) cannot be empty or must be greater\/equal than zero.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ],
 
@@ -310,10 +322,10 @@ trait ProductDataProvider
         return
         [
             [
-                // productData empty ForeignId
+
                 [
                     'ForeignId' => $this->getGUID(),
-                    'Title' => 'Integration-Smoke-Test 1',
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
                     'Description' => 'Beschreibung',
                     'ShortDescription' => 'Kurzbeschreibung',
                     'Price' => '',
@@ -323,21 +335,21 @@ trait ProductDataProvider
                         [
                             'ForeignId' => $this->getGUID(),
                             'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
-                            'Type' => 2
+                            'Type' => 2,
                         ],
                     ],
                     'Specifics' => [
                         [
                             'Name' => 'Marke',
-                            'Value' => 'VIA-Ebay'
+                            'Value' => 'VIA-Ebay',
                         ],
                     ],
                 ],
                 [
-                    'Succeeded' => true,
+                    'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty Price: Response not correct ',
+                    'ReturnMessage' => 'Empty Price: Response contains not correct ',
                     'Messages' => [
                         [
                             'Code' => 4005,
@@ -346,8 +358,8 @@ trait ProductDataProvider
                             'Description' => 'The Price of the product with ForeignId: (.+) cannot be empty or must be greater than zero.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ],
 
@@ -359,10 +371,10 @@ trait ProductDataProvider
         return
         [
             [
-                // productData empty ForeignId
+
                 [
                     'ForeignId' => $this->getGUID(),
-                    'Title' => 'Integration-Smoke-Test 1',
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
                     'Description' => 'Beschreibung',
                     'ShortDescription' => 'Kurzbeschreibung',
                     'StockAmount' => 1,
@@ -371,21 +383,21 @@ trait ProductDataProvider
                         [
                             'ForeignId' => $this->getGUID(),
                             'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
-                            'Type' => 2
+                            'Type' => 2,
                         ],
                     ],
                     'Specifics' => [
                         [
                             'Name' => 'Marke',
-                            'Value' => 'VIA-Ebay'
+                            'Value' => 'VIA-Ebay',
                         ],
                     ],
                 ],
                 [
-                    'Succeeded' => true,
+                    'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing Price: Response not correct ',
+                    'ReturnMessage' => 'Missing Price: Response contains not correct ',
                     'Messages' => [
                         [
                             'Code' => 4005,
@@ -394,8 +406,8 @@ trait ProductDataProvider
                             'Description' => 'The Price of the product with ForeignId: (.+) cannot be empty or must be greater than zero.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ],
 
@@ -407,10 +419,10 @@ trait ProductDataProvider
         return
         [
             [
-                // productData empty ForeignId
+
                 [
                     'ForeignId' => $this->getGUID(),
-                    'Title' => 'Integration-Smoke-Test 1',
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
                     'Description' => 'Beschreibung',
                     'ShortDescription' => 'Kurzbeschreibung',
                     'Price' => 0,
@@ -420,21 +432,21 @@ trait ProductDataProvider
                         [
                             'ForeignId' => $this->getGUID(),
                             'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
-                            'Type' => 2
+                            'Type' => 2,
                         ],
                     ],
                     'Specifics' => [
                         [
                             'Name' => 'Marke',
-                            'Value' => 'VIA-Ebay'
+                            'Value' => 'VIA-Ebay',
                         ],
                     ],
                 ],
                 [
-                    'Succeeded' => true,
+                    'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Zero Price: Response not correct ',
+                    'ReturnMessage' => 'Zero Price: Response contains not correct ',
                     'Messages' => [
                         [
                             'Code' => 4005,
@@ -443,8 +455,8 @@ trait ProductDataProvider
                             'Description' => 'The Price of the product with ForeignId: (.+) cannot be empty or must be greater than zero.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ],
 
@@ -456,10 +468,10 @@ trait ProductDataProvider
         return
         [
             [
-                // productData empty ForeignId
+
                 [
                     'ForeignId' => $this->getGUID(),
-                    'Title' => 'Integration-Smoke-Test 1',
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
                     'Description' => 'Beschreibung',
                     'ShortDescription' => 'Kurzbeschreibung',
                     'Price' => 1.23,
@@ -468,7 +480,7 @@ trait ProductDataProvider
                     'Specifics' => [
                         [
                             'Name' => 'Marke',
-                            'Value' => 'VIA-Ebay'
+                            'Value' => 'VIA-Ebay',
                         ],
                     ],
                 ],
@@ -476,7 +488,7 @@ trait ProductDataProvider
                     'Succeeded' => true,
                     'StatusCode' => 201,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing Images: Response not correct ',
+                    'ReturnMessage' => 'Missing Images: Response contains not correct ',
                     'Messages' => [
                         [
                             'Code' => 5000,
@@ -485,8 +497,8 @@ trait ProductDataProvider
                             'Description' => 'The product contains no image. It is recommended to add at least one image.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ],
 
@@ -498,10 +510,10 @@ trait ProductDataProvider
         return
         [
             [
-                // productData empty ForeignId
+
                 [
                     'ForeignId' => $this->getGUID(),
-                    'Title' => 'Integration-Smoke-Test 1',
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
                     'Description' => 'Beschreibung',
                     'ShortDescription' => 'Kurzbeschreibung',
                     'Price' => 1.23,
@@ -511,7 +523,7 @@ trait ProductDataProvider
                     'Specifics' => [
                         [
                             'Name' => 'Marke',
-                            'Value' => 'VIA-Ebay'
+                            'Value' => 'VIA-Ebay',
                         ],
                     ],
                 ],
@@ -519,7 +531,7 @@ trait ProductDataProvider
                     'Succeeded' => true,
                     'StatusCode' => 201,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty Images: Response not correct ',
+                    'ReturnMessage' => 'Empty Images: Response contains not correct ',
                     'Messages' => [
                         [
                             'Code' => 5000,
@@ -528,8 +540,8 @@ trait ProductDataProvider
                             'Description' => 'The product contains no image. It is recommended to add at least one image.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ],
 
@@ -541,10 +553,10 @@ trait ProductDataProvider
         return
         [
             [
-                // productData empty ForeignId
+
                 [
                     'ForeignId' => $this->getGUID(),
-                    'Title' => 'Integration-Smoke-Test 1',
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
                     'Description' => 'Beschreibung',
                     'ShortDescription' => 'Kurzbeschreibung',
                     'Price' => 1.23,
@@ -554,7 +566,7 @@ trait ProductDataProvider
                         [
                             'ForeignId' => $this->getGUID(),
                             'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
-                            'Type' => 2
+                            'Type' => 2,
                         ],
                     ],
                 ],
@@ -563,7 +575,7 @@ trait ProductDataProvider
                     'StatusCode' => 201,
                     'EntityListCount' => 0,
                     'MessagesCount' => 1,
-                    'ReturnMessage' => 'Missing Specifics: Response not correct ',
+                    'ReturnMessage' => 'Missing Specifics: Response contains not correct ',
                     'Messages' => [
                         [
                             'Code' => 6000,
@@ -572,8 +584,8 @@ trait ProductDataProvider
                             'Description' => 'The product contains no product specifications (.+). It is recommended to add at least one product specification with the "Name" \'Marke\' and the corresponding "Value".',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ],
 
@@ -585,10 +597,10 @@ trait ProductDataProvider
         return
         [
             [
-                // productData empty ForeignId
+
                 [
                     'ForeignId' => $this->getGUID(),
-                    'Title' => 'Integration-Smoke-Test 1',
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
                     'Description' => 'Beschreibung',
                     'ShortDescription' => 'Kurzbeschreibung',
                     'Price' => 1.23,
@@ -598,7 +610,7 @@ trait ProductDataProvider
                         [
                             'ForeignId' => $this->getGUID(),
                             'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
-                            'Type' => 2
+                            'Type' => 2,
                         ],
                     ],
                     'Specifics' => [],
@@ -608,7 +620,7 @@ trait ProductDataProvider
                     'StatusCode' => 201,
                     'EntityListCount' => 0,
                     'MessagesCount' => 1,
-                    'ReturnMessage' => 'Empty Specifics: Response not correct ',
+                    'ReturnMessage' => 'Empty Specifics: Response contains not correct ',
                     'Messages' => [
                         [
                             'Code' => 6000,
@@ -617,8 +629,8 @@ trait ProductDataProvider
                             'Description' => 'The product contains no product specifications \(like: Marke: VIA-eBay\). It is recommended to add at least one product specification with the "Name" \'Marke\' and the corresponding "Value".',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ],
 
@@ -630,10 +642,10 @@ trait ProductDataProvider
         return
         [
             [
-                // productData empty ForeignId
+
                 [
                     'ForeignId' => $this->getGUID(),
-                    'Title' => 'Integration-Smoke-Test 1',
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
                     'Description' => 'Beschreibung',
                     'ShortDescription' => 'Kurzbeschreibung',
                     'Price' => 1.23,
@@ -644,7 +656,7 @@ trait ProductDataProvider
                     'Succeeded' => true,
                     'StatusCode' => 201,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing Specifics and Images: Response not correct ',
+                    'ReturnMessage' => 'Missing Specifics and Images: Response contains not correct ',
                     'Messages' => [
                         [
                             'Code' => 5000,
@@ -662,7 +674,7 @@ trait ProductDataProvider
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
-                    ]
+                    ],
                 ],
             ],
 
@@ -674,10 +686,10 @@ trait ProductDataProvider
         return
         [
             [
-                // productData empty ForeignId
+
                 [
                     'ForeignId' => $this->getGUID(),
-                    'Title' => 'Integration-Smoke-Test 1',
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
                     'Description' => 'Beschreibung',
                     'ShortDescription' => 'Kurzbeschreibung',
                     'Price' => 1.23,
@@ -690,7 +702,7 @@ trait ProductDataProvider
                     'Succeeded' => true,
                     'StatusCode' => 201,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty Images and Specifics: Response not correct ',
+                    'ReturnMessage' => 'Empty Images and Specifics: Response contains not correct ',
                     'Messages' => [
                         [
                             'Code' => 5000,
@@ -708,10 +720,623 @@ trait ProductDataProvider
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
-                    ]
+                    ],
                 ],
             ],
 
+        ];
+    }
+
+    public function missingImageUrl()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Missing Imageurl: Response contains not correct ',
+                    'Messages' => [
+                        [
+                            'Code' => 5001,
+                            'Severity' => 2,
+                            'Message' => 'ImageUrl cannot be empty.',
+                            'Description' => 'The productImage ImageUrl of the product with the ForeignId: (.+) cannot be empty',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function emptyImageUrl()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => '',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Missing Imageurl: Response contains not correct ',
+                    'Messages' => [
+                        [
+                            'Code' => 5001,
+                            'Severity' => 2,
+                            'Message' => 'ImageUrl cannot be empty.',
+                            'Description' => 'The productImage ImageUrl of the product with the ForeignId: (.+) cannot be empty',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function whitespacesAndTabsImageUrl()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => '         ',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Missing Imageurl: Response contains not correct ',
+                    'Messages' => [
+                        [
+                            'Code' => 5001,
+                            'Severity' => 2,
+                            'Message' => 'ImageUrl cannot be empty.',
+                            'Description' => 'The productImage ImageUrl of the product with the ForeignId: (.+) cannot be empty',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function invalidImageTypeOne()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 1,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Invalid Image Type 1: Response contains not correct ',
+                    'Messages' => [
+                        [
+                            'Code' => 5003,
+                            'Severity' => 2,
+                            'Message' => 'Invalid "Type" value.',
+                            'Description' => 'The productImage "Type" of the product with the ForeignId: (.+) is not valid. Please check our documentation for the allowed values.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function invalidImageTypeZero()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 0,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Invalid Image Type 0: Response contains not correct ',
+                    'Messages' => [
+                        [
+                            'Code' => 5003,
+                            'Severity' => 2,
+                            'Message' => 'Invalid "Type" value.',
+                            'Description' => 'The productImage "Type" of the product with the ForeignId: (.+) is not valid. Please check our documentation for the allowed values.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function invalidImageType13()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 13,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Invalid Image Type 13: Response contains not correct ',
+                    'Messages' => [
+                        [
+                            'Code' => 5003,
+                            'Severity' => 2,
+                            'Message' => 'Invalid "Type" value.',
+                            'Description' => 'The productImage "Type" of the product with the ForeignId: (.+) is not valid. Please check our documentation for the allowed values.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function moreThanOneValidImage()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 2,
+                        ],
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 3,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Invalid Image Type 13: Response contains not correct ',
+                    'Messages' => [
+                        [
+                            'Code' => 5003,
+                            'Severity' => 2,
+                            'Message' => 'Invalid "Type" value.',
+                            'Description' => 'The productImage "Type" of the product with the ForeignId: (.+) is not valid. Please check our documentation for the allowed values.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function emptySpecificsName()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => '',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Empty Specifics.Name: Response contains not correct ',
+                    'Messages' => [
+                        [
+                            'Code' => 6001,
+                            'Severity' => 2,
+                            'Message' => 'Empty product specifics name.',
+                            'Description' => 'The property "Name" is empty.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function missingSpecificsName()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Missing Specifics.Name: Response contains not correct ',
+                    'Messages' => [
+                        [
+                            'Code' => 6001,
+                            'Severity' => 2,
+                            'Message' => 'Empty product specifics name.',
+                            'Description' => 'The property "Name" is empty.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function greater40CharsSpecificsName()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Specifics Name greater than forthy characters',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Greater than 40 chars Specifics.Name: Response contains not correct ',
+                    'Messages' => [
+                        [
+                            'Code' => 6003,
+                            'Severity' => 2,
+                            'Message' => 'The value of "Name" is too long.',
+                            'Description' => 'The value of the property "Name" is greater than 40 characters.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function emptySpecificsValue()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => '',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Empty Specifics.Value: Response contains not correct ',
+                    'Messages' => [
+                        [
+                            'Code' => 6004,
+                            'Severity' => 2,
+                            'Message' => 'The value of "Value" is empty.',
+                            'Description' => 'The value of the property "Value" is empty.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function missingSpecificsValue()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Missing Specifics.Value: Response contains not correct ',
+                    'Messages' => [
+                        [
+                            'Code' => 6004,
+                            'Severity' => 2,
+                            'Message' => 'The value of "Value" is empty.',
+                            'Description' => 'The value of the property "Value" is empty.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function greaterThan50CharsSpecificsValue()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'Is that a greater than fifty character Specifics.Value?',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => true,
+                    'StatusCode' => 201,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Greater than fifty chars Specifics.Value: Response contains not correct ',
+                    'Messages' => [
+                        [
+                            'Code' => 6005,
+                            'Severity' => 1,
+                            'Message' => 'The value of "Value" has been truncated.',
+                            'Description' => 'The value of the property "Value" is greater than 50 characters and has been truncated.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 }

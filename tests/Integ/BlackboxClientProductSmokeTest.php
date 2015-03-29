@@ -22,7 +22,6 @@ class BlackboxClientProductSmokeTest extends \PHPUnit_Framework_TestCase
         $client = $this->createClient();
 
         try {
-
             $response = $client->postProduct($product);
 
             $this->assertCount(
@@ -33,16 +32,17 @@ class BlackboxClientProductSmokeTest extends \PHPUnit_Framework_TestCase
             if (isset($expectedResponse['Messages'])) {
                 foreach ($expectedResponse['Messages'] as $counter => $message) {
                     foreach ($message as $name => $value) {
-
                         if (gettype($value) === 'string') {
                             $this->assertRegExp(
                                 '/' . $value . '/',
-                                $result->search('Messages['.$counter.'].' . $name)
+                                $result->search('Messages['.$counter.'].' . $name),
+                                $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
                             );
                         } else {
                             $this->assertEquals(
                                 $value,
-                                $result->search('Messages['.$counter.'].' . $name)
+                                $result->search('Messages['.$counter.'].' . $name),
+                                $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
                             );
                         }
                     }
@@ -50,7 +50,6 @@ class BlackboxClientProductSmokeTest extends \PHPUnit_Framework_TestCase
             }
 
         } catch (BlackboxException $e) {
-
             $this->assertEquals(
                 $expectedResponse['StatusCode'],
                 $e->getStatusCode(),
@@ -75,13 +74,13 @@ class BlackboxClientProductSmokeTest extends \PHPUnit_Framework_TestCase
                             $this->assertRegExp(
                                 '/' . $value . '/',
                                 $result->search('Messages['.$counter.'].' . $name),
-                                $expectedResponse['ReturnMessage'] . ' Messages['.$counter.'] = ' . $value
+                                $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
                             );
                         } else {
                             $this->assertEquals(
                                 $value,
                                 $result->search('Messages['.$counter.'].' . $name),
-                                $expectedResponse['ReturnMessage'] . ' Messages['.$counter.'] = ' . $value
+                                $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
                             );
                         }
                     }
