@@ -15,8 +15,7 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetCatalogsEnsureBodyContainsCorrectIdsAndHasEmptyMessages()
     {
-        $options = [];
-        $client = $this->getSdk()->createClient('blackbox', $options);
+        $client = $this->createClient();
         $response = $client->getCatalogs();
 
         $this->assertSame(
@@ -38,8 +37,7 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetCatalogById117702EnsureBodyContainsGivenIdAndHasEmptyMessages()
     {
-        $options = [];
-        $client = $this->getSdk()->createClient('blackbox', $options);
+        $client = $this->createClient();
         $response = $client->getCatalogById(['Id' => 117702]);
 
         $this->assertSame(
@@ -55,8 +53,7 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetCatalogById4711EnsureBodyContainsCorrectMessageAndHasEmptyEntityList()
     {
-        $options = [];
-        $client = $this->getSdk()->createClient('blackbox', $options);
+        $client = $this->createClient();
         $response = $client->getCatalogById(['Id' => 4711]);
 
         // error message exists
@@ -84,8 +81,7 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
      */
     public function testPostCatalogEmptyNameEnsureBodyContainsCorrectMessageAndCode3103AndSeverity()
     {
-        $options = ['validate' => false];
-        $client = $this->getSdk()->createClient('blackbox', $options);
+        $client = $this->createClient();
         $response = $client->postCatalog(
             [
                 'Name' => '',
@@ -120,8 +116,7 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
      */
     public function testPostCatalogNameTooLongEnsureBodyContainsCorrectMessageAndCode3102AndSeverityWarning()
     {
-        $options = ['validate' => false];
-        $client = $this->getSdk()->createClient('blackbox', $options);
+        $client = $this->createClient();
         $response = $client->postCatalog(
             [
                 'Name' => 'Name_too_long_Name_too_long_Name_too_long',
@@ -161,8 +156,7 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
      */
     public function testPostCatalogNoForeignIdEnsureBodyContainsCorrectMessageAndCodeXXXXAndSeverityXXXX()
     {
-        $options = ['validate' => false];
-        $client = $this->getSdk()->createClient('blackbox', $options);
+        $client = $this->createClient();
         $response = $client->postCatalog(
             [
                 'Name' => 'Root Catalog',
@@ -201,8 +195,7 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
      */
     public function testPostCatalogChildCatalogHasIsRootLevelTrueEnsureBodyContainsCorrectMessageAndCode3105AndSeverityWarning()
     {
-        $options = ['validate' => false];
-        $client = $this->getSdk()->createClient('blackbox', $options);
+        $client = $this->createClient();
         $response = $client->postCatalog(
             [
                 'Name' => 'Root Catalog',
@@ -252,11 +245,7 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
     {
         $args = func_get_args();
 
-        $options = [
-            'validate' => false,
-            //'debug' => true
-        ];
-        $client = $this->getSdk()->createClient('blackbox', $options);
+        $client = $this->createClient();
 
         foreach ($args as $values) {
             foreach ($values as $value) {

@@ -5,7 +5,7 @@ namespace Vws\Test\Integ;
 use GuzzleHttp\Command\Event\ProcessEvent;
 
 /**
- *
+ * @internal
  */
 class BlackboxClientProductConcurrencyTest extends \PHPUnit_Framework_TestCase
 {
@@ -16,12 +16,7 @@ class BlackboxClientProductConcurrencyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetProductParallelRequest10()
     {
-        $args = [
-            'region'  => 'sandbox',
-            'profile' => 'integ-sandbox',
-            'version' => 'latest',
-        ];
-        $client = $this->getSdk()->createBlackbox($args);
+        $client = $this->createClient();
 
         $commands = [
             $client->getCommand('GetProducts', ['page' => 1]),
@@ -65,30 +60,25 @@ class BlackboxClientProductConcurrencyTest extends \PHPUnit_Framework_TestCase
      */
     public function testPostProductParallelRequests10AndDeleteProductParallelRequests10()
     {
-        $args = [
-            'region'  => 'sandbox',
-            'profile' => 'integ-sandbox',
-            'version' => 'latest',
-        ];
-        $client = $this->getSdk()->createBlackbox($args);
+        $client = $this->createClient();
 
-        $commands = [
-            $client->getCommand('PostProduct', [
-                'ForeignId' => '',
-                'Title' => '',
-                'Description' => '',
-                'ShortDescription' => '',
-                'Price' => 1.23,
-                'Ean' => 'abc123',
-                'StockAmount' => 1,
-            ]),
-        ];
-
-        $processResults = [];
-        $client->executeAll($commands, [
-            'process' => function (ProcessEvent $e) use (&$processResults) {
-                $processResults[] = $e->getResult();
-            },
-        ]);
+        // $commands = [
+        //     $client->getCommand('PostProduct', [
+        //         'ForeignId' => '',
+        //         'Title' => '',
+        //         'Description' => '',
+        //         'ShortDescription' => '',
+        //         'Price' => 1.23,
+        //         'Ean' => 'abc123',
+        //         'StockAmount' => 1,
+        //     ]),
+        // ];
+        //
+        // $processResults = [];
+        // $client->executeAll($commands, [
+        //     'process' => function (ProcessEvent $e) use (&$processResults) {
+        //         $processResults[] = $e->getResult();
+        //     },
+        // ]);
     }
 }

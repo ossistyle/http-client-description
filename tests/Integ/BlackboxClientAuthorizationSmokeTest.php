@@ -18,12 +18,9 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
     public function testAuthorizationInvalidEmptyUsername()
     {
         $args = [
-          'region'  => 'sandbox',
           'profile' => 'integ-sandbox-invalid-username',
-          'version' => 'latest',
-          'scheme'  => 'http',
         ];
-        $client = $this->getSdk()->createClient('blackbox', $args);
+        $client = $this->createClient($args);
         $response = $client->getCatalogs();
 
         $this->assertSame(
@@ -87,12 +84,9 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
     public function testAuthorizationInvalidMissingUsername()
     {
         $args = [
-          'region'  => 'sandbox',
           'profile' => 'integ-sandbox-invalid-username',
-          'version' => 'latest',
-          'scheme'  => 'http',
         ];
-        $client = $this->getSdk()->createClient('blackbox', $args);
+        $client = $this->createClient($args);
         $response = $client->getCatalogs();
 
         $this->assertSame(
@@ -156,12 +150,9 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
     public function testAuthorizationInvalidEmptyPassword()
     {
         $args = [
-           'region'  => 'sandbox',
            'profile' => 'integ-sandbox-invalid-password',
-           'version' => 'latest',
-           'scheme'  => 'http',
          ];
-        $client = $this->getSdk()->createClient('blackbox', $args);
+         $client = $this->createClient($args);
         $response = $client->getCatalogs();
 
         $this->assertSame(
@@ -225,12 +216,9 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
     public function testAuthorizationInvalidMissingPassword()
     {
         $args = [
-           'region'  => 'sandbox',
            'profile' => 'integ-sandbox-invalid-password',
-           'version' => 'latest',
-           'scheme'  => 'http',
          ];
-        $client = $this->getSdk()->createClient('blackbox', $args);
+         $client = $this->createClient($args);
         $response = $client->getCatalogs();
 
         $this->assertSame(
@@ -294,12 +282,9 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
     public function testAuthorizationInvalidEmptySubscriptionToken()
     {
         $args = [
-           'region'  => 'sandbox',
            'profile' => 'integ-sandbox-invalid-subscription_token',
-           'version' => 'latest',
-           'scheme'  => 'http',
          ];
-        $client = $this->getSdk()->createClient('blackbox', $args);
+         $client = $this->createClient($args);
         $response = $client->getCatalogs();
 
         $this->assertSame(
@@ -363,12 +348,9 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
     public function testAuthorizationInvalidMissingSubscriptionToken()
     {
         $args = [
-           'region'  => 'sandbox',
            'profile' => 'integ-sandbox-invalid-subscription_token',
-           'version' => 'latest',
-           'scheme'  => 'http',
-         ];
-        $client = $this->getSdk()->createClient('blackbox', $args);
+        ];
+        $client = $this->createClient($args);
         $response = $client->getCatalogs();
 
         $this->assertSame(
@@ -431,13 +413,7 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
      */
     public function testAuthorizationEmptyVendor()
     {
-        $args = [
-           'region'  => 'sandbox',
-           'profile' => 'integ-sandbox',
-           'version' => 'latest',
-           'scheme'  => 'http',
-        ];
-        $client = $this->getSdk()->createClient('blackbox', $args);
+        $client = $this->createClient();
 
         $client->getEmitter()->on('prepared', function (PreparedEvent $event) {
              $request = $event->getRequest();
@@ -475,13 +451,7 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
      */
     public function testAuthorizationMissingVendor()
     {
-        $args = [
-           'region'  => 'sandbox',
-           'profile' => 'integ-sandbox',
-           'version' => 'latest',
-           'scheme'  => 'http',
-        ];
-        $client = $this->getSdk()->createClient('blackbox', $args);
+        $client = $this->createClient();
 
         $client->getEmitter()->on('prepared', function (PreparedEvent $event) {
              $request = $event->getRequest();
@@ -519,13 +489,7 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
      */
     public function testAuthorizationEmptyVersion()
     {
-        $args = [
-           'region'  => 'sandbox',
-           'profile' => 'integ-sandbox',
-           'version' => 'latest',
-           'scheme'  => 'http',
-        ];
-        $client = $this->getSdk()->createClient('blackbox', $args);
+        $client = $this->createClient();
 
         $client->getEmitter()->on('prepared', function (PreparedEvent $event) {
              $request = $event->getRequest();
@@ -563,13 +527,7 @@ class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
      */
     public function testAuthorizationMissingVersion()
     {
-        $args = [
-           'region'  => 'sandbox',
-           'profile' => 'integ-sandbox',
-           'version' => 'latest',
-           'scheme'  => 'http',
-        ];
-        $client = $this->getSdk()->createClient('blackbox', $args);
+        $client = $this->createClient();
 
         $client->getEmitter()->on('prepared', function (PreparedEvent $event) {
              $request = $event->getRequest();
