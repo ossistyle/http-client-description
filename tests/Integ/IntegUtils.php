@@ -9,7 +9,7 @@ trait IntegUtils
     private static function getSdk(array $args = [])
     {
         return new Sdk($args + [
-            'region'  => 'sandbox',
+            'region'  => 'sandbox-new',
             'profile' => 'integ-sandbox',
             'version' => 'latest',
             'scheme'  => 'http',
@@ -18,13 +18,20 @@ trait IntegUtils
         ]);
     }
 
+    private function randStrGen($len)
+    {
+        $result = "";
+        $chars = "abcdefghijklmnopqrstuvwxyz$\_?!- 0123456789";
+        $charArray = str_split($chars);
+        for ($i = 0; $i < $len; $i++) {
+            $randItem = array_rand($charArray);
+            $result .= "".$charArray[$randItem];
+        }
+        return $result;
+    }
+
     private function createClient ($args = [])
     {
-        $args = [
-            'region'  => 'sandbox',
-            'profile' => 'integ-sandbox',
-            'version' => 'latest',
-        ];
         $client = $this->getSdk()->createBlackbox($args);
 
         return $client;
