@@ -2,18 +2,104 @@
 
 namespace Vws\Test\Integ;
 
+use Vws\Blackbox\Exception\BlackboxException;
+use Vws\Result;
 
 /**
  *
  */
 class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
 {
-    use IntegUtils;
+    use IntegUtils, CatalogDataProvider;
+
+    /**
+     * @dataProvider catalogData
+     */
+    public function testPostCatalogValidation(
+        $catalog,
+        $expectedResponse
+    ) {
+        $client = $this->createClient();
+
+        try {
+            $response = $client->postCatalog($catalog);
+
+            $this->assertCount(
+                $expectedResponse['EntityListCount'],
+                $response->search('EntityList')
+            );
+
+            $this->assertSame(
+                $expectedResponse['StatusCode'],
+                201,
+                $expectedResponse['ReturnMessage'] . ' StatusCode: ' . $expectedResponse['StatusCode']
+            );
+
+            if (isset($expectedResponse['Messages'])) {
+                foreach ($expectedResponse['Messages'] as $counter => $message) {
+                    foreach ($message as $name => $value) {
+                        if ($name === 'Message') {
+                            $this->assertRegExp(
+                                '/' . $value . '/',
+                                $response->search('Messages['.$counter.'].' . $name),
+                                $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
+                            );
+                        } else {
+                            $this->assertEquals(
+                                $value,
+                                $response->search('Messages['.$counter.'].' . $name),
+                                $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
+                            );
+                        }
+                    }
+                }
+            }
+
+        } catch (BlackboxException $e) {
+            $this->assertEquals(
+                $expectedResponse['StatusCode'],
+                $e->getStatusCode(),
+                $expectedResponse['ReturnMessage'] . 'StatusCode not ' . $expectedResponse['StatusCode']
+            );
+
+            $responseBody = json_decode(
+                $e->getResponse()->getBody()->__toString(),
+                true
+            );
+            $result = new Result($responseBody);
+
+            $this->assertCount(
+                $expectedResponse['EntityListCount'],
+                $result->search('EntityList')
+            );
+
+            if (isset($expectedResponse['Messages'])) {
+                foreach ($expectedResponse['Messages'] as $counter => $message) {
+                    foreach ($message as $name => $value) {
+                        if (gettype($value) === 'string') {
+                            $this->assertRegExp(
+                                '/' . $value . '/',
+                                $result->search('Messages['.$counter.'].' . $name),
+                                $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
+                            );
+                        } else {
+                            $this->assertEquals(
+                                $value,
+                                $result->search('Messages['.$counter.'].' . $name),
+                                $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
+                            );
+                        }
+                    }
+                }
+            }
+
+        }
+    }
 
     /**
      *
      */
-    public function testGetCatalogsEnsureBodyContainsCorrectIdsAndHasEmptyMessages()
+    public function testGetCatalogs()
     {
         $client = $this->createClient();
         $response = $client->getCatalogs();
@@ -35,7 +121,7 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
     /**
      *
      */
-    public function testGetCatalogById117702EnsureBodyContainsGivenIdAndHasEmptyMessages()
+    public function testGetCatalogById117702()
     {
         $client = $this->createClient();
         $response = $client->getCatalogById(['Id' => 117702]);
@@ -51,7 +137,7 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
     /**
      *
      */
-    public function testGetCatalogById4711EnsureBodyContainsCorrectMessageAndHasEmptyEntityList()
+    public function testGetCatalogById4711()
     {
         $client = $this->createClient();
         $response = $client->getCatalogById(['Id' => 4711]);
@@ -70,200 +156,9 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             'The specified CatalogId 4711 was not found.',
             $response->search('Messages[0].Message'),
-            'Messages[0].Message doea not contains '
+            'Messages[0].Message does not contains '
             . 'The specified CatalogId 4711 was not found.'
         );
         $this->assertEmpty($response->search('EntityList'), 'EntityList is not empty');
-    }
-
-    /**
-     * { "Code": "3103", "Severity": 2, "Message": "Name is empty." }.
-     */
-    public function testPostCatalogEmptyNameEnsureBodyContainsCorrectMessageAndCode3103AndSeverity()
-    {
-        $client = $this->createClient();
-        $response = $client->postCatalog(
-            [
-                'Name' => '',
-                'IsRootLevel' => true,
-                'ForeignId' => 'root_1',
-            ]
-        );
-
-        // error message code exists
-        $this->assertSame(
-            '3103',
-            $response->search('Messages[0].Code'),
-            'Messages[0].Code is not 3103'
-        );
-        $this->assertSame(
-            2,
-            $response->search('Messages[0].Severity'),
-            'Messages[0].Severity is not a Error (2)'
-        );
-        $this->assertSame(
-            '"Name" is empty.',
-            $response->search('Messages[0].Message'),
-            'Messages[0].Message does not contains '
-            .'""Name" is empty."'
-        );
-    }
-
-    /**
-     * { "Code": "3102", "Severity": 1, "Message": "The value of the property "Name" is too long for eBay. We have cut the value short to 30 chars." }.
-     *
-     * @return array
-     */
-    public function testPostCatalogNameTooLongEnsureBodyContainsCorrectMessageAndCode3102AndSeverityWarning()
-    {
-        $client = $this->createClient();
-        $response = $client->postCatalog(
-            [
-                'Name' => 'Name_too_long_Name_too_long_Name_too_long',
-                'IsRootLevel' => true,
-                'ForeignId' => 'root_catalog',
-            ]
-        );
-
-        // warning message code exist
-        $this->assertSame(
-            '3102',
-            $response->search('Messages[0].Code'),
-            'Messages[0].Code is not 3102'
-        );
-        $this->assertSame(
-            1,
-            $response->search('Messages[0].Severity'),
-            'Messages[0].Severity is not Warning (1)'
-        );
-        $this->assertSame(
-            'The value of the property "Name" is too long for eBay. We have cut the value short to 30 chars.',
-            $response->search('Messages[0].Message'),
-            'Messages[0].Message does not contains '
-            .'"The value of the property "Name" is too long for eBay. We have cut the value short to 30 chars.""'
-        );
-
-        $toDeleteCatalogId = [];
-        $toDeleteCatalogId[] = $response->search('EntityList[0].Id');
-
-        return $toDeleteCatalogId;
-    }
-
-    /**
-     * { "Code": "XXXX", "Severity": 2, "Message": "######" }.
-     *
-     * @return array
-     */
-    public function testPostCatalogNoForeignIdEnsureBodyContainsCorrectMessageAndCodeXXXXAndSeverityXXXX()
-    {
-        $client = $this->createClient();
-        $response = $client->postCatalog(
-            [
-                'Name' => 'Root Catalog',
-                'IsRootLevel' => true,
-                'ForeignId' => '',
-            ]
-        );
-
-        // error message code exists
-        $this->assertSame(
-            'XXXX',
-            $response->search('Messages[0].Code'),
-            'Messages[0].Code is not XXXX'
-        );
-        $this->assertSame(
-            'XXXX',
-            $response->search('Messages[0].Severity'),
-            'Messages[0].Severity is not a XXXX (X)'
-        );
-        $this->assertSame(
-            'XXXX',
-            $response->search('Messages[0].Message'),
-            'Messages[0].Message does not contains XXXX'
-        );
-
-        $toDeleteCatalogId = [];
-        $toDeleteCatalogId[] = $response->search('EntityList[0].Id');
-
-        return $toDeleteCatalogId;
-    }
-
-    /**
-     * { "Code": "3105", "Severity": 1, "Message": "The value of the property "IsRootLevel" was changed to false." }.
-     *
-     * @return array
-     */
-    public function testPostCatalogChildCatalogHasIsRootLevelTrueEnsureBodyContainsCorrectMessageAndCode3105AndSeverityWarning()
-    {
-        $client = $this->createClient();
-        $response = $client->postCatalog(
-            [
-                'Name' => 'Root Catalog',
-                'IsRootLevel' => true,
-                'ForeignId' => 'root_catalog',
-                'ChildCatalogs' => [
-                    [
-                        'Name' => 'Child Catalog 1.1',
-                        'ForeignId' => 'child_1_1',
-                        'IsRootLevel' => true,
-                    ],
-                ],
-            ]
-        );
-
-        // warning message code exist
-        $this->assertSame(
-            '3105',
-            $response->search('Messages[0].Code'),
-            'Messages[0].Code is not 3105'
-        );
-        $this->assertSame(
-            1,
-            $response->search('Messages[0].Severity'),
-            'Messages[0].Severity is not Warning (1)'
-        );
-        $this->assertSame(
-            'The value of the property "IsRootLevel" was changed to false.',
-            $response->search('Messages[0].Message'),
-            'Messages[0].Message does not contains '
-            .'"The value of the property "IsRootLevel" was changed to false."'
-        );
-
-        $toDeleteCatalogId = [];
-        $toDeleteCatalogId[] = $response->search('EntityList[0].Id');
-        $toDeleteCatalogId[] = $response->search('EntityList[0].ChildCatalogs[0].Id');
-
-        return $toDeleteCatalogId;
-    }
-
-    /**
-     * @depends testPostCatalogNameTooLongEnsureBodyContainsCorrectMessageAndCode3102AndSeverityWarning
-     * #depends testPostCatalogNoForeignIdEnsureResponseContainsCorrectMessageAndCodeXXXXAndSeverityXXXX
-     * @depends testPostCatalogChildCatalogHasIsRootLevelTrueEnsureBodyContainsCorrectMessageAndCode3105AndSeverityWarning
-     */
-    public function testDeleteCatalogByIdEnsureBodyIsEmptyAndCatalogIsDeleted()
-    {
-        $args = func_get_args();
-
-        $client = $this->createClient();
-
-        foreach ($args as $values) {
-            foreach ($values as $value) {
-                $client->deleteCatalogById(['Id' => $value]);
-                $getResponse = $client->getCatalogById(['Id' => $value]);
-
-                $this->assertSame(
-                    '3000',
-                    $getResponse->search('Messages[0].Code'),
-                    'Messages[0].Code is not 3000'
-                );
-                $this->assertSame(
-                    2,
-                    $getResponse->search('Messages[0].Severity'),
-                    'Messages[0].Severity is not Error (2)'
-                );
-                $this->assertEmpty($getResponse->search('EntityList'), 'EntityList is not empty');
-            }
-        }
     }
 }
