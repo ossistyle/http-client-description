@@ -831,6 +831,9 @@ return [
                 'Message' => [
                     'shape' => 'StringMax2000',
                 ],
+                'Description' => [
+                    'shape' => 'StringMax2000',
+                ],
             ],
         ],
 
