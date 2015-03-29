@@ -25,8 +25,14 @@ class BlackboxClientProductSmokeTest extends \PHPUnit_Framework_TestCase
             $response = $client->postProduct($product);
 
             $this->assertCount(
-                $response['EntityListCount'],
-                $result->search('EntityList')
+                $expectedResponse['EntityListCount'],
+                $response->search('EntityList')
+            );
+
+            $this->assertSame(
+                $expectedResponse['StatusCode'],
+                201,
+                $expectedResponse['ReturnMessage'] . ' StatusCode: ' . $expectedResponse['StatusCode']
             );
 
             if (isset($expectedResponse['Messages'])) {
@@ -35,13 +41,13 @@ class BlackboxClientProductSmokeTest extends \PHPUnit_Framework_TestCase
                         if (gettype($value) === 'string') {
                             $this->assertRegExp(
                                 '/' . $value . '/',
-                                $result->search('Messages['.$counter.'].' . $name),
+                                $response->search('Messages['.$counter.'].' . $name),
                                 $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
                             );
                         } else {
                             $this->assertEquals(
                                 $value,
-                                $result->search('Messages['.$counter.'].' . $name),
+                                $response->search('Messages['.$counter.'].' . $name),
                                 $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
                             );
                         }

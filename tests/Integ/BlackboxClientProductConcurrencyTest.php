@@ -62,6 +62,7 @@ class BlackboxClientProductConcurrencyTest extends \PHPUnit_Framework_TestCase
     {
         $client = $this->createClient();
 
+        $this->markTestIncomplete('Post Product parallel 10 requests and Delete Product parallel NOT IMPLEMENTED YET');
         // $commands = [
         //     $client->getCommand('PostProduct', [
         //         'ForeignId' => '',
