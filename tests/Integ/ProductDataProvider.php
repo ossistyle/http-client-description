@@ -15,6 +15,11 @@ trait ProductDataProvider
             $this->emptyPrice(),
             $this->missingPrice(),
             $this->zeroPrice(),
+            $this->emptyDescription(),
+            $this->greaterThan2000CharsShortDescription(),
+            $this->invalidEan(),
+            $this->invalidUpc(),
+            $this->invalidIsbn(),
             $this->missingImages(),
             $this->emptyImages(),
             $this->missingSpecifics(),
@@ -453,6 +458,322 @@ trait ProductDataProvider
                             'Severity' => 2,
                             'Message' => 'Invalid Price',
                             'Description' => 'The Price of the product with ForeignId: (.+) cannot be empty or must be greater than zero.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+
+        ];
+    }
+
+    public function emptyDescription()
+    {
+        return
+        [
+            [
+
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => '',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'Price' => 1.23,
+                    'StockAmount' => 1,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Empty Description: Response contains not correct ',
+                    'Messages' => [
+                        [
+                            'Code' => 4019,
+                            'Severity' => 2,
+                            'Message' => 'Description cannot be empty',
+                            'Description' => 'The description of the product cannot be empty.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+
+        ];
+    }
+
+    public function missingDescription()
+    {
+        return
+        [
+            [
+
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'Price' => 1.23,
+                    'StockAmount' => 1,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Empty Description: Response contains not correct ',
+                    'Messages' => [
+                        [
+                            'Code' => 4019,
+                            'Severity' => 2,
+                            'Message' => 'Description cannot be empty',
+                            'Description' => 'The description of the product cannot be empty.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+
+        ];
+    }
+
+    public function greaterThan2000CharsShortDescription()
+    {
+        return
+        [
+            [
+
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => '',
+                    'ShortDescription' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Integer nec odio. Praesent libero.
+                    Sed cursus ante dapibus diam. Sed nisi.
+                    Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum.
+                    Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa.
+                    Vestibulum lacinia arcu eget nulla.
+                    Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+                    Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam.
+                    In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas porttitor.
+                    Morbi lectus risus, iaculis vel, suscipit quis, luctus non, massa. Fusce ac turpis quis ligula lacinia aliquet.
+                    Mauris ipsum. Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh.
+                    Quisque volutpat condimentum velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra,
+                    per inceptos himenaeos. Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam,
+                    a cursus ipsum ante quis turpis. Nulla facilisi. Ut fringilla. Suspendisse potenti.
+                    Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam. Etiam ultrices.
+                    Suspendisse in justo eu magna luctus suscipit. Sed lectus. Integer euismod lacus luctus magna.
+                    Quisque cursus, metus vitae pharetra auctor, sem massa mattis sem, at interdum magna augue eget diam.
+                    Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi lacinia molestie dui.
+                    Praesent blandit dolor. Sed non quam. In vel mi sit amet augue congue elementum.
+                    Morbi in ipsum sit amet pede facilisis laoreet. Donec lacus nunc, viverra nec, blandit vel, egestas et, augue.
+                    Vestibulum tincidunt malesuada tellus. Ut ultrices ultrices enim. Curabitur sit amet mauris.
+                    Morbi in dui quis est pulvinar ullamcorper. Nulla facilisi. Integer lacinia sollicitudin massa.
+                    Cras metus. Sed aliquet risus a tortor.
+                    Integer id quam. Morbi mi. Quisque nisl felis, venenatis tristique, dignissim in, ultrice.',
+                    'Price' => 1.23,
+                    'StockAmount' => 1,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 201,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Empty Description: Response contains not correct ',
+                    'Messages' => [
+                        [
+                            'Code' => 4014,
+                            'Severity' => 1,
+                            'Message' => 'ShortDescription is too long',
+                            'Description' => 'The ShortDescription of the product with ForeignId: {.+} is too long. The ShortDescription has been truncated by 2000 chars.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+
+        ];
+    }
+
+    public function invalidEan()
+    {
+        return
+        [
+            [
+
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                    'Price' => 1.23,
+                    'StockAmount' => 1,
+                    'Ean' => 'abc123',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 201,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Invalid Ean: Response contains not correct ',
+                    'Messages' => [
+                        [
+                            'Code' => 4006,
+                            'Severity' => 1,
+                            'Message' => 'Invalid Ean',
+                            'Description' => 'The Ean of the product with ForeignId: (.+) is not valid. Please verify to send a valid Ean with 12 or 13 chars.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+
+        ];
+    }
+
+    public function invalidUpc()
+    {
+        return
+        [
+            [
+
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                    'Price' => 1.23,
+                    'StockAmount' => 1,
+                    'Upc' => 'abc123',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 201,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Invalid Upc: Response contains not correct ',
+                    'Messages' => [
+                        [
+                            'Code' => 4007,
+                            'Severity' => 1,
+                            'Message' => 'Invalid Upc',
+                            'Description' => 'The Upc of the product with ForeignId: (.+) is not valid. Please verify to send a valid Upc.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+
+        ];
+    }
+
+    public function invalidIsbn()
+    {
+        return
+        [
+            [
+
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                    'Price' => 1.23,
+                    'StockAmount' => 1,
+                    'Isbn' => 'abc123',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 201,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Invalid Isbn: Response contains not correct ',
+                    'Messages' => [
+                        [
+                            'Code' => 4008,
+                            'Severity' => 1,
+                            'Message' => 'Invalid Isbn',
+                            'Description' => 'The Isbn of the product with ForeignId: (.+) is not valid. Please verify to send a valid Isbn-10 or Isbn-13.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],

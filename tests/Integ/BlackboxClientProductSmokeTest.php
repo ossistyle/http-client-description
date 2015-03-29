@@ -38,11 +38,11 @@ class BlackboxClientProductSmokeTest extends \PHPUnit_Framework_TestCase
             if (isset($expectedResponse['Messages'])) {
                 foreach ($expectedResponse['Messages'] as $counter => $message) {
                     foreach ($message as $name => $value) {
-                        if (gettype($value) === 'string') {
+                        if ($name === 'Message' || $name === 'Description') {
                             $this->assertRegExp(
                                 '/' . $value . '/',
                                 $response->search('Messages['.$counter.'].' . $name),
-                                $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
+                                '###Docs    ' . $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
                             );
                         } else {
                             $this->assertEquals(
@@ -76,11 +76,11 @@ class BlackboxClientProductSmokeTest extends \PHPUnit_Framework_TestCase
             if (isset($expectedResponse['Messages'])) {
                 foreach ($expectedResponse['Messages'] as $counter => $message) {
                     foreach ($message as $name => $value) {
-                        if (gettype($value) === 'string') {
+                        if ($name === 'Message' || $name === 'Description') {
                             $this->assertRegExp(
                                 '/' . $value . '/',
                                 $result->search('Messages['.$counter.'].' . $name),
-                                $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
+                                '###Docs    ' . $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
                             );
                         } else {
                             $this->assertEquals(

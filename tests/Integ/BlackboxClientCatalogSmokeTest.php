@@ -26,7 +26,8 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
 
             $this->assertCount(
                 $expectedResponse['EntityListCount'],
-                $response->search('EntityList')
+                $response->search('EntityList'),
+                $expectedResponse['ReturnMessage'] . ' EntityListCount: '  . $expectedResponse['EntityListCount']
             );
 
             $this->assertSame(
@@ -38,11 +39,11 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
             if (isset($expectedResponse['Messages'])) {
                 foreach ($expectedResponse['Messages'] as $counter => $message) {
                     foreach ($message as $name => $value) {
-                        if ($name === 'Message') {
+                        if ($name === 'Message' || $name === 'Description') {
                             $this->assertRegExp(
                                 '/' . $value . '/',
                                 $response->search('Messages['.$counter.'].' . $name),
-                                $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
+                                '###Docs    ' . $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
                             );
                         } else {
                             $this->assertEquals(
@@ -54,6 +55,12 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
                     }
                 }
             }
+
+            $toDeleteCatalogId = [];
+            $toDeleteCatalogId[] = $response->search('EntityList[0].Id');
+            $toDeleteCatalogId[] = $response->search('EntityList[0].ChildCatalogs[0].Id');
+
+            return $toDeleteCatalogId;
 
         } catch (BlackboxException $e) {
             $this->assertEquals(
@@ -76,11 +83,11 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
             if (isset($expectedResponse['Messages'])) {
                 foreach ($expectedResponse['Messages'] as $counter => $message) {
                     foreach ($message as $name => $value) {
-                        if (gettype($value) === 'string') {
+                        if ($name === 'Message' || $name === 'Description') {
                             $this->assertRegExp(
                                 '/' . $value . '/',
                                 $result->search('Messages['.$counter.'].' . $name),
-                                $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
+                                '###Docs    ' . $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
                             );
                         } else {
                             $this->assertEquals(
@@ -92,7 +99,38 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
                     }
                 }
             }
+        }
+    }
 
+    /**
+     * @depends testPostCatalogValidation
+     */
+    public function testDeleteCatalogById()
+    {
+        $args = func_get_args();
+
+        print_r($args);
+        return;
+
+        $client = $this->createClient();
+
+        foreach ($args as $values) {
+            foreach ($values as $value) {
+                $client->deleteCatalogById(['Id' => $value]);
+                $getResponse = $client->getCatalogById(['Id' => $value]);
+
+                $this->assertSame(
+                    '3000',
+                    $getResponse->search('Messages[0].Code'),
+                    'Messages[0].Code is not 3000'
+                );
+                $this->assertSame(
+                    2,
+                    $getResponse->search('Messages[0].Severity'),
+                    'Messages[0].Severity is not Error (2)'
+                );
+                $this->assertEmpty($getResponse->search('EntityList'), 'EntityList is not empty');
+            }
         }
     }
 
