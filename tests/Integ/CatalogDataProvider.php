@@ -31,7 +31,7 @@ trait CatalogDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty Name: Response contains not correct ',
+                    'ReturnMessage' => 'Empty Name: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 3103,
@@ -61,7 +61,7 @@ trait CatalogDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing Name: Response contains not correct ',
+                    'ReturnMessage' => 'Missing Name: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 3103,
@@ -92,7 +92,7 @@ trait CatalogDataProvider
                     'Succeeded' => true,
                     'StatusCode' => 201,
                     'EntityListCount' => 1,
-                    'ReturnMessage' => 'Greater than 30 chars Name: Response contains not correct ',
+                    'ReturnMessage' => 'Greater than 30 chars Name: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 3102,
@@ -123,7 +123,7 @@ trait CatalogDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty ForeignId: Response contains not correct ',
+                    'ReturnMessage' => 'Empty ForeignId: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 3102,
@@ -153,7 +153,7 @@ trait CatalogDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing ForeignId: Response contains not correct ',
+                    'ReturnMessage' => 'Missing ForeignId: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 3102,
@@ -176,7 +176,7 @@ trait CatalogDataProvider
             [
 
                 [
-                    'Name' => 'Root with empty ForeignId',
+                    'Name' => 'Root ChildCatalog has RootLevel true',
                     'IsRootLevel' => true,
                     'ForeignId' => '',
                     'ChildCatalogs' => [
@@ -191,7 +191,7 @@ trait CatalogDataProvider
                     'Succeeded' => true,
                     'StatusCode' => 201,
                     'EntityListCount' => 1,
-                    'ReturnMessage' => 'Empty Name: Response contains not correct ',
+                    'ReturnMessage' => 'Empty Name: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 3105,

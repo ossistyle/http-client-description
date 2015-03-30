@@ -16,6 +16,7 @@ trait ProductDataProvider
             $this->missingPrice(),
             $this->zeroPrice(),
             $this->emptyDescription(),
+            $this->missingDescription(),
             $this->greaterThan2000CharsShortDescription(),
             $this->invalidEan(),
             $this->invalidUpc(),
@@ -27,16 +28,22 @@ trait ProductDataProvider
             $this->missingImagesAndSpecifics(),
             $this->missingImageUrl(),
             $this->whitespacesAndTabsImageUrl(),
+            $this->emptyImageType(),
+            $this->missingImageType(),
             $this->invalidImageTypeOne(),
             $this->invalidImageTypeZero(),
             $this->invalidImageType13(),
-            $this->moreThanOneValidImage(),
+            //$this->moreThanOneValidImage(),
+            $this->moreThan11ValidImage(),
+            $this->duplicateImageType(),
             $this->emptySpecifics(),
             $this->missingSpecificsName(),
             $this->greater40CharsSpecificsName(),
             $this->emptySpecificsValue(),
             $this->missingSpecificsValue(),
-            $this->greaterThan50charsSpecificsValue()
+            $this->greaterThan50charsSpecificsValue(),
+            $this->duplicateSpecificsNameValue(),
+            $this->moreThanFifteenSpecifics()
         );
     }
 
@@ -72,7 +79,7 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty ForeignId: Response contains not correct ',
+                    'ReturnMessage' => 'Empty ForeignId: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4003,
@@ -120,7 +127,7 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing ForeignId: Response contains not correct ',
+                    'ReturnMessage' => 'Missing ForeignId: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4003,
@@ -169,7 +176,7 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty StockAmount: Response contains not correct ',
+                    'ReturnMessage' => 'Empty StockAmount: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4004,
@@ -217,7 +224,7 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing StockAmount: Response contains not correct ',
+                    'ReturnMessage' => 'Missing StockAmount: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4004,
@@ -265,7 +272,7 @@ trait ProductDataProvider
                 [
                     'Succeeded' => true,
                     'StatusCode' => 201,
-                    'ReturnMessage' => 'Zero StockAmount: Response contains not correct ',
+                    'ReturnMessage' => 'Zero StockAmount: Response contains not expected ',
                     'EntityListCount' => 0,
                 ],
             ],
@@ -305,7 +312,7 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Negativ StockAmount: Response contains not correct ',
+                    'ReturnMessage' => 'Negativ StockAmount: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4004,
@@ -354,7 +361,7 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty Price: Response contains not correct ',
+                    'ReturnMessage' => 'Empty Price: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4005,
@@ -402,7 +409,7 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing Price: Response contains not correct ',
+                    'ReturnMessage' => 'Missing Price: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4005,
@@ -451,7 +458,7 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Zero Price: Response contains not correct ',
+                    'ReturnMessage' => 'Zero Price: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4005,
@@ -500,13 +507,13 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty Description: Response contains not correct ',
+                    'ReturnMessage' => 'Empty Description: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4019,
                             'Severity' => 2,
                             'Message' => 'Description cannot be empty',
-                            'Description' => 'The description of the product cannot be empty.',
+                            'Description' => 'The description of the product with the ForeignId: (.+) cannot be empty.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -548,13 +555,13 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty Description: Response contains not correct ',
+                    'ReturnMessage' => 'Missing Description: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4019,
                             'Severity' => 2,
                             'Message' => 'Description cannot be empty',
-                            'Description' => 'The description of the product cannot be empty.',
+                            'Description' => 'The description of the product with the ForeignId: (.+) cannot be empty.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -574,7 +581,7 @@ trait ProductDataProvider
                 [
                     'ForeignId' => $this->getGUID(),
                     'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
-                    'Description' => '',
+                    'Description' => 'Beschreibung',
                     'ShortDescription' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                     Integer nec odio. Praesent libero.
                     Sed cursus ante dapibus diam. Sed nisi.
@@ -620,7 +627,7 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 201,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty Description: Response contains not correct ',
+                    'ReturnMessage' => 'Greater than 2000 chars ShortDescription: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4014,
@@ -669,13 +676,13 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 201,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Invalid Ean: Response contains not correct ',
+                    'ReturnMessage' => 'Invalid Ean: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4006,
                             'Severity' => 1,
                             'Message' => 'Invalid Ean',
-                            'Description' => 'The Ean of the product with ForeignId: (.+) is not valid. Please verify to send a valid Ean with 12 or 13 chars.',
+                            'Description' => 'The EAN of the product with ForeignId: (.+) is not valid. Please verify to send a valid EAN with 12 or 13 chars.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -718,13 +725,13 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 201,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Invalid Upc: Response contains not correct ',
+                    'ReturnMessage' => 'Invalid Upc: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4007,
                             'Severity' => 1,
                             'Message' => 'Invalid Upc',
-                            'Description' => 'The Upc of the product with ForeignId: (.+) is not valid. Please verify to send a valid Upc.',
+                            'Description' => 'The UPC of the product with ForeignId: (.+) is not valid. Please verify to send a valid UPC.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -767,13 +774,13 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 201,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Invalid Isbn: Response contains not correct ',
+                    'ReturnMessage' => 'Invalid Isbn: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4008,
                             'Severity' => 1,
                             'Message' => 'Invalid Isbn',
-                            'Description' => 'The Isbn of the product with ForeignId: (.+) is not valid. Please verify to send a valid Isbn-10 or Isbn-13.',
+                            'Description' => 'The ISBN of the product with ForeignId: (.+) is not valid. Please verify to send a valid ISBN-10 or ISBN-13.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -809,7 +816,7 @@ trait ProductDataProvider
                     'Succeeded' => true,
                     'StatusCode' => 201,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing Images: Response contains not correct ',
+                    'ReturnMessage' => 'Missing Images: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5000,
@@ -852,7 +859,7 @@ trait ProductDataProvider
                     'Succeeded' => true,
                     'StatusCode' => 201,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty Images: Response contains not correct ',
+                    'ReturnMessage' => 'Empty Images: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5000,
@@ -896,7 +903,7 @@ trait ProductDataProvider
                     'StatusCode' => 201,
                     'EntityListCount' => 0,
                     'MessagesCount' => 1,
-                    'ReturnMessage' => 'Missing Specifics: Response contains not correct ',
+                    'ReturnMessage' => 'Missing Specifics: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 6000,
@@ -941,7 +948,7 @@ trait ProductDataProvider
                     'StatusCode' => 201,
                     'EntityListCount' => 0,
                     'MessagesCount' => 1,
-                    'ReturnMessage' => 'Empty Specifics: Response contains not correct ',
+                    'ReturnMessage' => 'Empty Specifics: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 6000,
@@ -977,7 +984,7 @@ trait ProductDataProvider
                     'Succeeded' => true,
                     'StatusCode' => 201,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing Specifics and Images: Response contains not correct ',
+                    'ReturnMessage' => 'Missing Specifics and Images: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5000,
@@ -1023,7 +1030,7 @@ trait ProductDataProvider
                     'Succeeded' => true,
                     'StatusCode' => 201,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty Images and Specifics: Response contains not correct ',
+                    'ReturnMessage' => 'Empty Images and Specifics: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5000,
@@ -1078,7 +1085,7 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing Imageurl: Response contains not correct ',
+                    'ReturnMessage' => 'Missing Imageurl: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5001,
@@ -1125,7 +1132,7 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing Imageurl: Response contains not correct ',
+                    'ReturnMessage' => 'Missing Imageurl: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5001,
@@ -1172,13 +1179,106 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing Imageurl: Response contains not correct ',
+                    'ReturnMessage' => 'Missing Imageurl: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5001,
                             'Severity' => 2,
                             'Message' => 'ImageUrl cannot be empty.',
                             'Description' => 'The productImage ImageUrl of the product with the ForeignId: (.+) cannot be empty',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function emptyImageType()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => ''
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Empty Image Type: Response contains not expected ',
+                    'Messages' => [
+                        [
+                            'Code' => 5002,
+                            'Severity' => 2,
+                            'Message' => 'Type cannot be empty.',
+                            'Description' => 'The productImage Type of the product with the ForeignId: (.+) cannot be empty.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function missingImageType()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Missing Image Type: Response contains not expected ',
+                    'Messages' => [
+                        [
+                            'Code' => 5002,
+                            'Severity' => 2,
+                            'Message' => 'Type cannot be empty.',
+                            'Description' => 'The productImage Type of the product with the ForeignId: (.+) cannot be empty.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -1219,7 +1319,7 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Invalid Image Type 1: Response contains not correct ',
+                    'ReturnMessage' => 'Invalid Image Type 1: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5003,
@@ -1266,7 +1366,7 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Invalid Image Type 0: Response contains not correct ',
+                    'ReturnMessage' => 'Invalid Image Type 0: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5003,
@@ -1313,7 +1413,7 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Invalid Image Type 13: Response contains not correct ',
+                    'ReturnMessage' => 'Invalid Image Type 13: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5003,
@@ -1365,13 +1465,207 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Invalid Image Type 13: Response contains not correct ',
+                    'ReturnMessage' => 'More than one valid Image: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5003,
                             'Severity' => 2,
                             'Message' => 'Invalid "Type" value.',
                             'Description' => 'The productImage "Type" of the product with the ForeignId: (.+) is not valid. Please check our documentation for the allowed values.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function moreThan11ValidImage()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_2.jpg',
+                            'Type' => 2,
+                        ],
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_3.jpg',
+                            'Type' => 3,
+                        ],
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_4.jpg',
+                            'Type' => 4,
+                        ],
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_5.jpg',
+                            'Type' => 5,
+                        ],
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_6.jpg',
+                            'Type' => 6,
+                        ],
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_7.jpg',
+                            'Type' => 7,
+                        ],
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_8.jpg',
+                            'Type' => 8,
+                        ],
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_9.jpg',
+                            'Type' => 9,
+                        ],
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_10.jpg',
+                            'Type' => 10,
+                        ],
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 11,
+                        ],
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_2.jpg',
+                            'Type' => 12,
+                        ],
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_2.jpg',
+                            'Type' => 13,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'More than 11 Images: Response contains not expected ',
+                    'Messages' => [
+                        [
+                            'Code' => 5003,
+                            'Severity' => 2,
+                            'Message' => 'Too many images provided for the product.',
+                            'Description' => 'The maximum number of images per product is limited to 11.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function duplicateImageType()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_2.jpg',
+                            'Type' => 2,
+                        ],
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_3.jpg',
+                            'Type' => 2,
+                        ],
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_4.jpg',
+                            'Type' => 4,
+                        ],
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_5.jpg',
+                            'Type' => 5,
+                        ],
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_6.jpg',
+                            'Type' => 6,
+                        ],
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_7.jpg',
+                            'Type' => 7,
+                        ],
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_8.jpg',
+                            'Type' => 8,
+                        ],
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_9.jpg',
+                            'Type' => 9,
+                        ],
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_10.jpg',
+                            'Type' => 10,
+                        ],
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 11,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Duplicate Image Type: Response contains not expected ',
+                    'Messages' => [
+                        [
+                            'Code' => 5005,
+                            'Severity' => 2,
+                            'Message' => 'Images contains duplicate "Type" value.',
+                            'Description' => 'The images of the product with the ForeignId: (.+) contains duplicate "Type". Be sure to use unique "Type" values.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -1412,7 +1706,7 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty Specifics.Name: Response contains not correct ',
+                    'ReturnMessage' => 'Empty Specifics.Name: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 6001,
@@ -1458,7 +1752,7 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing Specifics.Name: Response contains not correct ',
+                    'ReturnMessage' => 'Missing Specifics.Name: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 6001,
@@ -1505,7 +1799,7 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Greater than 40 chars Specifics.Name: Response contains not correct ',
+                    'ReturnMessage' => 'Greater than 40 chars Specifics.Name: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 6003,
@@ -1552,7 +1846,7 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty Specifics.Value: Response contains not correct ',
+                    'ReturnMessage' => 'Empty Specifics.Value: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 6004,
@@ -1598,7 +1892,7 @@ trait ProductDataProvider
                     'Succeeded' => false,
                     'StatusCode' => 400,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing Specifics.Value: Response contains not correct ',
+                    'ReturnMessage' => 'Missing Specifics.Value: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 6004,
@@ -1645,13 +1939,171 @@ trait ProductDataProvider
                     'Succeeded' => true,
                     'StatusCode' => 201,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Greater than fifty chars Specifics.Value: Response contains not correct ',
+                    'ReturnMessage' => 'Greater than fifty chars Specifics.Value: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 6005,
                             'Severity' => 1,
                             'Message' => 'The value of "Value" has been truncated.',
                             'Description' => 'The value of the property "Value" is greater than 50 characters and has been truncated.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function duplicateSpecificsNameValue()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-eBay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Identical Specifics.Name: Response contains not expected ',
+                    'Messages' => [
+                        [
+                            'Code' => 6002,
+                            'Severity' => 2,
+                            'Message' => 'Identical values in product specifics name.',
+                            'Description' => 'The property "Name" on product specifics is not unique. Be sure to submit unique values for the property "Name".',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function moreThanFifteenSpecifics()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke1',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                        [
+                            'Name' => 'Marke2',
+                            'Value' => 'VIA-eBay',
+                        ],
+                        [
+                            'Name' => 'Marke3',
+                            'Value' => 'VIA-eBay',
+                        ],
+                        [
+                            'Name' => 'Marke4',
+                            'Value' => 'VIA-eBay',
+                        ],
+                        [
+                            'Name' => 'Marke5',
+                            'Value' => 'VIA-eBay',
+                        ],
+                        [
+                            'Name' => 'Marke6',
+                            'Value' => 'VIA-eBay',
+                        ],
+                        [
+                            'Name' => 'Marke7',
+                            'Value' => 'VIA-eBay',
+                        ],
+                        [
+                            'Name' => 'Marke8',
+                            'Value' => 'VIA-eBay',
+                        ],
+                        [
+                            'Name' => 'Marke9',
+                            'Value' => 'VIA-eBay',
+                        ],
+                        [
+                            'Name' => 'Marke10',
+                            'Value' => 'VIA-eBay',
+                        ],
+                        [
+                            'Name' => 'Marke11',
+                            'Value' => 'VIA-eBay',
+                        ],
+                        [
+                            'Name' => 'Marke12',
+                            'Value' => 'VIA-eBay',
+                        ],
+                        [
+                            'Name' => 'Marke13',
+                            'Value' => 'VIA-eBay',
+                        ],
+                        [
+                            'Name' => 'Marke14',
+                            'Value' => 'VIA-eBay',
+                        ],
+                        [
+                            'Name' => 'Marke15',
+                            'Value' => 'VIA-eBay',
+                        ],
+                        [
+                            'Name' => 'Marke16',
+                            'Value' => 'VIA-eBay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => true,
+                    'StatusCode' => 201,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'More than 15 Specifics: Response contains not expected ',
+                    'Messages' => [
+                        [
+                            'Code' => 6006,
+                            'Severity' => 1,
+                            'Message' => 'Contains more than 15 Specifics.',
+                            'Description' => 'The product with the ForeignId: (.+) contains more than 15 Specifics. eBay only supports 15 Specifics. So you only will see 15 Specifics on eBay.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],

@@ -32,7 +32,7 @@ class BlackboxClientProductSmokeTest extends \PHPUnit_Framework_TestCase
             $this->assertSame(
                 $expectedResponse['StatusCode'],
                 201,
-                $expectedResponse['ReturnMessage'] . ' StatusCode: ' . $expectedResponse['StatusCode']
+                '###Wrong Header StatusCode -> ' . $expectedResponse['ReturnMessage'] . ' -> ' . $expectedResponse['StatusCode']
             );
 
             if (isset($expectedResponse['Messages'])) {
@@ -42,13 +42,13 @@ class BlackboxClientProductSmokeTest extends \PHPUnit_Framework_TestCase
                             $this->assertRegExp(
                                 '/' . $value . '/',
                                 $response->search('Messages['.$counter.'].' . $name),
-                                '###Docs    ' . $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
+                                '###Wrong Body Messages -> ' . $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
                             );
                         } else {
                             $this->assertEquals(
                                 $value,
                                 $response->search('Messages['.$counter.'].' . $name),
-                                $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
+                                '###Wrong Body Messages -> ' .$expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
                             );
                         }
                     }
@@ -59,7 +59,7 @@ class BlackboxClientProductSmokeTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(
                 $expectedResponse['StatusCode'],
                 $e->getStatusCode(),
-                $expectedResponse['ReturnMessage'] . 'StatusCode not ' . $expectedResponse['StatusCode']
+                '###Wrong Header StatusCode -> ' . $expectedResponse['ReturnMessage'] . ' -> ' . $expectedResponse['StatusCode']
             );
 
             $responseBody = json_decode(
@@ -80,13 +80,13 @@ class BlackboxClientProductSmokeTest extends \PHPUnit_Framework_TestCase
                             $this->assertRegExp(
                                 '/' . $value . '/',
                                 $result->search('Messages['.$counter.'].' . $name),
-                                '###Docs    ' . $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
+                                '###Wrong Response Message -> ' . $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
                             );
                         } else {
                             $this->assertEquals(
                                 $value,
                                 $result->search('Messages['.$counter.'].' . $name),
-                                $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
+                                '###Wrong Response Message -> ' . $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
                             );
                         }
                     }

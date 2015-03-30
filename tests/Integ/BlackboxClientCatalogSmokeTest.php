@@ -66,7 +66,7 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(
                 $expectedResponse['StatusCode'],
                 $e->getStatusCode(),
-                $expectedResponse['ReturnMessage'] . 'StatusCode not ' . $expectedResponse['StatusCode']
+                $expectedResponse['ReturnMessage'] . 'StatusCode ' . $expectedResponse['StatusCode']
             );
 
             $responseBody = json_decode(
@@ -108,9 +108,6 @@ class BlackboxClientCatalogSmokeTest extends \PHPUnit_Framework_TestCase
     public function testDeleteCatalogById()
     {
         $args = func_get_args();
-
-        print_r($args);
-        return;
 
         $client = $this->createClient();
 
