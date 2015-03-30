@@ -78,8 +78,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty ForeignId: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4003,
@@ -126,8 +126,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing ForeignId: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4003,
@@ -175,8 +175,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty StockAmount: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4004,
@@ -223,8 +223,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing StockAmount: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4004,
@@ -272,7 +272,7 @@ trait ProductDataProvider
                 [
                     'Succeeded' => true,
                     'StatusCode' => 201,
-                    'ReturnMessage' => 'Zero StockAmount: Response contains not expected ',
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
                 ],
             ],
@@ -311,8 +311,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Negativ StockAmount: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4004,
@@ -360,8 +360,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty Price: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4005,
@@ -408,8 +408,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing Price: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4005,
@@ -457,8 +457,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Zero Price: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4005,
@@ -506,8 +506,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty Description: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4019,
@@ -554,8 +554,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing Description: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4019,
@@ -626,8 +626,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 201,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Greater than 2000 chars ShortDescription: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4014,
@@ -675,8 +675,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 201,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Invalid Ean: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4006,
@@ -724,8 +724,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 201,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Invalid Upc: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4007,
@@ -773,8 +773,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 201,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Invalid Isbn: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 4008,
@@ -815,8 +815,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => true,
                     'StatusCode' => 201,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing Images: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5000,
@@ -858,8 +858,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => true,
                     'StatusCode' => 201,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty Images: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5000,
@@ -901,9 +901,9 @@ trait ProductDataProvider
                 [
                     'Succeeded' => true,
                     'StatusCode' => 201,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
                     'MessagesCount' => 1,
-                    'ReturnMessage' => 'Missing Specifics: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 6000,
@@ -946,9 +946,9 @@ trait ProductDataProvider
                 [
                     'Succeeded' => true,
                     'StatusCode' => 201,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
                     'MessagesCount' => 1,
-                    'ReturnMessage' => 'Empty Specifics: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 6000,
@@ -983,8 +983,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => true,
                     'StatusCode' => 201,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing Specifics and Images: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5000,
@@ -1029,8 +1029,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => true,
                     'StatusCode' => 201,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty Images and Specifics: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5000,
@@ -1084,8 +1084,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing Imageurl: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5001,
@@ -1131,8 +1131,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing Imageurl: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5001,
@@ -1178,8 +1178,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing Imageurl: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5001,
@@ -1212,7 +1212,7 @@ trait ProductDataProvider
                         [
                             'ForeignId' => $this->getGUID(),
                             'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
-                            'Type' => ''
+                            'Type' => '',
                         ],
                     ],
                     'Specifics' => [
@@ -1225,8 +1225,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty Image Type: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5002,
@@ -1271,8 +1271,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing Image Type: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5002,
@@ -1318,8 +1318,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Invalid Image Type 1: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5003,
@@ -1365,8 +1365,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Invalid Image Type 0: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5003,
@@ -1412,8 +1412,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Invalid Image Type 13: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5003,
@@ -1464,8 +1464,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'More than one valid Image: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5003,
@@ -1566,8 +1566,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'More than 11 Images: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5003,
@@ -1658,8 +1658,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Duplicate Image Type: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 5005,
@@ -1705,8 +1705,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty Specifics.Name: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 6001,
@@ -1751,8 +1751,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing Specifics.Name: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 6001,
@@ -1798,8 +1798,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Greater than 40 chars Specifics.Name: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 6003,
@@ -1845,8 +1845,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty Specifics.Value: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 6004,
@@ -1891,8 +1891,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing Specifics.Value: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 6004,
@@ -1938,8 +1938,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => true,
                     'StatusCode' => 201,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Greater than fifty chars Specifics.Value: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 6005,
@@ -1989,8 +1989,8 @@ trait ProductDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Identical Specifics.Name: Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 6002,
@@ -2096,8 +2096,104 @@ trait ProductDataProvider
                 [
                     'Succeeded' => true,
                     'StatusCode' => 201,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'More than 15 Specifics: Response contains not expected ',
+                    'Messages' => [
+                        [
+                            'Code' => 6006,
+                            'Severity' => 1,
+                            'Message' => 'Contains more than 15 Specifics.',
+                            'Description' => 'The product with the ForeignId: (.+) contains more than 15 Specifics. eBay only supports 15 Specifics. So you only will see 15 Specifics on eBay.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function validProductSprint18()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => $this->getGUID(),
+                    'Title' => 'Lipsum',
+                    'Description' => '<h1>HTML Ipsum Presents</h1>
+
+<p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
+
+<h2>Header Level 2</h2>
+
+<ol>
+   <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+   <li>Aliquam tincidunt mauris eu risus.</li>
+</ol>
+
+<blockquote><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</p></blockquote>
+
+<h3>Header Level 3</h3>
+
+<ul>
+   <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+   <li>Aliquam tincidunt mauris eu risus.</li>
+</ul>
+
+<pre><code>
+#header h1 a {
+	display: block;
+	width: 300px;
+	height: 80px;
+}
+</code></pre>',
+                    'ShortDescription' => '<dl>
+   <dt>Definition list</dt>
+   <dd>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+commodo consequat.</dd>
+   <dt>Lorem ipsum dolor sit amet</dt>
+   <dd>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+commodo consequat.</dd>
+</dl>',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_2.jpg',
+                            'Type' => 2,
+                        ],
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_3.jpg',
+                            'Type' => 2,
+                        ],
+                        [
+                            'ForeignId' => $this->getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_4.jpg',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                        [
+                            'Name' => 'Hersteller',
+                            'Value' => 'VIA-eBay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => true,
+                    'StatusCode' => 201,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
                     'Messages' => [
                         [
                             'Code' => 6006,

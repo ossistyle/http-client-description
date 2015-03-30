@@ -4,6 +4,9 @@ namespace Vws\Test\Integ;
 
 use Vws\Blackbox\Exception\BlackboxException;
 use Vws\Result;
+use GuzzleHttp\Subscriber\Log\LogSubscriber;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 /**
  *
@@ -21,18 +24,35 @@ class BlackboxClientProductSmokeTest extends \PHPUnit_Framework_TestCase
     ) {
         $client = $this->createClient();
 
+        // create a log channel
+        $log = new Logger('blackbox');
+        $log->pushHandler(new StreamHandler('/tmp/your.log', Logger::DEBUG, true, 0777));
+        $subscriber = new LogSubscriber($log);
+        $client->getHttpClient()->getEmitter()->attach($subscriber);
+
         try {
             $response = $client->postProduct($product);
-
-            $this->assertCount(
-                $expectedResponse['EntityListCount'],
-                $response->search('EntityList')
-            );
 
             $this->assertSame(
                 $expectedResponse['StatusCode'],
                 201,
-                '###Wrong Header StatusCode -> ' . $expectedResponse['ReturnMessage'] . ' -> ' . $expectedResponse['StatusCode']
+                self::getCustomErrorMessage(
+                    $expectedResponse['FunctionName'],
+                    'HeaderStatusCode',
+                    $expectedResponse['StatusCode'],
+                    201
+                )
+            );
+
+            $this->assertCount(
+                $expectedResponse['EntityListCount'],
+                $response->search('EntityList'),
+                self::getCustomErrorMessage(
+                    $expectedResponse['FunctionName'],
+                    'EntityList',
+                    $expectedResponse['EntityListCount'],
+                    count($response->search('EntityList'))
+                )
             );
 
             if (isset($expectedResponse['Messages'])) {
@@ -42,13 +62,25 @@ class BlackboxClientProductSmokeTest extends \PHPUnit_Framework_TestCase
                             $this->assertRegExp(
                                 '/' . $value . '/',
                                 $response->search('Messages['.$counter.'].' . $name),
-                                '###Wrong Body Messages -> ' . $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
+                                self::getCustomErrorMessage(
+                                    $expectedResponse['FunctionName'],
+                                    'Message',
+                                    $value,
+                                    $response->search('Messages['.$counter.'].' . $name),
+                                    'Messages['.$counter.'].' . $name
+                                )
                             );
                         } else {
                             $this->assertEquals(
                                 $value,
                                 $response->search('Messages['.$counter.'].' . $name),
-                                '###Wrong Body Messages -> ' .$expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
+                                self::getCustomErrorMessage(
+                                    $expectedResponse['FunctionName'],
+                                    'Message',
+                                    $value,
+                                    $response->search('Messages['.$counter.'].' . $name),
+                                    'Messages['.$counter.'].' . $name
+                                )
                             );
                         }
                     }
@@ -59,18 +91,29 @@ class BlackboxClientProductSmokeTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(
                 $expectedResponse['StatusCode'],
                 $e->getStatusCode(),
-                '###Wrong Header StatusCode -> ' . $expectedResponse['ReturnMessage'] . ' -> ' . $expectedResponse['StatusCode']
+                self::getCustomErrorMessage(
+                    $expectedResponse['FunctionName'],
+                    'HeaderStatusCode',
+                    $expectedResponse['StatusCode'],
+                    $e->getStatusCode()
+                )
             );
 
             $responseBody = json_decode(
                 $e->getResponse()->getBody()->__toString(),
                 true
             );
-            $result = new Result($responseBody);
+            $response = new Result($responseBody);
 
             $this->assertCount(
                 $expectedResponse['EntityListCount'],
-                $result->search('EntityList')
+                $response->search('EntityList'),
+                self::getCustomErrorMessage(
+                    $expectedResponse['FunctionName'],
+                    'EntityList',
+                    $expectedResponse['EntityListCount'],
+                    count($response->search('EntityList'))
+                )
             );
 
             if (isset($expectedResponse['Messages'])) {
@@ -79,14 +122,26 @@ class BlackboxClientProductSmokeTest extends \PHPUnit_Framework_TestCase
                         if ($name === 'Message' || $name === 'Description') {
                             $this->assertRegExp(
                                 '/' . $value . '/',
-                                $result->search('Messages['.$counter.'].' . $name),
-                                '###Wrong Response Message -> ' . $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
+                                $response->search('Messages['.$counter.'].' . $name),
+                                self::getCustomErrorMessage(
+                                    $expectedResponse['FunctionName'],
+                                    'Message',
+                                    $value,
+                                    $response->search('Messages['.$counter.'].' . $name),
+                                    'Messages['.$counter.'].' . $name
+                                )
                             );
                         } else {
                             $this->assertEquals(
                                 $value,
-                                $result->search('Messages['.$counter.'].' . $name),
-                                '###Wrong Response Message -> ' . $expectedResponse['ReturnMessage'] . ' Messages['.$counter.']'.$name.' = ' . $value
+                                $response->search('Messages['.$counter.'].' . $name),
+                                self::getCustomErrorMessage(
+                                    $expectedResponse['FunctionName'],
+                                    'Message',
+                                    $value,
+                                    $response->search('Messages['.$counter.'].' . $name),
+                                    'Messages['.$counter.'].' . $name
+                                )
                             );
                         }
                     }

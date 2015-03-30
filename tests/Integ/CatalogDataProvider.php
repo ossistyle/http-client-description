@@ -12,6 +12,8 @@ trait CatalogDataProvider
             $this->greaterThanThirtyCharsName(),
             $this->emptyForeignId(),
             $this->missingForeignId(),
+            $this->emptyForeignIdInChildCatalogs(),
+            $this->missingForeignIdInChildCatalogs(),
             $this->childCatalogHasRootLevelTrue()
         );
     }
@@ -30,8 +32,9 @@ trait CatalogDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty Name: Response contains not expected ',
+                    'ReturnMessage' => 'Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 3103,
@@ -60,8 +63,9 @@ trait CatalogDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing Name: Response contains not expected ',
+                    'ReturnMessage' => 'Response contains not expected %s actual given %s',
                     'Messages' => [
                         [
                             'Code' => 3103,
@@ -84,15 +88,16 @@ trait CatalogDataProvider
             [
 
                 [
-                    'Name' => 'This Catalogname is greater than thirty chars',
+                    'Name' => 'This Catalog.Name is greater than thirty chars',
                     'IsRootLevel' => true,
                     'ForeignId' => $this->getGUID(),
                 ],
                 [
                     'Succeeded' => true,
                     'StatusCode' => 201,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 1,
-                    'ReturnMessage' => 'Greater than 30 chars Name: Response contains not expected ',
+                    'ReturnMessage' => 'Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 3102,
@@ -122,12 +127,13 @@ trait CatalogDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Empty ForeignId: Response contains not expected ',
+                    'ReturnMessage' => 'Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 3102,
-                            'Severity' => 1,
+                            'Severity' => 2,
                             'Message' => 'ForeignId is empty.',
                             'Description' => 'The ForeignId of the catalog with with the ForeignId: <EMPTY> is empty. It is recommended to send a unique ForeignId.',
                             'UserHelpLink' => '',
@@ -152,8 +158,97 @@ trait CatalogDataProvider
                 [
                     'Succeeded' => false,
                     'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'ReturnMessage' => 'Missing ForeignId: Response contains not expected ',
+                    'ReturnMessage' => 'Response contains not expected ',
+                    'Messages' => [
+                        [
+                            'Code' => 3102,
+                            'Severity' => 2,
+                            'Message' => 'ForeignId is empty.',
+                            'Description' => 'The ForeignId of the catalog with with the ForeignId: <EMPTY> is empty. It is recommended to send a unique ForeignId.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function emptyForeignIdInChildCatalogs()
+    {
+        return
+        [
+            [
+
+                [
+                    'Name' => 'Root Child has empty ForeignId',
+                    'IsRootLevel' => true,
+                    'ChildCatalogs' => [
+                        [
+                            'Name' => 'Child 1.1',
+                            'ForeignId' => 'child_1_1',
+                            'IsRootLevel' => false,
+                            'ChildCatalogs' => [
+                                [
+                                    'Name' => 'Child 1.1.1',
+                                    'ForeignId' => 'child_1_1_1',
+                                    'IsRootLevel' => false,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Response contains not expected ',
+                    'Messages' => [
+                        [
+                            'Code' => 3102,
+                            'Severity' => 1,
+                            'Message' => 'ForeignId is empty.',
+                            'Description' => 'The ForeignId of the catalog with with the ForeignId: <EMPTY> is empty. It is recommended to send a unique ForeignId.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function missingForeignIdInChildCatalogs()
+    {
+        return
+        [
+            [
+
+                [
+                    'Name' => 'Root Child has empty ForeignId',
+                    'IsRootLevel' => true,
+                    'ChildCatalogs' => [
+                        [
+                            'Name' => 'Child 1.1',
+                            'IsRootLevel' => false,
+                            'ChildCatalogs' => [
+                                [
+                                    'Name' => 'Child 1.1.1',
+                                    'IsRootLevel' => false,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 3102,
@@ -176,12 +271,12 @@ trait CatalogDataProvider
             [
 
                 [
-                    'Name' => 'Root ChildCatalog has RootLevel true',
+                    'Name' => 'Root Child 1 has Root true',
                     'IsRootLevel' => true,
-                    'ForeignId' => '',
+                    'ForeignId' => 'root_1',
                     'ChildCatalogs' => [
                         [
-                            'Name' => 'Child Catalog 1.1',
+                            'Name' => 'Child 1.1',
                             'ForeignId' => 'child_1_1',
                             'IsRootLevel' => true,
                         ],
@@ -190,8 +285,9 @@ trait CatalogDataProvider
                 [
                     'Succeeded' => true,
                     'StatusCode' => 201,
+                    'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 1,
-                    'ReturnMessage' => 'Empty Name: Response contains not expected ',
+                    'ReturnMessage' => 'Response contains not expected ',
                     'Messages' => [
                         [
                             'Code' => 3105,
