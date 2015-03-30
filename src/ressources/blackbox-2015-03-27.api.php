@@ -118,7 +118,7 @@ return [
             'name' => 'ReviseInventory',
             'http' => [
               'method' => 'POST',
-              'requestUri' => 'ReviseInventoryStatus?productId={productId}L&price={price}m&stockAmount={stockAmount}&productVariationId={productVariationId}L&{discountOfferPrice}m',
+              'requestUri' => 'ReviseInventoryStatus',
             ],
             'input' => [
               'shape' => 'ReviseInventoryInput',
