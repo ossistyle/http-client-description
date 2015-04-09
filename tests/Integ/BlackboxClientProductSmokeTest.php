@@ -24,11 +24,11 @@ class BlackboxClientProductSmokeTest extends \PHPUnit_Framework_TestCase
     ) {
         $client = $this->createClient();
 
-        // create a log channel
-        $log = new Logger('blackbox');
-        $log->pushHandler(new StreamHandler('/tmp/your.log', Logger::DEBUG, true, 0777));
-        $subscriber = new LogSubscriber($log);
-        $client->getHttpClient()->getEmitter()->attach($subscriber);
+        // // create a log channel
+        // $log = new Logger('blackbox');
+        // $log->pushHandler(new StreamHandler('/tmp/your.log', Logger::DEBUG, true, 0777));
+        // $subscriber = new LogSubscriber($log);
+        // $client->getHttpClient()->getEmitter()->attach($subscriber);
 
         try {
             $response = $client->postProduct($product);
