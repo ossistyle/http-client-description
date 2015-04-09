@@ -183,7 +183,7 @@ trait CatalogDataProvider
             [
 
                 [
-                    'Name' => 'Root Child has empty ForeignId',
+                    'Name' => 'Child has empty ForeignId',
                     'IsRootLevel' => true,
                     'ChildCatalogs' => [
                         [
@@ -228,7 +228,7 @@ trait CatalogDataProvider
             [
 
                 [
-                    'Name' => 'Root Child has empty ForeignId',
+                    'Name' => 'Childs has missing ForeignId',
                     'IsRootLevel' => true,
                     'ChildCatalogs' => [
                         [
@@ -271,7 +271,7 @@ trait CatalogDataProvider
             [
 
                 [
-                    'Name' => 'Root Child 1 has Root true',
+                    'Name' => 'Child 1 has Root true',
                     'IsRootLevel' => true,
                     'ForeignId' => 'root_1',
                     'ChildCatalogs' => [

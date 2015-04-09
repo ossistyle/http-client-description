@@ -43,7 +43,8 @@ trait ProductDataProvider
             $this->missingSpecificsValue(),
             $this->greaterThan50charsSpecificsValue(),
             $this->duplicateSpecificsNameValue(),
-            $this->moreThanFifteenSpecifics()
+            $this->moreThanFifteenSpecifics(),
+            $this->validProductSprint18()
         );
     }
 
@@ -822,7 +823,7 @@ trait ProductDataProvider
                             'Code' => 5000,
                             'Severity' => 1,
                             'Message' => 'No "productImages" defined or empty.',
-                            'Description' => 'The product contains no image. It is recommended to add at least one image.',
+                            'Description' => 'The product with the (.+): (.+) contains no image. It is recommended to add at least one image.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -865,7 +866,7 @@ trait ProductDataProvider
                             'Code' => 5000,
                             'Severity' => 1,
                             'Message' => 'No "productImages" defined or empty.',
-                            'Description' => 'The product contains no image. It is recommended to add at least one image.',
+                            'Description' => 'The product with the (.+): (.+) contains no image. It is recommended to add at least one image.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -990,7 +991,7 @@ trait ProductDataProvider
                             'Code' => 5000,
                             'Severity' => 1,
                             'Message' => 'No "productImages" defined or empty.',
-                            'Description' => 'The product contains no image. It is recommended to add at least one image.',
+                            'Description' => 'The product with the (.+): (.+) contains no image. It is recommended to add at least one image.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -1572,8 +1573,16 @@ trait ProductDataProvider
                         [
                             'Code' => 5003,
                             'Severity' => 2,
+                            'Message' => 'Invalid "Type" value.',
+                            'Description' => 'The productImage "Type" of the product with the ForeignId: (.+) is not valid. Please check our documentation for the allowed values.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                        [
+                            'Code' => 5004,
+                            'Severity' => 2,
                             'Message' => 'Too many images provided for the product.',
-                            'Description' => 'The maximum number of images per product is limited to 11.',
+                            'Description' => 'The maximum number of images for the product with the (.+): (.+) is limited to 11.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -2103,7 +2112,7 @@ trait ProductDataProvider
                             'Code' => 6006,
                             'Severity' => 1,
                             'Message' => 'Contains more than 15 Specifics.',
-                            'Description' => 'The product with the ForeignId: (.+) contains more than 15 Specifics. eBay only supports 15 Specifics. So you only will see 15 Specifics on eBay.',
+                            'Description' => 'The product contains more than 15 Specifics. eBay only supports 15 Specifics. So you only will see 15 Specifics on eBay.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -2170,12 +2179,12 @@ commodo consequat.</dd>
                         [
                             'ForeignId' => $this->getGUID(),
                             'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_3.jpg',
-                            'Type' => 2,
+                            'Type' => 3,
                         ],
                         [
                             'ForeignId' => $this->getGUID(),
                             'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_4.jpg',
-                            'Type' => 2,
+                            'Type' => 4,
                         ],
                     ],
                     'Specifics' => [
@@ -2194,16 +2203,6 @@ commodo consequat.</dd>
                     'StatusCode' => 201,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'Messages' => [
-                        [
-                            'Code' => 6006,
-                            'Severity' => 1,
-                            'Message' => 'Contains more than 15 Specifics.',
-                            'Description' => 'The product with the ForeignId: (.+) contains more than 15 Specifics. eBay only supports 15 Specifics. So you only will see 15 Specifics on eBay.',
-                            'UserHelpLink' => '',
-                            'DeveloperHelpLink' => '',
-                        ],
-                    ],
                 ],
             ],
         ];
