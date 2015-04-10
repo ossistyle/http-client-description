@@ -6,7 +6,7 @@ return [
             'endpoint' => '{region}.via.de',
         ],
         'local/blackbox' => [
-            'endpoint' => 'local.via.de/WebApi/',
+            'endpoint' => 'local.via.de/WebApi/api/',
         ],
         'sandbox/blackbox' => [
             'endpoint' => 'sandboxapi.via.de:8001',
