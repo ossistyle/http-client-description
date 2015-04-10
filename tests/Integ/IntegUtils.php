@@ -109,7 +109,7 @@ trait IntegUtils
         return $_SERVER['PREFIX'];
     }
 
-    public function getGUID()
+    public static function getGUID()
     {
         if (function_exists('com_create_guid')) {
             return com_create_guid();
