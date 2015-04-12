@@ -36,7 +36,7 @@ trait IntegUtils
         return $result;
     }
 
-    private function createClient ($args = [])
+    protected function createClient ($args = [])
     {
         $client = $this->getSdk()->createBlackbox($args);
         // create a log channel
