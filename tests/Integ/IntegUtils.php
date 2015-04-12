@@ -74,12 +74,12 @@ trait IntegUtils
                     $expected
                 );
                 break;
-            case 'Message':
+            case 'Messages':
                 $string = sprintf(
                     self::$errorMessage,
                     $method,
                     $assertType,
-                    '['.$additional.']',
+                    (!empty($additional)) ? '['.$additional.']' : '',
                     $actual,
                     'Message',
                     $expected

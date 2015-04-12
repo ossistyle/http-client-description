@@ -56,6 +56,17 @@ class BlackboxClientProductSmokeTest extends AbstractTestCase
             );
 
             if (isset($expectedResponse['Messages'])) {
+                $this->assertEquals(
+                    count($expectedResponse['Messages']),
+                    count($response->search('Messages')),
+                    self::getCustomErrorMessage(
+                        $expectedResponse['FunctionName'],
+                        'Messages',
+                        count($expectedResponse['Messages']),
+                        count($response->search('Messages'))
+                    )
+                );
+
                 foreach ($expectedResponse['Messages'] as $counter => $message) {
                     foreach ($message as $name => $value) {
                         if ($name === 'Message' || $name === 'Description') {
@@ -76,7 +87,7 @@ class BlackboxClientProductSmokeTest extends AbstractTestCase
                                 $response->search('Messages['.$counter.'].' . $name),
                                 self::getCustomErrorMessage(
                                     $expectedResponse['FunctionName'],
-                                    'Message',
+                                    'Messages',
                                     $value,
                                     $response->search('Messages['.$counter.'].' . $name),
                                     'Messages['.$counter.'].' . $name
@@ -85,6 +96,18 @@ class BlackboxClientProductSmokeTest extends AbstractTestCase
                         }
                     }
                 }
+            } else {
+                $this->assertEquals(
+                    count($response->search('Messages')),
+                    0,
+                    self::getCustomErrorMessage(
+                        $expectedResponse['FunctionName'],
+                        'Messages',
+                        'more Entry than',
+                        '',
+                        '0'
+                    )
+                );
             }
 
         } catch (BlackboxException $e) {
@@ -117,6 +140,17 @@ class BlackboxClientProductSmokeTest extends AbstractTestCase
             );
 
             if (isset($expectedResponse['Messages'])) {
+                $this->assertEquals(
+                    count($expectedResponse['Messages']),
+                    count($response->search('Messages')),
+                    self::getCustomErrorMessage(
+                        $expectedResponse['FunctionName'],
+                        'Messages',
+                        count($expectedResponse['Messages']),
+                        count($response->search('Messages'))
+                    )
+                );
+
                 foreach ($expectedResponse['Messages'] as $counter => $message) {
                     foreach ($message as $name => $value) {
                         if ($name === 'Message' || $name === 'Description') {
@@ -125,7 +159,7 @@ class BlackboxClientProductSmokeTest extends AbstractTestCase
                                 $response->search('Messages['.$counter.'].' . $name),
                                 self::getCustomErrorMessage(
                                     $expectedResponse['FunctionName'],
-                                    'Message',
+                                    'Messages',
                                     $value,
                                     $response->search('Messages['.$counter.'].' . $name),
                                     'Messages['.$counter.'].' . $name
@@ -137,7 +171,7 @@ class BlackboxClientProductSmokeTest extends AbstractTestCase
                                 $response->search('Messages['.$counter.'].' . $name),
                                 self::getCustomErrorMessage(
                                     $expectedResponse['FunctionName'],
-                                    'Message',
+                                    'Messages',
                                     $value,
                                     $response->search('Messages['.$counter.'].' . $name),
                                     'Messages['.$counter.'].' . $name
@@ -146,10 +180,22 @@ class BlackboxClientProductSmokeTest extends AbstractTestCase
                         }
                     }
                 }
+            } else {
+                $this->assertEquals(
+                    count($response->search('Messages')),
+                    0,
+                    self::getCustomErrorMessage(
+                        $expectedResponse['FunctionName'],
+                        'Messages',
+                        'more Entry than',
+                        '',
+                        '0'
+                    )
+                );
             }
 
         } catch (\Exception $e) {
-            $his->fail('Failed with php Exception');
+            $this->fail('Failed with php Exception' . $e->getMessage());
         }
     }
 
