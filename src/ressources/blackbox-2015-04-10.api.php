@@ -114,6 +114,19 @@ return [
             ],
 
         ],
+        'CreateLink' => [
+            'name' => 'CreateLink',
+            'http' => [
+              'method' => 'POST',
+              'requestUri' => 'Products/{productForeignId}/CreateLink/{catalogForeignId}',
+            ],
+            'input' => [
+              'shape' => 'ProductCreateLinkInput',
+            ],
+            'output' => [
+              'shape' => 'ProductCreateLinkOutput',
+            ],
+        ],
         'ReviseInventory' => [
             'name' => 'ReviseInventory',
             'http' => [
@@ -363,6 +376,38 @@ return [
                      'shape' => 'Paging',
                  ],
              ],
+        ],
+
+        'ProductCreateLinkInput' => [
+            'type' => 'structure',
+            'members' => [
+                'productForeignId' => [
+                    'shape' => 'StringNoMinMax',
+                    'location' => 'uri',
+                    'locationName' => 'productForeignId',
+                ],
+                'catalogForeignId' => [
+                    'shape' => 'Float',
+                    'location' => 'uri',
+                    'locationName' => 'catalogForeignId',
+                ],
+            ],
+            'required' => [
+                'productForeignId',
+                'catalogForeignId',
+            ],
+        ],
+
+        'ProductCreateLinkOutput' => [
+            'type' => 'structure',
+            'members' => [
+                'EntityList' =>  [
+                  'shape' => 'ProductList',
+                ],
+                'Messages' =>  [
+                    'shape' => 'MessageList',
+                ],
+            ],
         ],
 
         'PostProductOutput' => [
