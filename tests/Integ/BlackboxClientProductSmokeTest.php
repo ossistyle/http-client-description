@@ -11,7 +11,8 @@ use Monolog\Handler\StreamHandler;
  */
 class BlackboxClientProductSmokeTest extends BlackboxClientAbstractTestCase
 {
-
+    use ProductDataProvider,
+        ProductVariationDataProvider;
 
     /**
      * @dataProvider productData
@@ -20,7 +21,8 @@ class BlackboxClientProductSmokeTest extends BlackboxClientAbstractTestCase
         $product,
         $expectedResponse
     ) {
-        $this->postProductValidation($product, $expectedResponse);
+        $this->expectedResponse = $expectedResponse;
+        $this->validate('postProduct', $product);
     }
 
 
@@ -31,135 +33,9 @@ class BlackboxClientProductSmokeTest extends BlackboxClientAbstractTestCase
         $product,
         $expectedResponse
     ) {
-        $client = $this->createClient();
+        $this->expectedResponse = $expectedResponse;
 
-        // // create a log channel
-        // $log = new Logger('blackbox');
-        // $log->pushHandler(new StreamHandler('/tmp/your.log', Logger::DEBUG, true, 0777));
-        // $subscriber = new LogSubscriber($log);
-        // $client->getHttpClient()->getEmitter()->attach($subscriber);
-
-        try {
-            $response = $client->postProduct($product);
-
-            $this->assertSame(
-                $expectedResponse['StatusCode'],
-                201,
-                self::getCustomErrorMessage(
-                    $expectedResponse['FunctionName'],
-                    'HeaderStatusCode',
-                    $expectedResponse['StatusCode'],
-                    201
-                )
-            );
-
-            $this->assertCount(
-                $expectedResponse['EntityListCount'],
-                $response->search('EntityList'),
-                self::getCustomErrorMessage(
-                    $expectedResponse['FunctionName'],
-                    'EntityList',
-                    $expectedResponse['EntityListCount'],
-                    count($response->search('EntityList'))
-                )
-            );
-
-            if (isset($expectedResponse['Messages'])) {
-                foreach ($expectedResponse['Messages'] as $counter => $message) {
-                    foreach ($message as $name => $value) {
-                        if ($name === 'Message' || $name === 'Description') {
-                            $this->assertRegExp(
-                                '/' . $value . '/',
-                                $response->search('Messages['.$counter.'].' . $name),
-                                self::getCustomErrorMessage(
-                                    $expectedResponse['FunctionName'],
-                                    'Message',
-                                    $value,
-                                    $response->search('Messages['.$counter.'].' . $name),
-                                    'Messages['.$counter.'].' . $name
-                                )
-                            );
-                        } else {
-                            $this->assertEquals(
-                                $value,
-                                $response->search('Messages['.$counter.'].' . $name),
-                                self::getCustomErrorMessage(
-                                    $expectedResponse['FunctionName'],
-                                    'Message',
-                                    $value,
-                                    $response->search('Messages['.$counter.'].' . $name),
-                                    'Messages['.$counter.'].' . $name
-                                )
-                            );
-                        }
-                    }
-                }
-            }
-
-        } catch (BlackboxException $e) {
-            $this->assertEquals(
-                $expectedResponse['StatusCode'],
-                $e->getStatusCode(),
-                self::getCustomErrorMessage(
-                    $expectedResponse['FunctionName'],
-                    'HeaderStatusCode',
-                    $expectedResponse['StatusCode'],
-                    $e->getStatusCode()
-                )
-            );
-
-            $responseBody = json_decode(
-                $e->getResponse()->getBody()->__toString(),
-                true
-            );
-            $response = new Result($responseBody);
-
-            $this->assertCount(
-                $expectedResponse['EntityListCount'],
-                $response->search('EntityList'),
-                self::getCustomErrorMessage(
-                    $expectedResponse['FunctionName'],
-                    'EntityList',
-                    $expectedResponse['EntityListCount'],
-                    count($response->search('EntityList'))
-                )
-            );
-
-            if (isset($expectedResponse['Messages'])) {
-                foreach ($expectedResponse['Messages'] as $counter => $message) {
-                    foreach ($message as $name => $value) {
-                        if ($name === 'Message' || $name === 'Description') {
-                            $this->assertRegExp(
-                                '/' . $value . '/',
-                                $response->search('Messages['.$counter.'].' . $name),
-                                self::getCustomErrorMessage(
-                                    $expectedResponse['FunctionName'],
-                                    'Message',
-                                    $value,
-                                    $response->search('Messages['.$counter.'].' . $name),
-                                    'Messages['.$counter.'].' . $name
-                                )
-                            );
-                        } else {
-                            $this->assertEquals(
-                                $value,
-                                $response->search('Messages['.$counter.'].' . $name),
-                                self::getCustomErrorMessage(
-                                    $expectedResponse['FunctionName'],
-                                    'Message',
-                                    $value,
-                                    $response->search('Messages['.$counter.'].' . $name),
-                                    'Messages['.$counter.'].' . $name
-                                )
-                            );
-                        }
-                    }
-                }
-            }
-
-        } catch (\Exception $e) {
-            $his->fail('Failed with php Exception');
-        }
+        $this->postProductValidation($product);
     }
 
     /**
@@ -169,135 +45,9 @@ class BlackboxClientProductSmokeTest extends BlackboxClientAbstractTestCase
         $product,
         $expectedResponse
     ) {
-        $client = $this->createClient(['profile' => 'integ-sandbox-external-user']);
+        $this->expectedResponse = $expectedResponse;
 
-        // // create a log channel
-        // $log = new Logger('blackbox');
-        // $log->pushHandler(new StreamHandler('/tmp/your.log', Logger::DEBUG, true, 0777));
-        // $subscriber = new LogSubscriber($log);
-        // $client->getHttpClient()->getEmitter()->attach($subscriber);
-
-        try {
-            $response = $client->postProduct($product);
-
-            $this->assertSame(
-                $expectedResponse['StatusCode'],
-                201,
-                self::getCustomErrorMessage(
-                    $expectedResponse['FunctionName'],
-                    'HeaderStatusCode',
-                    $expectedResponse['StatusCode'],
-                    201
-                )
-            );
-
-            $this->assertCount(
-                $expectedResponse['EntityListCount'],
-                $response->search('EntityList'),
-                self::getCustomErrorMessage(
-                    $expectedResponse['FunctionName'],
-                    'EntityList',
-                    $expectedResponse['EntityListCount'],
-                    count($response->search('EntityList'))
-                )
-            );
-
-            if (isset($expectedResponse['Messages'])) {
-                foreach ($expectedResponse['Messages'] as $counter => $message) {
-                    foreach ($message as $name => $value) {
-                        if ($name === 'Message' || $name === 'Description') {
-                            $this->assertRegExp(
-                                '/' . $value . '/',
-                                $response->search('Messages['.$counter.'].' . $name),
-                                self::getCustomErrorMessage(
-                                    $expectedResponse['FunctionName'],
-                                    'Message',
-                                    $value,
-                                    $response->search('Messages['.$counter.'].' . $name),
-                                    'Messages['.$counter.'].' . $name
-                                )
-                            );
-                        } else {
-                            $this->assertEquals(
-                                $value,
-                                $response->search('Messages['.$counter.'].' . $name),
-                                self::getCustomErrorMessage(
-                                    $expectedResponse['FunctionName'],
-                                    'Message',
-                                    $value,
-                                    $response->search('Messages['.$counter.'].' . $name),
-                                    'Messages['.$counter.'].' . $name
-                                )
-                            );
-                        }
-                    }
-                }
-            }
-
-        } catch (BlackboxException $e) {
-            $this->assertEquals(
-                $expectedResponse['StatusCode'],
-                $e->getStatusCode(),
-                self::getCustomErrorMessage(
-                    $expectedResponse['FunctionName'],
-                    'HeaderStatusCode',
-                    $expectedResponse['StatusCode'],
-                    $e->getStatusCode()
-                )
-            );
-
-            $responseBody = json_decode(
-                $e->getResponse()->getBody()->__toString(),
-                true
-            );
-            $response = new Result($responseBody);
-
-            $this->assertCount(
-                $expectedResponse['EntityListCount'],
-                $response->search('EntityList'),
-                self::getCustomErrorMessage(
-                    $expectedResponse['FunctionName'],
-                    'EntityList',
-                    $expectedResponse['EntityListCount'],
-                    count($response->search('EntityList'))
-                )
-            );
-
-            if (isset($expectedResponse['Messages'])) {
-                foreach ($expectedResponse['Messages'] as $counter => $message) {
-                    foreach ($message as $name => $value) {
-                        if ($name === 'Message' || $name === 'Description') {
-                            $this->assertRegExp(
-                                '/' . $value . '/',
-                                $response->search('Messages['.$counter.'].' . $name),
-                                self::getCustomErrorMessage(
-                                    $expectedResponse['FunctionName'],
-                                    'Message',
-                                    $value,
-                                    $response->search('Messages['.$counter.'].' . $name),
-                                    'Messages['.$counter.'].' . $name
-                                )
-                            );
-                        } else {
-                            $this->assertEquals(
-                                $value,
-                                $response->search('Messages['.$counter.'].' . $name),
-                                self::getCustomErrorMessage(
-                                    $expectedResponse['FunctionName'],
-                                    'Message',
-                                    $value,
-                                    $response->search('Messages['.$counter.'].' . $name),
-                                    'Messages['.$counter.'].' . $name
-                                )
-                            );
-                        }
-                    }
-                }
-            }
-
-        } catch (\Exception $e) {
-            $his->fail('Failed with php Exception');
-        }
+        $this->postProductValidation($product);
     }
 
     // /**

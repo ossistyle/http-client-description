@@ -36,7 +36,7 @@ trait IntegUtils
         return $result;
     }
 
-    protected function createClient ($args = [])
+    protected function createClient($args = [])
     {
         $client = $this->getSdk()->createBlackbox($args);
         // create a log channel
@@ -48,7 +48,7 @@ trait IntegUtils
         return $client;
     }
 
-    private static function getCustomErrorMessage($method, $assertType, $expected, $actual, $additional = '')
+    protected static function getCustomErrorMessage($method, $assertType, $expected, $actual, $additional = '')
     {
         $string = '';
         switch($assertType) {
@@ -74,12 +74,12 @@ trait IntegUtils
                     $expected
                 );
                 break;
-            case 'Message':
+            case 'Messages':
                 $string = sprintf(
                     self::$errorMessage,
                     $method,
                     $assertType,
-                    '['.$additional.']',
+                    (!empty($additional)) ? '['.$additional.']' : '',
                     $actual,
                     'Message',
                     $expected

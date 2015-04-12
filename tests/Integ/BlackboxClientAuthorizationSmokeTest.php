@@ -7,7 +7,7 @@ use GuzzleHttp\Command\Event\PreparedEvent;
 /**
  *
  */
-class BlackboxClientAuthorizationSmokeTest extends \PHPUnit_Framework_TestCase
+class BlackboxClientAuthorizationSmokeTest extends BlackboxClientAbstractTestCase
 {
     use IntegUtils;
 

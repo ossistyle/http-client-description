@@ -4,116 +4,21 @@ namespace Vws\Test\Integ;
 
 trait CatalogDataProvider
 {
-    public function catalogData()
+    public static function catalogData()
     {
         return array_merge(
-            $this->emptyName(),
-            $this->missingName(),
-            $this->greaterThanThirtyCharsName(),
-            $this->emptyForeignId(),
-            $this->missingForeignId(),
-            $this->emptyForeignIdInChildCatalogs(),
-            $this->missingForeignIdInChildCatalogs(),
-            $this->childCatalogHasRootLevelTrue()
+            self::emptyForeignId(),
+            self::missingForeignId(),
+            self::emptyForeignIdInChildCatalogs(),
+            self::missingForeignIdInChildCatalogs(),
+            self::emptyName(),
+            self::missingName(),
+            self::greaterThanThirtyCharsName(),
+            self::childCatalogHasRootLevelTrue()
         );
     }
 
-    public function emptyName()
-    {
-        return
-        [
-            [
-
-                [
-                    'Name' => '',
-                    'IsRootLevel' => true,
-                    'ForeignId' => $this->getGUID(),
-                ],
-                [
-                    'Succeeded' => false,
-                    'StatusCode' => 400,
-                    'FunctionName' => __FUNCTION__,
-                    'EntityListCount' => 0,
-                    'ReturnMessage' => 'Response contains not expected ',
-                    'Messages' => [
-                        [
-                            'Code' => 3103,
-                            'Severity' => 2,
-                            'Message' => '"Name" is empty.',
-                            'Description' => 'The value of the property "Name" cannot be empty.',
-                            'UserHelpLink' => '',
-                            'DeveloperHelpLink' => '',
-                        ],
-                    ],
-                ],
-            ],
-        ];
-    }
-
-    public function missingName()
-    {
-        return
-        [
-            [
-
-                [
-                    'IsRootLevel' => true,
-                    'ForeignId' => $this->getGUID(),
-                ],
-                [
-                    'Succeeded' => false,
-                    'StatusCode' => 400,
-                    'FunctionName' => __FUNCTION__,
-                    'EntityListCount' => 0,
-                    'ReturnMessage' => 'Response contains not expected %s actual given %s',
-                    'Messages' => [
-                        [
-                            'Code' => 3103,
-                            'Severity' => 2,
-                            'Message' => '"Name" is empty.',
-                            'Description' => 'The value of the property "Name" cannot be empty.',
-                            'UserHelpLink' => '',
-                            'DeveloperHelpLink' => '',
-                        ],
-                    ],
-                ],
-            ],
-        ];
-    }
-
-    public function greaterThanThirtyCharsName()
-    {
-        return
-        [
-            [
-
-                [
-                    'Name' => 'This Catalog.Name is greater than thirty chars',
-                    'IsRootLevel' => true,
-                    'ForeignId' => $this->getGUID(),
-                ],
-                [
-                    'Succeeded' => true,
-                    'StatusCode' => 201,
-                    'FunctionName' => __FUNCTION__,
-                    'EntityListCount' => 1,
-                    'ReturnMessage' => 'Response contains not expected ',
-                    'Messages' => [
-                        [
-                            'Code' => 3102,
-                            'Severity' => 1,
-                            'Message' => 'The value of the property "Name" is too long.',
-                            'Description' => 'The value of the property "Name" cannot not be longer than 30 chars because in your eBay shop you can only use 30 chars for the name of the catalog.',
-                            'UserHelpLink' => '',
-                            'DeveloperHelpLink' => '',
-                        ],
-                    ],
-                ],
-            ],
-        ];
-    }
-
-    public function emptyForeignId()
+    public static function emptyForeignId()
     {
         return
         [
@@ -132,10 +37,12 @@ trait CatalogDataProvider
                     'ReturnMessage' => 'Response contains not expected ',
                     'Messages' => [
                         [
-                            'Code' => 3102,
+                            'Code' => 3000,
                             'Severity' => 2,
-                            'Message' => 'ForeignId is empty.',
-                            'Description' => 'The ForeignId of the catalog with with the ForeignId: <EMPTY> is empty. It is recommended to send a unique ForeignId.',
+                            'Message' => 'Invalid ForeignId.',
+                            'Description' => 'The ForeignId of the catalog with '
+                                            .'the ForeignId: <EMPTY> is empty. '
+                                            .'It is recommended to send a unique ForeignId.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -145,7 +52,7 @@ trait CatalogDataProvider
         ];
     }
 
-    public function missingForeignId()
+    public static function missingForeignId()
     {
         return
         [
@@ -163,10 +70,12 @@ trait CatalogDataProvider
                     'ReturnMessage' => 'Response contains not expected ',
                     'Messages' => [
                         [
-                            'Code' => 3102,
+                            'Code' => 3000,
                             'Severity' => 2,
-                            'Message' => 'ForeignId is empty.',
-                            'Description' => 'The ForeignId of the catalog with with the ForeignId: <EMPTY> is empty. It is recommended to send a unique ForeignId.',
+                            'Message' => 'Invalid ForeignId.',
+                            'Description' => 'The ForeignId of the catalog with '
+                                            .'the ForeignId: <EMPTY> is empty. '
+                                            .'It is recommended to send a unique ForeignId.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -176,7 +85,7 @@ trait CatalogDataProvider
         ];
     }
 
-    public function emptyForeignIdInChildCatalogs()
+    public static function emptyForeignIdInChildCatalogs()
     {
         return
         [
@@ -208,10 +117,12 @@ trait CatalogDataProvider
                     'ReturnMessage' => 'Response contains not expected ',
                     'Messages' => [
                         [
-                            'Code' => 3102,
+                            'Code' => 3000,
                             'Severity' => 1,
-                            'Message' => 'ForeignId is empty.',
-                            'Description' => 'The ForeignId of the catalog with with the ForeignId: <EMPTY> is empty. It is recommended to send a unique ForeignId.',
+                            'Message' => 'Invalid ForeignId.',
+                            'Description' => 'The ForeignId of the catalog with '
+                                            .'the ForeignId: <EMPTY> is empty. '
+                                            .'It is recommended to send a unique ForeignId.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -221,7 +132,7 @@ trait CatalogDataProvider
         ];
     }
 
-    public function missingForeignIdInChildCatalogs()
+    public static function missingForeignIdInChildCatalogs()
     {
         return
         [
@@ -251,10 +162,12 @@ trait CatalogDataProvider
                     'ReturnMessage' => 'Response contains not expected ',
                     'Messages' => [
                         [
-                            'Code' => 3102,
+                            'Code' => 3000,
                             'Severity' => 1,
-                            'Message' => 'ForeignId is empty.',
-                            'Description' => 'The ForeignId of the catalog with with the ForeignId: <EMPTY> is empty. It is recommended to send a unique ForeignId.',
+                            'Message' => 'Invalid ForeignId.',
+                            'Description' => 'The ForeignId of the catalog with '
+                                            .'the ForeignId: <EMPTY> is empty. '
+                                            .'It is recommended to send a unique ForeignId.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -264,7 +177,215 @@ trait CatalogDataProvider
         ];
     }
 
-    public function childCatalogHasRootLevelTrue()
+    public static function emptyName()
+    {
+        return
+        [
+            [
+
+                [
+                    'Name' => '',
+                    'IsRootLevel' => true,
+                    'ForeignId' => self::getGUID(),
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Response contains not expected ',
+                    'Messages' => [
+                        [
+                            'Code' => 3001,
+                            'Severity' => 2,
+                            'Message' => 'Invalid Name.',
+                            'Description' => 'The \'Name\' of the catalog with '
+                                            .'the {0}: {1} cannot be empty.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public static function missingName()
+    {
+        return
+        [
+            [
+
+                [
+                    'IsRootLevel' => true,
+                    'ForeignId' => self::getGUID(),
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Response contains not expected %s actual given %s',
+                    'Messages' => [
+                        [
+                            'Code' => 3001,
+                            'Severity' => 2,
+                            'Message' => 'Invalid Name.',
+                            'Description' => 'The \'Name\' of the catalog with '
+                                            .'the {0}: {1} cannot be empty.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public static function nullName()
+    {
+        return
+        [
+            [
+
+                [
+                    'Name' => null,
+                    'IsRootLevel' => true,
+                    'ForeignId' => self::getGUID(),
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Response contains not expected %s actual given %s',
+                    'Messages' => [
+                        [
+                            'Code' => 3001,
+                            'Severity' => 2,
+                            'Message' => 'Invalid Name.',
+                            'Description' => 'The \'Name\' of the catalog with '
+                                            .'the {0}: {1} cannot be empty.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public static function greaterThanThirtyCharsName()
+    {
+        return
+        [
+            [
+
+                [
+                    'Name' => '1 This Catalog.Name is greater than thirty chars',
+                    'IsRootLevel' => true,
+                    'ForeignId' => self::getGUID(),
+                    'ChildCatalogs' => [
+                        [
+                            'Name' => '1.1 This Catalog.Name is greater than thirty chars',
+                            'IsRootLevel' => false,
+                            'ForeignId' => self::getGUID(),
+                            'ChildCatalogs' => [
+                                [
+                                    'Name' => '1.1.1 This Catalog.Name is greater than thirty chars',
+                                    'IsRootLevel' => false,
+                                    'ForeignId' => self::getGUID(),
+                                ],
+                                [
+                                    'Name' => '1.1.2 This Catalog.Name is greater than thirty chars',
+                                    'IsRootLevel' => false,
+                                    'ForeignId' => self::getGUID(),
+                                ]
+                            ]
+                        ],
+                        [
+                            'Name' => '1.2 This Catalog.Name is greater than thirty chars',
+                            'IsRootLevel' => false,
+                            'ForeignId' => self::getGUID(),
+                        ]
+                    ]
+                ],
+                [
+                    'Succeeded' => true,
+                    'StatusCode' => 201,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
+                    'ReturnMessage' => 'Response contains not expected ',
+                    'Messages' => [
+                        [
+                            'Code' => 3002,
+                            'Severity' => 1,
+                            'Message' => 'Name is too long.',
+                            'Description' => 'The \'Name\' of the catalog with '
+                                            .'the {0}: {1} cannot not be longer '
+                                            .'than 30 chars, because in your eBay '
+                                            .'shop you can only use 30 chars for '
+                                            .'the name of the catalog.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                        [
+                            'Code' => 3002,
+                            'Severity' => 1,
+                            'Message' => 'Name is too long.',
+                            'Description' => 'The \'Name\' of the catalog with '
+                                            .'the {0}: {1} cannot not be longer '
+                                            .'than 30 chars, because in your eBay '
+                                            .'shop you can only use 30 chars for '
+                                            .'the name of the catalog.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                        [
+                            'Code' => 3002,
+                            'Severity' => 1,
+                            'Message' => 'Name is too long.',
+                            'Description' => 'The \'Name\' of the catalog with '
+                                            .'the {0}: {1} cannot not be longer '
+                                            .'than 30 chars, because in your eBay '
+                                            .'shop you can only use 30 chars for '
+                                            .'the name of the catalog.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                        [
+                            'Code' => 3002,
+                            'Severity' => 1,
+                            'Message' => 'Name is too long.',
+                            'Description' => 'The \'Name\' of the catalog with '
+                                            .'the {0}: {1} cannot not be longer '
+                                            .'than 30 chars, because in your eBay '
+                                            .'shop you can only use 30 chars for '
+                                            .'the name of the catalog.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                        [
+                            'Code' => 3002,
+                            'Severity' => 1,
+                            'Message' => 'Name is too long.',
+                            'Description' => 'The \'Name\' of the catalog with '
+                                            .'the {0}: {1} cannot not be longer '
+                                            .'than 30 chars, because in your eBay '
+                                            .'shop you can only use 30 chars for '
+                                            .'the name of the catalog.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+
+
+    public static function childCatalogHasRootLevelTrue()
     {
         return
         [
@@ -286,14 +407,14 @@ trait CatalogDataProvider
                     'Succeeded' => true,
                     'StatusCode' => 201,
                     'FunctionName' => __FUNCTION__,
-                    'EntityListCount' => 1,
+                    'EntityListCount' => 0,
                     'ReturnMessage' => 'Response contains not expected ',
                     'Messages' => [
                         [
-                            'Code' => 3105,
+                            'Code' => 3003,
                             'Severity' => 1,
-                            'Message' => 'The value of the property "IsRootLevel" was changed to false.',
-                            'Description' => 'One or more requested childCatalog have the property "IsRootLevel" set to "true". We changed the value to false.',
+                            'Message' => 'One ChildCatalogs has \'IsRootLevel\' : true defined.',
+                            'Description' => 'The ChildCatalogs with [0} : {1} has \'IsRootLevel\' : true defined. This value was changed automatically to false.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
