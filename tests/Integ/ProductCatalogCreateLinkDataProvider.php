@@ -11,9 +11,6 @@ trait ProductCatalogCreateLinkDataProvider
 
     public function productCatalogCreateLinkData()
     {
-        print_r($this->buildProducts()->toArray());
-        print_r($this->productGuids);
-
         return array_merge(
             // $this->buildCatalogs()->toArray()
             []
