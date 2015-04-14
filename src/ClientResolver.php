@@ -17,6 +17,10 @@ use GuzzleHttp\Subscriber\Log\SimpleLogger;
 use GuzzleHttp\Subscriber\Retry\RetrySubscriber;
 use GuzzleHttp\Command\Subscriber\Debug;
 use GuzzleHttp\Ring\Core;
+use GuzzleHttp\Subscriber\Log\LogSubscriber;
+use GuzzleHttp\Subscriber\Log\Formatter;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 /**
  * @internal Resolves a hash of client arguments to construct a client.
@@ -107,6 +111,19 @@ class ClientResolver
             'default' => true,
             'doc'     => 'Set to false to disable client-side parameter validation.',
             'fn'      => [__CLASS__, '_apply_validate'],
+        ],
+        'log' => [
+            'type'    => 'value',
+            'valid'   => ['bool'],
+            'default' => false,
+            'doc'     => 'Set to true to enable resquest/response logging.',
+            'fn'      => [__CLASS__, '_apply_logger'],
+        ],
+        'log_filename' => [
+            'type'    => 'value',
+            'valid'   => ['bool', 'string'],
+            'default' => false,
+            'doc'     => 'Path and filename for logger.',
         ],
         'debug' => [
             'type'  => 'value',
@@ -360,6 +377,19 @@ class ClientResolver
     {
         if (is_callable($value)) {
             $args['client'] = $value($args);
+        }
+    }
+
+    public static function _apply_logger($value, array &$args, EmitterInterface $em)
+    {
+        if ($value === true) {
+
+            $fileName = isset($args['log_filename']) ? $args['log_filename'] : $args['api']->getEndpointPrefix() . '_' . $args['api']->getApiVersion();
+
+            $log = new Logger($args['api']->getEndpointPrefix());
+            $log->pushHandler(new StreamHandler("/tmp/{$fileName}.log", Logger::DEBUG, true, 0777, true));
+            $subscriber = new LogSubscriber($log, Formatter::DEBUG);
+            $args['client']->getEmitter()->attach($subscriber);
         }
     }
 
