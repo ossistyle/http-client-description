@@ -22,8 +22,8 @@ class BlackboxClientPatchProductTest extends BlackboxClientAbstractTestCase
 
         $data = [
             'ForeignId' => isset($request['ForeignId']) ? $request['ForeignId'] : '',
-            'Name' => $request['Name'],
-            'Value' => $request['Value'],
+            'Name' => isset($request['Name']) ? $request['Name'] : '',
+            'Value' => isset($request['Value']) ? $request['Value'] : '',
         ];
         if (isset($request['Foo'])) {
             $data['Foo'] = $data['Foo'];
