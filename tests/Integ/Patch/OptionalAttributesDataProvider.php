@@ -24,8 +24,8 @@ trait OptionalAttributesDataProvider
             [
                 [
                     'ForeignId' => '',
-                    'Name' => '1 OptionalAttributes ' . date('y-m-d h:i:s'),
-                    'Value' => 'Lorem ipsum dolor sit amet - ' . date('y-m-d h:i:s'),
+                    'Name' => '1 OptionalAttributes ' . date('y-m-d H:i:s'),
+                    'Value' => 'Lorem ipsum dolor sit amet - ' . date('y-m-d H:i:s'),
                 ],
                 [
                     'Succeeded' => false,
@@ -44,8 +44,8 @@ trait OptionalAttributesDataProvider
         [
             [
                 [
-                    'Name' => '1 OptionalAttributes ' . date('y-m-d h:i:s'),
-                    'Value' => 'Lorem ipsum dolor sit amet - ' . date('y-m-d h:i:s'),
+                    'Name' => '1 OptionalAttributes ' . date('y-m-d H:i:s'),
+                    'Value' => 'Lorem ipsum dolor sit amet - ' . date('y-m-d H:i:s'),
                 ],
                 [
                     'Succeeded' => false,
@@ -65,8 +65,8 @@ trait OptionalAttributesDataProvider
             [
                 [
                     'ForeignId' => 'invalid_foreign_id',
-                    'Name' => '1 OptionalAttributes ' . date('y-m-d h:i:s'),
-                    'Value' => 'Lorem ipsum dolor sit amet - ' . date('y-m-d h:i:s'),
+                    'Name' => '1 OptionalAttributes ' . date('y-m-d H:i:s'),
+                    'Value' => 'Lorem ipsum dolor sit amet - ' . date('y-m-d H:i:s'),
                 ],
                 [
                     'Succeeded' => false,
@@ -86,10 +86,10 @@ trait OptionalAttributesDataProvider
             [
                 [
                     'ForeignId' => '3_optional_attribute',
-                    'Name' => '1 OptionalAttributes ' . date('y-m-d h:i:s') . ''
+                    'Name' => '3 OptionalAttributes ' . date('y-m-d H:i:s') . ' '
                             .' Name with more than 255 chars, '
                             . self::randStrGen(255),
-                    'Value' => 'Lorem ipsum dolor sit amet - ' . date('y-m-d h:i:s'),
+                    'Value' => 'Lorem ipsum dolor sit amet - ' . date('y-m-d H:i:s'),
                 ],
                 [
                     'Succeeded' => false,
@@ -122,8 +122,8 @@ trait OptionalAttributesDataProvider
             [
                 [
                     'ForeignId' => '3_optional_attribute',
-                    'Name' => '1 OptionalAttributes ' . date('y-m-d h:i:s'),
-                    'Value' => 'Lorem ipsum dolor sit amet - ' . date('y-m-d h:i:s') .''
+                    'Name' => '3 OptionalAttributes ' . date('y-m-d H:i:s'),
+                    'Value' => 'Lorem ipsum dolor sit amet - ' . date('y-m-d H:i:s') .' '
                                 . self::randStrGen(4000),
                 ],
                 [
@@ -157,9 +157,9 @@ trait OptionalAttributesDataProvider
             [
                 [
                     'ForeignId' => '3_optional_attribute',
-                    'Name' => '1 OptionalAttributes ' . date('y-m-d h:i:s') .''
+                    'Name' => '3 OptionalAttributes ' . date('y-m-d H:i:s') .' '
                                 . self::randStrGen(255),
-                    'Value' => 'Lorem ipsum dolor sit amet - ' . date('y-m-d h:i:s') .''
+                    'Value' => 'Lorem ipsum dolor sit amet - ' . date('y-m-d H:i:s') .' '
                                 . self::randStrGen(4000),
                 ],
                 [
@@ -204,8 +204,8 @@ trait OptionalAttributesDataProvider
             [
                 [
                     'ForeignId' => '3_optional_attribute',
-                    'Name' => '1 OptionalAttributes ' . date('y-m-d h:i:s'),
-                    'Value' => 'Lorem ipsum dolor sit amet - ' . date('y-m-d h:i:s'),
+                    'Name' => '3 OptionalAttributes ' . date('y-m-d H:i:s'),
+                    'Value' => 'Lorem ipsum dolor sit amet - ' . date('y-m-d H:i:s'),
                     'Foo' => 'Baz'
                 ],
                 [
