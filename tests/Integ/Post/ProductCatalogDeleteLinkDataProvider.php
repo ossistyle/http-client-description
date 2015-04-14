@@ -1,6 +1,6 @@
 <?php
 
-namespace Vws\Test\Integ;
+namespace Vws\Test\Integ\Post;
 
 use GuzzleHttp\Collection;
 

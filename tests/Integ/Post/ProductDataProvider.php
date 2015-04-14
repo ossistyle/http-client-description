@@ -1,10 +1,10 @@
 <?php
 
-namespace Vws\Test\Integ;
+namespace Vws\Test\Integ\Post;
 
-trait PostProductDataProvider
+trait ProductDataProvider
 {
-    public static function postProductData()
+    public static function productData()
     {
         return array_merge(
             self::emptyForeignId(),

@@ -1,11 +1,14 @@
 <?php
 
-namespace Vws\Test\Integ;
+namespace Vws\Test\Integ\Get;
+
+use Vws\Test\Integ\BlackboxClientAbstractTestCase;
+use Vws\Test\Integ\IntegUtils;
 
 /**
  *
  */
-class BlackboxClientSalesOrderSmokeTest extends \PHPUnit_Framework_TestCase
+class BlackboxClientGetSalesOrderTest extends BlackboxClientAbstractTestCase
 {
     use IntegUtils;
 

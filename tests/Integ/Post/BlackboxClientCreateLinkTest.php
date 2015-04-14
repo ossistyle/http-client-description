@@ -1,8 +1,10 @@
 <?php
 
-namespace Vws\Test\Integ;
+namespace Vws\Test\Integ\Post;
 
-class BlackboxClientCreateLinkTest extends BlackboxClientAbstractTestCase
+use Vws\Test\Integ\BlackboxClientAbstractTestCase;
+
+class BlackboxClientPostCreateLinkTest extends BlackboxClientAbstractTestCase
 {
     use ProductCatalogCreateLinkDataProvider;
 
@@ -24,7 +26,7 @@ class BlackboxClientCreateLinkTest extends BlackboxClientAbstractTestCase
     /**
      * @dataProvider customAssignment
      */
-    public function testCreateLinkCustomAssignment($catalog, $product, $expectedResponse)
+    public function _testCreateLinkCustomAssignment($catalog, $product, $expectedResponse)
     {
         $this->expectedResponse = $expectedResponse;
 

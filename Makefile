@@ -19,3 +19,12 @@ view-docs:
 
 integ:
 	vendor/bin/phpunit --debug --testsuite=integ
+
+integ-post:
+	vendor/bin/phpunit --debug --testsuite=integ-post
+
+integ-patch:
+	vendor/bin/phpunit --debug --testsuite=integ-patch
+
+integ-get:
+	vendor/bin/phpunit --debug --testsuite=integ-get

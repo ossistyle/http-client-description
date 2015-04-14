@@ -1,23 +1,23 @@
 <?php
 
-namespace Vws\Test\Integ;
+namespace Vws\Test\Integ\Patch;
 
-trait PatchOptionalAttributesDataProvider
+trait OptionalAttributesDataProvider
 {
-    public static function patchOptionalAttributesData()
+    public static function optionalAttributesData()
     {
         return array_merge(
-            self::patchEmptyOptionalAttributesForeignId(),
-            self::patchMissingOptionalAttributesForeignId(),
-            self::patchInvalidOptionalAttributesForeignId(),
+            self::emptyOptionalAttributesForeignId(),
+            self::missingOptionalAttributesForeignId(),
+            self::invalidOptionalAttributesForeignId(),
             // too long
-            self::patchTooLongOptionalAttributesName(),
-            self::patchTooLongOptionalAttributesValue(),
-            self::patchTooLongOptionalAttributesNameAndValue()
+            self::tooLongOptionalAttributesName(),
+            self::tooLongOptionalAttributesValue(),
+            self::tooLongOptionalAttributesNameAndValue()
         );
     }
 
-    public static function patchEmptyOptionalAttributesForeignId()
+    public static function emptyOptionalAttributesForeignId()
     {
         return
         [
@@ -38,7 +38,7 @@ trait PatchOptionalAttributesDataProvider
         ];
     }
 
-    public static function patchMissingOptionalAttributesForeignId()
+    public static function missingOptionalAttributesForeignId()
     {
         return
         [
@@ -58,7 +58,7 @@ trait PatchOptionalAttributesDataProvider
         ];
     }
 
-    public static function patchInvalidOptionalAttributesForeignId()
+    public static function invalidOptionalAttributesForeignId()
     {
         return
         [
@@ -79,7 +79,7 @@ trait PatchOptionalAttributesDataProvider
         ];
     }
 
-    public static function patchTooLongOptionalAttributesName()
+    public static function tooLongOptionalAttributesName()
     {
         return
         [
@@ -115,7 +115,7 @@ trait PatchOptionalAttributesDataProvider
         ];
     }
 
-    public static function patchTooLongOptionalAttributesValue()
+    public static function tooLongOptionalAttributesValue()
     {
         return
         [
@@ -150,7 +150,7 @@ trait PatchOptionalAttributesDataProvider
         ];
     }
 
-    public static function patchTooLongOptionalAttributesNameAndValue()
+    public static function tooLongOptionalAttributesNameAndValue()
     {
         return
         [
@@ -197,7 +197,7 @@ trait PatchOptionalAttributesDataProvider
         ];
     }
 
-    public static function patchUnknowsOptionalAttributesProperty()
+    public static function unknowsOptionalAttributesProperty()
     {
         return
         [

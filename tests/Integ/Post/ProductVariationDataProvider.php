@@ -1,11 +1,11 @@
 <?php
 
-namespace Vws\Test\Integ;
+namespace Vws\Test\Integ\Post;
 
-trait PostProductVariationDataProvider
+trait ProductVariationDataProvider
 {
 
-    public static function postProductVariationData()
+    public static function productVariationData()
     {
         return array_merge(
             self::emptyVariations(),
