@@ -20,6 +20,8 @@ trait IntegUtils
             'profile' => 'integ-sandbox',
             'version' => 'latest',
             'scheme'  => 'http',
+            'log'     => true,
+            'log_filename' => 'blackbox-integration',
             'validate' => false,
             //'debug'   => true
         ]);
@@ -40,12 +42,6 @@ trait IntegUtils
     protected function createClient($args = [])
     {
         $client = $this->getSdk()->createBlackbox($args);
-        // create a log channel
-        $log = new Logger('blackbox');
-        $log->pushHandler(new StreamHandler('/tmp/blackbox-smoke-test.log', Logger::DEBUG, true, 0777, true));
-        $subscriber = new LogSubscriber($log, Formatter::DEBUG);
-        $client->getHttpClient()->getEmitter()->attach($subscriber);
-
         return $client;
     }
 
@@ -90,7 +86,7 @@ trait IntegUtils
 
         return $string;
     }
-    
+
     public static function getGUID()
     {
         if (function_exists('com_create_guid')) {
