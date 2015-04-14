@@ -19,4 +19,7 @@ src/package.xml
 nbproject
 .htaccess
 index.php
+patch.php
+batch.php
+functions.php
 /.vws/
