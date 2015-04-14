@@ -11,43 +11,72 @@ use Monolog\Handler\StreamHandler;
  */
 class BlackboxClientProductSmokeTest extends BlackboxClientAbstractTestCase
 {
-    use ProductDataProvider,
-        ProductVariationDataProvider;
+    use PostProductDataProvider,
+        PostProductVariationDataProvider,
+        PatchOptionalAttributesDataProvider;
 
     /**
-     * @dataProvider productData
+     * @dataProvider postProductData
      */
     public function testPostProductValidation(
         $product,
         $expectedResponse
     ) {
         $this->expectedResponse = $expectedResponse;
-        $this->validate('postProduct', $product);
+        $this->postValidation('postProduct', $product);
     }
 
 
     /**
-     * #dataProvider productVariationData
+     * @dataProvider postProductVariationData
      */
-    public function _testPostProductVariationValidation(
+    public function testPostProductVariationValidation(
         $product,
         $expectedResponse
     ) {
         $this->expectedResponse = $expectedResponse;
+        //unset($product['StockAmount']);
+        //unset($product['Price']);
+        $product['StockAmount'] = 1;
+        $product['Price'] = 1.23;
+        $this->postValidation('postProduct', $product);
+    }
 
-        $this->postProductValidation($product);
+    /**
+     * @dataProvider patchOptionalAttributesData
+     */
+    public function testPatchOptionalAttributesValidation(
+        $request,
+        $expectedResponse
+    ) {
+        $this->expectedResponse = $expectedResponse;
+
+        $data = [
+            'ForeignId' => isset($request['ForeignId']) ? $request['ForeignId'] : '',
+            'Name' => $request['Name'],
+            'Value' => $request['Value'],
+        ];
+        if (isset($request['Foo'])) {
+            $data['Foo'] = $data['Foo'];
+        }
+
+        $this->patchValidation(
+            'patchOptionalAttributes',
+            $data
+        );
     }
 
     /**
      * #dataProvider productDataForExternalUser
      */
-    public function _testPostProductValidationForExternalUser(
+    public function postProductValidationForExternalUser(
         $product,
         $expectedResponse
     ) {
         $this->expectedResponse = $expectedResponse;
-
-        $this->postProductValidation($product);
+        unset($product['StockAmount']);
+        unset($product['Price']);
+        $this->postValidation('postProduct', $product);
     }
 
     // /**

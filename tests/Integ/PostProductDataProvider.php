@@ -2,13 +2,18 @@
 
 namespace Vws\Test\Integ;
 
-trait ProductDataProvider
+trait PostProductDataProvider
 {
-    public static function productData()
+    public static function postProductData()
     {
         return array_merge(
             self::emptyForeignId(),
             self::missingForeignId(),
+            self::emptyTitle(),
+            self::missingTitle(),
+            self::nullTitle(),
+            self::greaterThan80CharsTitle(),
+            self::shorterThan3CharsTitle(),
             self::emptyStockAmount(),
             self::missingStockAmount(),
             self::zeroStockAmount(),
@@ -166,6 +171,257 @@ trait ProductDataProvider
                             'Severity' => 1,
                             'Message' => 'ForeignId is empty.',
                             'Description' => 'The ForeignId of the product with with the title ForeignId: <EMPTY> is empty. It is recommended to send a unique ForeignId.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+
+        ];
+    }
+
+    public static function emptyTitle()
+    {
+        return
+        [
+            [
+
+                [
+                    'ForeignId' => self::getGUID(),
+                    'Title' => '',
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'StockAmount' => 10,
+                    'Images' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
+                    'Messages' => [
+                        [
+                            'Code' => 4000,
+                            'Severity' => 2,
+                            'Message' => 'Title is empty.',
+                            'Description' => 'The title of the product with the (.+): (.+) cannot be empty.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+
+        ];
+    }
+
+    public static function missingTitle()
+    {
+        return
+        [
+            [
+
+                [
+                    'ForeignId' => self::getGUID(),
+                    //'Title' => '',
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'StockAmount' => 10,
+                    'Images' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
+                    'Messages' => [
+                        [
+                            'Code' => 4000,
+                            'Severity' => 2,
+                            'Message' => 'Title is empty.',
+                            'Description' => 'The title of the product with the (.+): (.+) cannot be empty.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+
+        ];
+    }
+
+    public static function nullTitle()
+    {
+        return
+        [
+            [
+
+                [
+                    'ForeignId' => self::getGUID(),
+                    'Title' => null,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'StockAmount' => 10,
+                    'Images' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
+                    'Messages' => [
+                        [
+                            'Code' => 4000,
+                            'Severity' => 2,
+                            'Message' => 'Title is empty.',
+                            'Description' => 'The title of the product with '
+                                            .'the (.+): (.+) cannot be empty.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+
+        ];
+    }
+
+    public static function greaterThan80CharsTitle()
+    {
+        return
+        [
+            [
+
+                [
+                    'ForeignId' => self::getGUID(),
+                    'Title' => 'Integration-Smoke-Test with a title greater than eigthy chars validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'StockAmount' => 10,
+                    'Images' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 201,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
+                    'Messages' => [
+                        [
+                            'Code' => 4001,
+                            'Severity' => 1,
+                            'Message' => 'Title is too long.',
+                            'Description' => 'The title of the product with '
+                                            .'the (.+): (.+) is too long. '
+                                            .'The title has been truncated by 80 chars.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+
+        ];
+    }
+
+    public static function shorterThan3CharsTitle()
+    {
+        return
+        [
+            [
+
+                [
+                    'ForeignId' => self::getGUID(),
+                    'Title' => 'ba',
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'StockAmount' => 10,
+                    'Images' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
+                    'Messages' => [
+                        [
+                            'Code' => 4002,
+                            'Severity' => 2,
+                            'Message' => 'Title is too short.',
+                            'Description' => 'The title of the product with '
+                                            .'the (.+): (.+) is too short. '
+                                            .'Please verify to send a title with '
+                                            .'more than 3 chars and lower equal than 80 chars.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -3868,9 +4124,9 @@ trait ProductDataProvider
                             'Code' => 7002,
                             'Severity' => 2,
                             'Message' => 'OptionalProductAttributes.Value is empty.',
-                            'Description' => 'The \'Value\' of the
-                                                OptionalProductAttributes with (.+): (.+)
-                                                is empty.',
+                            'Description' => 'Product (.+): The \'Value\' of the '
+                                            .'OptionalProductAttributes with '
+                                            .'(.+): (.+) is empty.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -4017,9 +4273,9 @@ trait ProductDataProvider
                             'Code' => 7002,
                             'Severity' => 2,
                             'Message' => 'OptionalProductAttributes.Value is empty.',
-                            'Description' => 'The \'Value\' of the
-                                                OptionalProductAttributes with (.+): (.+)
-                                                is empty.',
+                            'Description' => 'Product (.+): The \'Value\' of the '
+                                            .'OptionalProductAttributes with '
+                                            .'(.+): (.+) is empty.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -4839,10 +5095,10 @@ trait ProductDataProvider
                             'Code' => 7005,
                             'Severity' => 1,
                             'Message' => 'OptionalProductAttributes.Value is too long.',
-                            'Description' => 'The \'Value\' of the '
+                            'Description' => 'Product (.+): The \'Value\' of the '
                                             .'OptionalProductAttributes with '
-                                            .'(.+): (.+) is too long. The \'Value\' '
-                                            .'has been truncated by 4000 chars.',
+                                            .'(.+): (.+) is too long. '
+                                            .'The \'Value\' has been truncated by 4000 chars.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -5033,7 +5289,7 @@ trait ProductDataProvider
                             'Code' => 7004,
                             'Severity' => 1,
                             'Message' => 'OptionalProductAttributes.Name is too long.',
-                            'Description' => 'The \'Name\' of the '
+                            'Description' => 'Product (.+): The \'Name\' of the '
                                             .'OptionalProductAttributes with '
                                             .'(.+): (.+) is too long. The \'Name\' '
                                             .'has been truncated by 255 chars.',
@@ -5044,7 +5300,7 @@ trait ProductDataProvider
                             'Code' => 7005,
                             'Severity' => 1,
                             'Message' => 'OptionalProductAttributes.Value is too long.',
-                            'Description' => 'The \'Value\' of the '
+                            'Description' => 'Product (.+): The \'Value\' of the '
                                             .'OptionalProductAttributes with '
                                             .'(.+): (.+) is too long. The \'Value\' '
                                             .'has been truncated by 4000 chars.',

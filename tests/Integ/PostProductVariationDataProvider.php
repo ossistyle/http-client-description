@@ -2,14 +2,14 @@
 
 namespace Vws\Test\Integ;
 
-trait ProductVariationDataProvider
+trait PostProductVariationDataProvider
 {
 
-    public static function productVariationData()
+    public static function postProductVariationData()
     {
         return array_merge(
             self::emptyVariations(),
-            self::nullVariations(),
+            //self::nullVariations(),
             self::emptyVariationsForeignId(),
             self::nullVariationsForeignId(),
             self::emptyVariationsPrice(),
@@ -131,7 +131,11 @@ trait ProductVariationDataProvider
                             'Code' => 8000,
                             'Severity' => 1,
                             'Message' => 'Variations container is empty.',
-                            'Description' => 'The product with the (.+): (.+) is present but empty. The product will be created as a standard product.',
+                            'Description' => 'The product with the '
+                                            .'(.+): (.+) has an empty '
+                                            .'\'Variations\' container. '
+                                            .'The product will be created '
+                                            .'as a standard product.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],

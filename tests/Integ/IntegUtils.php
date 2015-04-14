@@ -15,7 +15,8 @@ trait IntegUtils
     private static function getSdk(array $args = [])
     {
         return new Sdk($args + [
-            'region'  => 'sandbox-new',
+            //'region'  => 'sandbox-new',
+            'region'  => 'local',
             'profile' => 'integ-sandbox',
             'version' => 'latest',
             'scheme'  => 'http',
@@ -24,7 +25,7 @@ trait IntegUtils
         ]);
     }
 
-    private function randStrGen($len)
+    protected static function randStrGen($len)
     {
         $result = "";
         $chars = "abcdefghijklmnopqrstuvwxyz$\_?!- 0123456789";
@@ -89,26 +90,7 @@ trait IntegUtils
 
         return $string;
     }
-
-    public static function log($message)
-    {
-        fwrite(STDERR, date('c').': '.$message."\n");
-    }
-
-    /**
-     * Get the resource prefix to add to created resources.
-     *
-     * @return string
-     */
-    public static function getResourcePrefix()
-    {
-        if (!isset($_SERVER['PREFIX']) || $_SERVER['PREFIX'] == 'hostname') {
-            $_SERVER['PREFIX'] = crc32(gethostname()).rand(0, 10000);
-        }
-
-        return $_SERVER['PREFIX'];
-    }
-
+    
     public static function getGUID()
     {
         if (function_exists('com_create_guid')) {

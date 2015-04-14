@@ -15,12 +15,12 @@ class BlackboxClientAbstractTestCase extends AbstractTestCase
      *
      * @uses    $actualResponse, $expectedResponse
      */
-    public function validate($operation, $data)
+    public function postValidation($operation, $data, $args = [])
     {
         try {
-            $this->actualResponse = $this->getResponse($operation, $data);
+            $this->actualResponse = $this->getResponse($operation, $data, $args);
 
-            $this->validateStatusCode(201);
+            $this->validateStatusCode($this->actualResponse->get('StatusCode'));
             $this->validateEntityListCount();
 
             if (isset($this->expectedResponse['Messages'])) {
@@ -31,14 +31,53 @@ class BlackboxClientAbstractTestCase extends AbstractTestCase
             }
 
         } catch (BlackboxException $e) {
-            $this->validateStatusCode(400);
 
-            $responseBody = json_decode(
-                $e->getResponse()->getBody()->__toString(),
-                true
-            );
-            $this->actualResponse = new Result($responseBody);
+            $this->validateStatusCode($e->getStatusCode());
 
+            if ($e->getResponse()) {
+                $responseBody = json_decode(
+                    $e->getResponse()->getBody()->__toString(),
+                    true
+                );
+
+                if ($responseBody !== null) {
+                    $this->actualResponse = new Result($responseBody);
+                } else {
+                    $this->fail('Response Body has no Content!');
+                }
+
+                $this->validateEntityListCount();
+
+                if (isset($this->expectedResponse['Messages'])) {
+                    $this->validateMessagesNumber();
+                    $this->validateMessages();
+                } else {
+                    $this->validateMessagesNumber(false);
+                }
+            } else {
+                $this->fail('Response Body has no Content!');
+            }
+
+
+        } catch (\Exception $e) {
+            $this->fail('Failed with php Exception ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * validate response header and body by given value
+     *
+     * @param   string   $operation  Name of the operation (e.g. patchProduct)
+     * @param   array    $data       Operation data
+     *
+     * @uses    $actualResponse, $expectedResponse
+     */
+    public function patchValidation($operation, $data, $args = [])
+    {
+        try {
+            $this->actualResponse = $this->getResponse($operation, $data, $args);
+
+            $this->validateStatusCode($this->actualResponse->get('StatusCode'));
             $this->validateEntityListCount();
 
             if (isset($this->expectedResponse['Messages'])) {
@@ -47,6 +86,38 @@ class BlackboxClientAbstractTestCase extends AbstractTestCase
             } else {
                 $this->validateMessagesNumber(false);
             }
+
+        } catch (BlackboxException $e) {
+
+            $this->validateStatusCode($e->getStatusCode());
+
+            if ($e->getResponse()) {
+                $responseBody = json_decode(
+                    $e->getResponse()->getBody()->__toString(),
+                    true
+                );
+
+                if ($responseBody !== null) {
+                    $this->actualResponse = new Result($responseBody);
+                } elseif ($e->getStatusCode() != 404) {
+                    $this->fail('Response Body has Content!');
+                } else {
+                    return true;
+                }
+
+                $this->validateEntityListCount();
+
+                if (isset($this->expectedResponse['Messages'])) {
+                    $this->validateMessagesNumber();
+                    $this->validateMessages();
+                } else {
+                    $this->validateMessagesNumber(false);
+                }
+            } else {
+                $this->fail('Response Body has Content!');
+            }
+
+
 
         } catch (\Exception $e) {
             $this->fail('Failed with php Exception ' . $e->getMessage());
@@ -61,9 +132,9 @@ class BlackboxClientAbstractTestCase extends AbstractTestCase
      *
      * @return  Vws\Result
      */
-    private function getResponse($operation, $data)
+    private function getResponse($operation, $data, $args)
     {
-        return $this->client->{$operation}($data);
+        return $this->client->{$operation}($data, $args);
     }
 
     /**
@@ -86,7 +157,7 @@ class BlackboxClientAbstractTestCase extends AbstractTestCase
     }
 
     /**
-     * Assert response body EntityList number
+     * Assert expected messages number with response body EntityList number
      */
     private function validateEntityListCount()
     {

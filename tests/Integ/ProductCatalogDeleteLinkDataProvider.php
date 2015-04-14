@@ -4,12 +4,12 @@ namespace Vws\Test\Integ;
 
 use GuzzleHttp\Collection;
 
-trait ProductCatalogCreateLinkDataProvider
+trait ProductCatalogDeleteLinkDataProvider
 {
     private $catalogGuids = [];
     private $productGuids = [];
 
-    public static function productCatalogCreateLinkData()
+    public static function productCatalogDeleteLinkData()
     {
         return array_merge(
             self::emptyProductForeignId(),
@@ -19,7 +19,7 @@ trait ProductCatalogCreateLinkDataProvider
             self::emptyCatalogForeignId(),
             self::nullCatalogForeignId(),
             self::invalidCatalogForeignId(),
-            // valid assignments
+
             self::existingAssignment()
         );
     }
@@ -136,7 +136,7 @@ trait ProductCatalogCreateLinkDataProvider
                     'Messages' => [
                         [
                             'Code' => 4022,
-                            'Severity' => 2,
+                            'Severity' => 1,
                             'Message' => 'catalogForeignId is invalid.',
                             'Description' => 'The \'catalogForeignId\' cannot be empty.',
                             'UserHelpLink' => '',
@@ -167,7 +167,7 @@ trait ProductCatalogCreateLinkDataProvider
                     'Messages' => [
                         [
                             'Code' => 4022,
-                            'Severity' => 2,
+                            'Severity' => 1,
                             'Message' => 'catalogForeignId is invalid.',
                             'Description' => 'The \'catalogForeignId\' cannot be empty.',
                             'UserHelpLink' => '',
@@ -198,7 +198,7 @@ trait ProductCatalogCreateLinkDataProvider
                     'Messages' => [
                         [
                             'Code' => 4023,
-                            'Severity' => 2,
+                            'Severity' => 1,
                             'Message' => 'catalogForeignId does not exists.',
                             'Description' => 'The \'catalogForeignId\' (.+) does not exists.',
                             'UserHelpLink' => '',
@@ -229,11 +229,9 @@ trait ProductCatalogCreateLinkDataProvider
                     'Messages' => [
                         [
                             'Code' => 4024,
-                            'Severity' => 2,
+                            'Severity' => 1,
                             'Message' => 'Assignment already exists.',
-                            'Description' => 'The assignment of the product '
-                                            .'(.+): (.+) to the catalog '
-                                            .'(.+): (.+) already exists.',
+                            'Description' => 'The assignment of the product (.+): (.+) to the catalog (.+): (.+) already exists.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -243,54 +241,11 @@ trait ProductCatalogCreateLinkDataProvider
         ];
     }
 
-    public function customAssignment()
-    {
-        return
-        [
-            [
-                [
-                    $this->buildCatalog()->toArray()
-                ],
-                [
-                    $this->buildProduct()->toArray()
-                ],
-                [
-                    'Succeeded' => false,
-                    'StatusCode' => 400,
-                    'FunctionName' => __FUNCTION__,
-                    'EntityListCount' => 0,
-                    'Messages' => [
-                        [
-                            'Code' => 4024,
-                            'Severity' => 2,
-                            'Message' => 'Assignment already exists.',
-                            'Description' => 'The assignment of the product '
-                                            .'(.+): (.+) to the catalog '
-                                            .'(.+): (.+) already exists.',
-                            'UserHelpLink' => '',
-                            'DeveloperHelpLink' => '',
-                        ],
-                    ],
-                ]
-            ]
-        ];
-    }
-
-    private function buildCatalogs($number)
+    protected function buildCatalogs($number = 1)
     {
         $catalogs = new Collection();
-        $count = $number;
-        for ($i = 1; $i <= $count; $i++) {
-            $catalog = $this->buildCatalog();
-            $catalogs->add($i-1, $product->toArray());
-        }
-        return $catalogs;
-    }
-
-    protected function buildCatalog()
-    {
         $this->catalogGuids = [];
-        $count = 1;
+        $count = $number;
         for ($i = 1; $i <= $count; $i++) {
             $catalog = new Collection();
             $catalog->set('Name', 'Root ' . $i . ' with products');
@@ -327,8 +282,9 @@ trait ProductCatalogCreateLinkDataProvider
                     }
                 }
             }
+            $catalogs->add($i-1, $catalog->toArray());
         }
-        return $catalog;
+        return $catalogs;
     }
 
     private function buildProducts()
@@ -342,10 +298,10 @@ trait ProductCatalogCreateLinkDataProvider
         return $products;
     }
 
-    private function buildProduct($addVariations = false)
+    private function buildProduct()
     {
         $product = new Collection();
-        $product->set('Title', 'ProductName');
+        $product->set('Name', 'ProductName');
 
         $guid = self::getGUID();
         $this->productGuids[] = $guid;
@@ -372,11 +328,7 @@ trait ProductCatalogCreateLinkDataProvider
         $product->add('Specifics', $specifics->toArray());
 
         $randomValue = mt_rand();
-        if (($randomValue&1 && $addVariations == false) || $addVariations == true) {
-
-            $product->remove('StockAmount');
-            $product->remove('Price');
-
+        if ($randomValue&1) {
             $variations = new Collection();
             $variation = new Collection();
             $variation->set('ForeignId', self::getGUID());
