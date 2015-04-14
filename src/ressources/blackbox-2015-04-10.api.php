@@ -2,7 +2,7 @@
 
 return [
     'metadata' => [
-        'apiVersion' => '2015-03-27',
+        'apiVersion' => '2015-04-10',
         'serviceFullName' => 'Via Blackbox Service',
         'timestampFormat' => 'iso8601',
         'protocol' => 'rest-json',
@@ -20,6 +20,7 @@ return [
               'shape' => 'GetCatalogsOutput',
             ],
         ],
+
         'DeleteCatalogById' => [
             'name' => 'DeleteCatalogById',
             'http' => [
@@ -33,6 +34,7 @@ return [
               'shape' => 'GetCatalogByIdOutput',
             ],
         ],
+
         'GetCatalogById' => [
             'name' => 'GetCatalogById',
             'http' => [
@@ -46,6 +48,7 @@ return [
               'shape' => 'GetCatalogByIdOutput',
             ],
         ],
+
         'PostCatalog' => [
             'name' => 'PostCatalog',
             'http' => [
@@ -58,8 +61,8 @@ return [
             'output' => [
               'shape' => 'PostCatalogOutput',
             ],
-
         ],
+
         'PostCatalogs' => [
             'name' => 'PostCatalogs',
             'http' => [
@@ -72,8 +75,8 @@ return [
             'output' => [
               'shape' => 'PostCatalogsOutput',
             ],
-
         ],
+
         'GetProductById' => [
             'name' => 'GetProductById',
             'http' => [
@@ -87,6 +90,7 @@ return [
               'shape' => 'GetProductByIdOutput',
             ],
         ],
+
         'GetProducts' => [
             'name' => 'GetProducts',
             'http' => [
@@ -100,6 +104,7 @@ return [
               'shape' => 'GetProductsOutput',
             ],
         ],
+
         'PostProduct' => [
             'name' => 'PostProduct',
             'http' => [
@@ -112,8 +117,22 @@ return [
             'output' => [
               'shape' => 'PostProductOutput',
             ],
-
         ],
+
+        'DeleteLink' => [
+            'name' => 'DeleteLink',
+            'http' => [
+              'method' => 'POST',
+              'requestUri' => 'Products/{productForeignId}/DeleteLink/{catalogForeignId}',
+            ],
+            'input' => [
+              'shape' => 'ProductDeleteLinkInput',
+            ],
+            'output' => [
+              'shape' => 'ProductDeleteLinkOutput',
+            ],
+        ],
+
         'CreateLink' => [
             'name' => 'CreateLink',
             'http' => [
@@ -127,6 +146,7 @@ return [
               'shape' => 'ProductCreateLinkOutput',
             ],
         ],
+
         'ReviseInventory' => [
             'name' => 'ReviseInventory',
             'http' => [
@@ -140,6 +160,7 @@ return [
               'shape' => 'ReviseInventoryOutput',
             ],
         ],
+
         'GetSalesOrdersById' => [
             'name' => 'GetSalesOrdersById',
             'http' => [
@@ -153,6 +174,7 @@ return [
               'shape' => 'GetSalesOrdersByIdOutput',
             ],
         ],
+
         'GetNewSalesOrders' => [
             'name' => 'GetNewSalesOrders',
             'http' => [
@@ -166,6 +188,20 @@ return [
               'shape' => 'GetNewSalesOrdersOutput',
             ],
         ],
+
+        'PatchOptionalAttributes' => [
+            'name' => 'PatchOptionalAttributes',
+            'http' => [
+              'method' => 'PATCH',
+              'requestUri' => 'OptionalProductAttributes?ForeignId={ForeignId}',
+            ],
+            'input' => [
+              'shape' => 'PatchOptionalAttributesInput',
+            ],
+            'output' => [
+              'shape' => 'PatchOptionalAttributesOutput',
+            ],
+        ],
     ],
     /***********************************************************************
      *
@@ -176,7 +212,9 @@ return [
     'shapes' => [
 
         /**********************************
+         *
          *      CATALOGS BEGIN
+         *
          *********************************/
 
         'DeleteCatalogByIdInput' => [
@@ -191,7 +229,7 @@ return [
              'required' => [
                'Id',
              ],
-         ],
+        ],
 
         'GetCatalogByIdInput' => [
             'type' => 'structure',
@@ -313,8 +351,48 @@ return [
         ],
 
         /***************************************
+         *
          *    CATALOGS END | PRODUCTS BEGIN
+         *
          ***************************************/
+
+        'PatchOptionalAttributesInput' => [
+            'type' => 'structure',
+            'required' => [
+                'ForeignId',
+                'Name',
+                'Value',
+            ],
+            'members' => [
+                'ForeignId' => [
+                    'shape' => 'StringMax255',
+                    'location' => 'uri',
+                    'locationName' => 'ForeignId',
+                ],
+                'Name' => [
+                    'shape' => 'StringMax255',
+                ],
+                'Value' => [
+                    'shape' => 'StringMax255',
+                ],
+            ],
+        ],
+
+        'PatchOptionalAttributesOutput' => [
+             'type' => 'structure',
+             'members' => [
+                 'EntityList' =>  [
+                   'shape' => 'OptionalAttributesList',
+                 ],
+                 'Messages' =>  [
+                     'shape' => 'MessageList',
+                 ],
+                 'StatusCode' => [
+                   'shape' => 'IntegerNoMinMax',
+                   'location' => 'statusCode',
+                 ],
+             ],
+        ],
 
         'GetProductsOutput' => [
              'type' => 'structure',
@@ -345,37 +423,6 @@ return [
                   'locationName' => 'PageNumber',
                 ],
             ],
-        ],
-
-        'GetNewSalesOrdersInput' => [
-            'type' => 'structure',
-            'members' => [
-                'limit' => [
-                  'shape' => 'IntegerMin1Max100Default100',
-                  'location' => 'querystring',
-                  'locationName' => 'EntriesPerPage',
-                ],
-                'page' => [
-                  'shape' => 'IntegerMin1NoMaxDefault1',
-                  'location' => 'querystring',
-                  'locationName' => 'PageNumber',
-                ],
-            ],
-        ],
-
-        'GetNewSalesOrdersOutput' => [
-             'type' => 'structure',
-             'members' => [
-                 'EntityList' =>  [
-                   'shape' => 'SalesOrderList',
-                 ],
-                 'Messages' =>  [
-                     'shape' => 'MessageList',
-                 ],
-                 'Pagination' => [
-                     'shape' => 'Paging',
-                 ],
-             ],
         ],
 
         'ProductCreateLinkInput' => [
@@ -410,6 +457,38 @@ return [
             ],
         ],
 
+        'ProductDeleteLinkInput' => [
+            'type' => 'structure',
+            'members' => [
+                'productForeignId' => [
+                    'shape' => 'StringNoMinMax',
+                    'location' => 'uri',
+                    'locationName' => 'productForeignId',
+                ],
+                'catalogForeignId' => [
+                    'shape' => 'Float',
+                    'location' => 'uri',
+                    'locationName' => 'catalogForeignId',
+                ],
+            ],
+            'required' => [
+                'productForeignId',
+                'catalogForeignId',
+            ],
+        ],
+
+        'ProductDeleteLinkOutput' => [
+            'type' => 'structure',
+            'members' => [
+                'EntityList' =>  [
+                  'shape' => 'ProductList',
+                ],
+                'Messages' =>  [
+                    'shape' => 'MessageList',
+                ],
+            ],
+        ],
+
         'PostProductOutput' => [
              'type' => 'structure',
              'members' => [
@@ -418,6 +497,10 @@ return [
                  ],
                  'Messages' =>  [
                      'shape' => 'MessageList',
+                 ],
+                 'StatusCode' => [
+                   'shape' => 'IntegerNoMinMax',
+                   'location' => 'statusCode',
                  ],
              ],
         ],
@@ -496,6 +579,10 @@ return [
                 ],
                 'Messages' =>  [
                     'shape' => 'MessageList',
+                ],
+                'StatusCode' => [
+                  'shape' => 'IntegerNoMinMax',
+                  'location' => 'statusCode',
                 ],
             ],
         ],
@@ -699,8 +786,46 @@ return [
         ],
 
         /**************************************
+         *
          *      PRODUCTS END SALESORDERS BEGIN
+         *
          **************************************/
+
+        'GetNewSalesOrdersInput' => [
+             'type' => 'structure',
+             'members' => [
+                 'limit' => [
+                   'shape' => 'IntegerMin1Max100Default100',
+                   'location' => 'querystring',
+                   'locationName' => 'EntriesPerPage',
+                 ],
+                 'page' => [
+                   'shape' => 'IntegerMin1NoMaxDefault1',
+                   'location' => 'querystring',
+                   'locationName' => 'PageNumber',
+                 ],
+             ],
+        ],
+
+        'GetNewSalesOrdersOutput' => [
+              'type' => 'structure',
+              'members' => [
+                  'EntityList' =>  [
+                    'shape' => 'SalesOrderList',
+                  ],
+                  'Messages' =>  [
+                      'shape' => 'MessageList',
+                  ],
+                  'Pagination' => [
+                      'shape' => 'Paging',
+                  ],
+                  'StatusCode' => [
+                    'shape' => 'IntegerNoMinMax',
+                    'location' => 'statusCode',
+                  ],
+              ],
+        ],
+
         'GetSalesOrdersByIdInput' => [
             'type' => 'structure',
             'members' => [
@@ -723,6 +848,10 @@ return [
                 ],
                 'Messages' =>  [
                     'shape' => 'MessageList',
+                ],
+                'StatusCode' => [
+                  'shape' => 'IntegerNoMinMax',
+                  'location' => 'statusCode',
                 ],
             ],
         ],
@@ -967,7 +1096,9 @@ return [
         ],
 
         /**********************************************
+         *
          *      MessageList BEGIN
+         *
          *********************************************/
 
         'MessageList' => [
@@ -1053,11 +1184,11 @@ return [
             ],
         ],
 
-       /***********************************************************************
+       /*****************************************
         *
-        *                          DATA TYPES
+        *             DATA TYPES
         *
-        **********************************************************************/
+        *****************************************/
 
         'Boolean' => [
             'type' => 'boolean',
@@ -1066,90 +1197,110 @@ return [
         'Float' => [
             'type' => 'float',
         ],
+
         'IntegerNoMinMax' => [
             'type' => 'integer',
         ],
+
         'IntegerMin0Max1' => [
             'type' => 'integer',
             'min' => 0,
             'max' => 1,
         ],
+
         'IntegerMin0Max2' => [
             'type' => 'integer',
             'min' => 0,
             'max' => 2,
         ],
+
         'IntegerMin1Max1' => [
             'type' => 'integer',
             'min' => 1,
             'max' => 1,
         ],
+
         'IntegerMin1Max100Default100' => [
             'type' => 'integer',
             'min' => 1,
             'max' => 100,
             'default' => 50,
         ],
+
         'IntegerMin1NoMaxDefault1' => [
             'type' => 'integer',
             'min' => 1,
             'default' => 1,
         ],
+
         'IntegerMax999' => [
             'type' => 'integer',
             'min' => 0,
             'max' => 999,
         ],
+
         'StringEan' => [
             'type' => 'string',
             'pattern' => '#\b[\d\\-]{3,18}\b#',
         ],
+
         'StringUpc' => [
             'type' => 'string',
             'pattern' => '#^(\\d{8}|\\d{12,14})$#',
         ],
+
         'StringIsbn' => [
             'type' => 'string',
             'pattern' => '#\b(?:ISBN(?:: ?| ))?((?:97[89])?\d{9}[\dx])\b#i',
         ],
+
         'StringNoMinMax' => [
             'type' => 'string',
         ],
+
         'StringMin3Max30' => [
             'type' => 'string',
             'min' => 3,
             'max' => 30,
         ],
+
         'StringMin3Max80' => [
             'type' => 'string',
             'min' => 3,
             'max' => 80,
         ],
+
         'StringMax5' => [
             'type' => 'string',
             'min' => 1,
             'max' => 5,
         ],
+
         'StringMax50' => [
             'type' => 'string',
             'min' => 1,
             'max' => 50,
         ],
+
         'StringMax2000' => [
             'type' => 'string',
             'max' => 2000,
         ],
+
         'StringMax255' => [
             'type' => 'string',
             'max' => 255,
         ],
+
         'StringMax4000' => [
             'type' => 'string',
             'max' => 4000,
         ],
+
         'TimestampType' => [
             'type' => 'timestamp',
         ],
+
         'Url' => [
             'type' => 'string',
             'max' => 255,
