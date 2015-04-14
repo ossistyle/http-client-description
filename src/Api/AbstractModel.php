@@ -4,7 +4,7 @@ namespace Vws\Api;
 use GuzzleHttp\ToArrayInterface;
 
 /**
- * Base class that is used by most API shapes
+ * Base class that is used by most API shapes.
  */
 abstract class AbstractModel implements ToArrayInterface, \ArrayAccess
 {
@@ -54,7 +54,7 @@ abstract class AbstractModel implements ToArrayInterface, \ArrayAccess
     {
         if (!isset($this->definition[$key])) {
             throw new \InvalidArgumentException('Expected shape definition at '
-                . $key);
+                .$key);
         }
 
         return $this->shapeFor($this->definition[$key]);

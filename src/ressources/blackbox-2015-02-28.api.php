@@ -4,9 +4,10 @@ return [
     'metadata' => [
         'apiVersion' => '2015-02-28',
         'serviceFullName' => 'Via Blackbox Service',
-        'timestampFormat' => 'rfc822',
+        'timestampFormat' => 'iso8601',
         'protocol' => 'rest-json',
-        'jsonVersion' => '1.1'
+        'endpointPrefix' => 'blackbox',
+        'jsonVersion' => '1.1',
     ],
     'operations' => [
         'GetCatalogs' => [
@@ -17,6 +18,19 @@ return [
             ],
             'output' => [
               'shape' => 'GetCatalogsOutput',
+            ],
+        ],
+        'DeleteCatalogById' => [
+            'name' => 'DeleteCatalogById',
+            'http' => [
+              'method' => 'DELETE',
+              'requestUri' => 'api/Catalogs/{Id}',
+            ],
+            'input' => [
+              'shape' => 'DeleteCatalogByIdInput',
+            ],
+            'output' => [
+              'shape' => 'GetCatalogByIdOutput',
             ],
         ],
         'GetCatalogById' => [
@@ -43,7 +57,7 @@ return [
             ],
             'output' => [
               'shape' => 'PostCatalogOutput',
-            ]
+            ],
 
         ],
         'PostCatalogs' => [
@@ -57,8 +71,34 @@ return [
             ],
             'output' => [
               'shape' => 'PostCatalogsOutput',
-            ]
+            ],
 
+        ],
+        'GetProductById' => [
+            'name' => 'GetProductById',
+            'http' => [
+              'method' => 'GET',
+              'requestUri' => 'api/Products/{Id}',
+            ],
+            'input' => [
+              'shape' => 'GetProductByIdInput',
+            ],
+            'output' => [
+              'shape' => 'GetProductByIdOutput',
+            ],
+        ],
+        'GetProducts' => [
+            'name' => 'GetProducts',
+            'http' => [
+              'method' => 'GET',
+              'requestUri' => 'api/Products',
+            ],
+            'input' => [
+              'shape' => 'GetProductsInput',
+            ],
+            'output' => [
+              'shape' => 'GetProductsOutput',
+            ],
         ],
         'PostProduct' => [
             'name' => 'PostProduct',
@@ -71,8 +111,47 @@ return [
             ],
             'output' => [
               'shape' => 'PostProductOutput',
-            ]
+            ],
 
+        ],
+        'ReviseInventory' => [
+            'name' => 'ReviseInventory',
+            'http' => [
+              'method' => 'POST',
+              'requestUri' => 'ReviseInventoryStatus?productId={productId}L&price={price}m&stockAmount={stockAmount}&productVariationId={productVariationId}L&{discountOfferPrice}m',
+            ],
+            'input' => [
+              'shape' => 'ReviseInventoryInput',
+            ],
+            'output' => [
+              'shape' => 'ReviseInventoryOutput',
+            ],
+        ],
+        'GetSalesOrdersById' => [
+            'name' => 'GetSalesOrdersById',
+            'http' => [
+              'method' => 'GET',
+              'requestUri' => 'api/SalesOrders/{Id}',
+            ],
+            'input' => [
+              'shape' => 'GetSalesOrdersByIdInput',
+            ],
+            'output' => [
+              'shape' => 'GetSalesOrdersByIdOutput',
+            ],
+        ],
+        'GetNewSalesOrders' => [
+            'name' => 'GetNewSalesOrders',
+            'http' => [
+              'method' => 'GET',
+              'requestUri' => 'api/SalesOrders',
+            ],
+            'input' => [
+              'shape' => 'GetNewSalesOrdersInput',
+            ],
+            'output' => [
+              'shape' => 'GetNewSalesOrdersOutput',
+            ],
         ],
     ],
     /***********************************************************************
@@ -81,20 +160,34 @@ return [
      *
      **********************************************************************/
 
-
     'shapes' => [
 
         /**********************************
          *      CATALOGS BEGIN
          *********************************/
 
+        'DeleteCatalogByIdInput' => [
+             'type' => 'structure',
+             'members' => [
+                 'Id' => [
+                     'shape' => 'IntegerNoMinMax',
+                     'location' => 'uri',
+                     'locationName' => 'Id',
+                 ],
+             ],
+             'required' => [
+               'Id',
+             ],
+         ],
+
         'GetCatalogByIdInput' => [
             'type' => 'structure',
             'members' => [
                 'Id' => [
                     'shape' => 'IntegerNoMinMax',
-                    'location' => 'uri'
-                ]
+                    'location' => 'uri',
+                    'locationName' => 'Id',
+                ],
             ],
             'required' => [
               'Id',
@@ -144,28 +237,19 @@ return [
                 'ChildCatalogs' => [
                     'shape' => 'CatalogList',
                 ],
-            ]
+            ],
         ],
 
         'PostCatalogOutput' => [
             'type' => 'structure',
             'members' => [
-                'Id' =>  [
-                  'shape' => 'IntegerNoMinMax',
+                'EntityList' =>  [
+                  'shape' => 'CatalogList',
                 ],
-                'Name' => [
-                    'shape' => 'StringMin3Max30',
+                'Messages' =>  [
+                    'shape' => 'MessageList',
                 ],
-                'IsRootLevel' => [
-                    'shape' => 'Boolean',
-                ],
-                'ForeignId' => [
-                    'shape' => 'StringMax255',
-                ],
-                'ChildCatalogs' => [
-                    'shape' => 'CatalogList',
-                ],
-            ]
+            ],
         ],
 
         'PostCatalogsInput' => [
@@ -176,10 +260,15 @@ return [
         ],
 
         'PostCatalogsOutput' => [
-            'type' => 'list',
-            'member' => [
-                'shape' => 'PostCatalogOutput',
-            ],
+          'type' => 'structure',
+          'members' => [
+              'EntityList' =>  [
+                'shape' => 'CatalogList',
+              ],
+              'Messages' =>  [
+                  'shape' => 'MessageList',
+              ],
+          ],
         ],
 
         'Catalog' => [
@@ -200,27 +289,96 @@ return [
                 'ChildCatalogs' => [
                     'shape' => 'CatalogList',
                 ],
-            ]
+            ],
         ],
 
         'CatalogList' => [
             'type' => 'list',
             'member' => [
-                'shape' => 'Catalog'
-            ]
+                'shape' => 'Catalog',
+            ],
         ],
 
         /***************************************
          *    CATALOGS END | PRODUCTS BEGIN
          ***************************************/
 
-        'PostProductInput' => [
+        'GetProductsOutput' => [
+             'type' => 'structure',
+             'members' => [
+                 'EntityList' =>  [
+                   'shape' => 'ProductList',
+                 ],
+                 'Messages' =>  [
+                     'shape' => 'MessageList',
+                 ],
+                 'Pagination' => [
+                     'shape' => 'Paging',
+                 ],
+             ],
+        ],
+
+        'GetProductsInput' => [
+            'type' => 'structure',
+            'members' => [
+                'limit' => [
+                  'shape' => 'IntegerMin1Max100Default100',
+                  'location' => 'querystring',
+                  'locationName' => 'EntriesPerPage',
+                ],
+                'page' => [
+                  'shape' => 'IntegerMin1NoMaxDefault1',
+                  'location' => 'querystring',
+                  'locationName' => 'PageNumber',
+                ],
+            ],
+        ],
+
+        'GetNewSalesOrdersInput' => [
+            'type' => 'structure',
+            'members' => [
+                'limit' => [
+                  'shape' => 'IntegerMin1Max100Default100',
+                  'location' => 'querystring',
+                  'locationName' => 'EntriesPerPage',
+                ],
+                'page' => [
+                  'shape' => 'IntegerMin1NoMaxDefault1',
+                  'location' => 'querystring',
+                  'locationName' => 'PageNumber',
+                ],
+            ],
+        ],
+
+        'GetNewSalesOrdersOutput' => [
+             'type' => 'structure',
+             'members' => [
+                 'EntityList' =>  [
+                   'shape' => 'SalesOrderList',
+                 ],
+                 'Messages' =>  [
+                     'shape' => 'MessageList',
+                 ],
+                 'Pagination' => [
+                     'shape' => 'Paging',
+                 ],
+             ],
+        ],
+
+        'ProductList' => [
+             'type' => 'list',
+             'member' => [
+                 'shape' => 'Product',
+             ],
+        ],
+
+        'Product' => [
             'type' => 'structure',
             'required' => [
                 'Title',
                 'ForeignId',
                 'Price',
-                'StockAmount'
+                'StockAmount',
             ],
             'members' => [
                 'ForeignId' => [
@@ -253,7 +411,75 @@ return [
                 'ProductImages' => [
                     'shape' => 'ProductImageList',
                 ],
-            ]
+            ],
+        ],
+
+        'GetProductByIdInput' => [
+            'type' => 'structure',
+            'members' => [
+                'Id' => [
+                    'shape' => 'IntegerNoMinMax',
+                    'location' => 'uri',
+                    'locationName' => 'Id',
+                ],
+            ],
+            'required' => [
+              'Id',
+            ],
+        ],
+
+        'GetProductByIdOutput' => [
+            'type' => 'structure',
+            'members' => [
+                'EntityList' =>  [
+                  'shape' => 'ProductList',
+                ],
+                'Messages' =>  [
+                    'shape' => 'MessageList',
+                ],
+            ],
+        ],
+
+        'PostProductInput' => [
+            'type' => 'structure',
+            'required' => [
+                'Title',
+                'ForeignId',
+                'Price',
+                'StockAmount',
+            ],
+            'members' => [
+                'ForeignId' => [
+                    'shape' => 'StringMax255',
+                ],
+                'Title' => [
+                    'shape' => 'StringMin3Max80',
+                ],
+                'Description' => [
+                    'shape' => 'StringNoMinMax',
+                ],
+                'ShortDescription' => [
+                    'shape' => 'StringMax2000',
+                ],
+                'Price' => [
+                    'shape' => 'Float',
+                ],
+                'Ean' => [
+                    'shape' => 'StringEan',
+                ],
+                'Upc' => [
+                    'shape' => 'StringUpc',
+                ],
+                'Isbn' => [
+                    'shape' => 'StringIsbn',
+                ],
+                'StockAmount' => [
+                    'shape' => 'IntegerMax999',
+                ],
+                'ProductImages' => [
+                    'shape' => 'ProductImageList',
+                ],
+            ],
         ],
 
         'ProductImageList' => [
@@ -261,8 +487,8 @@ return [
             'maxItems' => 1,
             'minItems' => 1,
             'member' => [
-                'shape' => 'ProductImage'
-            ]
+                'shape' => 'ProductImage',
+            ],
         ],
 
         'ProductImage' => [
@@ -282,12 +508,280 @@ return [
                 'Type' => [
                     'shape' => 'IntegerMin1Max1',
                 ],
-            ]
+            ],
         ],
 
-        /**********************************
-         *      PRODUCTS END
-         *********************************/
+        /**************************************
+         *      PRODUCTS END SALESORDERS BEGIN
+         **************************************/
+        'GetSalesOrdersByIdInput' => [
+            'type' => 'structure',
+            'members' => [
+                'Id' => [
+                    'shape' => 'IntegerNoMinMax',
+                    'location' => 'uri',
+                    'locationName' => 'Id',
+                ],
+            ],
+            'required' => [
+              'Id',
+            ],
+        ],
+
+        'GetSalesOrdersByIdOutput' => [
+            'type' => 'structure',
+            'members' => [
+                'EntityList' =>  [
+                  'shape' => 'SalesOrderList',
+                ],
+                'Messages' =>  [
+                    'shape' => 'MessageList',
+                ],
+            ],
+        ],
+
+        'SalesOrderList' => [
+            'type' => 'list',
+            'member' => [
+                'shape' => 'SalesOrder',
+            ],
+        ],
+
+        'SalesOrder' => [
+            'type' => 'structure',
+            'members' => [
+                'Id' => [
+                    'shape' => 'IntegerNoMinMax',
+                ],
+                'Buyer' => [
+                    'shape' => 'BuyerType'
+                ],
+                'SalesOrderItems' => [
+                    'shape' => 'SalesOrderItemList'
+                ],
+                'CreationDate' => [
+                    'shape' => 'TimestampType',
+                ],
+                'TotalPrice' => [
+                    'shape' => 'Float',
+                ],
+                'CurrencyCode' => [
+                    'shape' => 'StringMax5',
+                ],
+                'ItemCount' => [
+                    'shape' => 'IntegerNoMinMax',
+                ],
+                'TotalAmount' => [
+                    'shape' => 'IntegerNoMinMax',
+                ],
+                'PlatformName' => [
+                    'shape' => 'StringMax50',
+                ],
+                'BuyerId' => [
+                    'shape' => 'IntegerNoMinMax',
+                ],
+                'AddressId' => [
+                    'shape' => 'IntegerNoMinMax',
+                ],
+                'ShippingAddressId' => [
+                    'shape' => 'IntegerNoMinMax',
+                ],
+                'CheckoutStatus' => [
+                    'shape' => 'IntegerMin0Max1',
+                ],
+                'CheckoutCompletionDate' => [
+                    'shape' => 'TimestampType',
+                ],
+                'PaymentStatus' => [
+                    'shape' => 'StringMax50',
+                ],
+                'PaymentOption' => [
+                    'shape' => 'StringMax50',
+                ],
+                'ShippingService' => [
+                    'shape' => 'StringMax255',
+                ],
+                'BuyerCheckoutMessage' => [
+                    'shape' => 'StringNoMinMax',
+                ],
+                'ShippingStatus' => [
+                    'shape' => 'IntegerMin0Max2',
+                ],
+                'ShippingServiceCost' => [
+                    'shape' => 'Float',
+                ],
+                'PaymentTransactionId' => [
+                    'shape' => 'StringMax255',
+                ],
+                'MarkedAsPayed' => [
+                    'shape' => 'Boolean',
+                ],
+                'MarkedAsShipped' => [
+                    'shape' => 'Boolean',
+                ],
+                'ForeignOrderId' => [
+                    'shape' => 'StringMax50',
+                ],
+                'PaidAmount' => [
+                    'shape' => 'Float',
+                ],
+                'PaidDate' => [
+                    'shape' => 'TimestampType',
+                ],
+                'ModificationDate' => [
+                    'shape' => 'TimestampType',
+                ],
+                'PlatformOrderId' => [
+                    'shape' => 'StringMax255',
+                ],
+                'EbayModificationDate' => [
+                    'shape' => 'TimestampType',
+                ],
+                'BuyerPackageEnclosure' => [
+                    'shape' => 'StringMax4000',
+                ],
+                'Address' => [
+                    'shape' => 'AddressType',
+                ],
+                'ShippingAddress' => [
+                    'shape' => 'AddressType',
+                ],
+            ],
+        ],
+
+        'AddressType' => [
+            'type' => 'structure',
+            'members' => [
+                'Id' => [
+                    'shape' => 'IntegerNoMinMax',
+                ],
+                'Type' => [
+                    'shape' => 'IntegerNoMinMax',
+                ],
+                'Name' => [
+                    'shape' => 'StringMax255',
+                ],
+                'Surname' => [
+                    'shape' => 'StringMax255',
+                ],
+                'Street' => [
+                    'shape' => 'StringMax255',
+                ],
+                'Addition' => [
+                    'shape' => 'StringMax255',
+                ],
+                'PostalCode' => [
+                    'shape' => 'StringMax50',
+                ],
+                'Town' => [
+                    'shape' => 'StringMax255',
+                ],
+                'Country' => [
+                    'shape' => 'StringMax255',
+                ],
+                'State' => [
+                    'shape' => 'StringMax255',
+                ],
+                'Salutation' => [
+                    'shape' => 'StringMax255',
+                ],
+                'Phone' => [
+                    'shape' => 'StringMax255',
+                ],
+                'Email' => [
+                    'shape' => 'StringMax255',
+                ],
+            ],
+        ],
+
+        'BuyerType' => [
+            'type' => 'structure',
+            'members' => [
+                'Id' => [
+                    'shape' => 'IntegerNoMinMax',
+                ],
+                'BuyerName' => [
+                    'shape' => 'StringMax255',
+                ],
+            ],
+        ],
+
+        'SalesOrderItemList' => [
+            'type' => 'list',
+            'member' => [
+                'shape' => 'SalesOrderItem',
+            ],
+        ],
+
+        'SalesOrderItem' => [
+            'type' => 'structure',
+            'members' => [
+                'Id' => [
+                    'shape' => 'IntegerNoMinMax',
+                ],
+                'SalesOrderId' => [
+                    'shape' => 'IntegerNoMinMax',
+                ],
+                'CreationDate' => [
+                    'shape' => 'TimestampType',
+                ],
+                'Amount' => [
+                    'shape' => 'IntegerNoMinMax',
+                ],
+                'Price' => [
+                    'shape' => 'Float',
+                ],
+                'CurrencyCode' => [
+                    'shape' => 'StringMax5',
+                ],
+                'Name' => [
+                    'shape' => 'StringMax255',
+                ],
+                'PlatformName' => [
+                    'shape' => 'StringMax50',
+                ],
+                'ShippingStatus' => [
+                    'shape' => 'IntegerMin0Max1',
+                ],
+                'TrackingNumbers' => [
+                    'shape' => 'StringMax255',
+                ],
+                'CarrierUsed' => [
+                    'shape' => 'StringMax255',
+                ],
+                'ProductId' => [
+                    'shape' => 'IntegerNoMinMax',
+                ],
+                'ForeignId' => [
+                    'shape' => 'IntegerNoMinMax',
+                ],
+                'TransactionId' => [
+                    'shape' => 'IntegerNoMinMax',
+                ],
+                'PlatformItemId' => [
+                    'shape' => 'IntegerNoMinMax',
+                ],
+                'ShippingDate' => [
+                    'shape' => 'TimestampType',
+                ],
+                'FeedbackStatus' => [
+                    'shape' => 'IntegerNoMinMax',
+                ],
+                'ModificationDate' => [
+                    'shape' => 'TimestampType',
+                ],
+                'PlatformOrderId' => [
+                    'shape' => 'StringMax255',
+                ],
+                'SalesDate' => [
+                    'shape' => 'TimestampType',
+                ],
+            ],
+        ],
+
+        /**********************************************
+         *      MessageList BEGIN
+         *********************************************/
 
         'MessageList' => [
             'type' => 'list',
@@ -308,7 +802,65 @@ return [
                 'Message' => [
                     'shape' => 'StringMax2000',
                 ],
-            ]
+            ],
+        ],
+
+        'Paging' => [
+            'type' => 'structure',
+            'members' => [
+                'EntriesPerPage' => [
+                    'shape' => 'IntegerNoMinMax',
+                ],
+                'PageNumber' => [
+                    'shape' => 'IntegerNoMinMax',
+                ],
+                'TotalNumberOfPages' => [
+                    'shape' => 'IntegerNoMinMax',
+                ],
+                'TotalNumberOfEntries' => [
+                    'shape' => 'IntegerNoMinMax',
+                ],
+                'HasPreviousPage' => [
+                    'shape' => 'Boolean',
+                ],
+                'HasNextPage' => [
+                    'shape' => 'Boolean',
+                ],
+            ],
+        ],
+
+        'ReviseInventoryInput' => [
+            'type' => 'structure',
+            'members' => [
+                'productId' => [
+                    'shape' => 'IntegerNoMinMax',
+                    'location' => 'querystring',
+                    'locationName' => 'productId',
+                ],
+                'price' => [
+                    'shape' => 'Float',
+                    'location' => 'querystring',
+                    'locationName' => 'price',
+                ],
+                'stockAmount' => [
+                    'shape' => 'IntegerNoMinMax',
+                    'location' => 'querystring',
+                    'locationName' => 'stockAmount',
+                ],
+                'productVariationId' => [
+                    'shape' => 'IntegerNoMinMax',
+                    'location' => 'querystring',
+                    'locationName' => 'productVariationId',
+                ],
+                'discountOfferPrice' => [
+                    'shape' => 'Float',
+                    'location' => 'querystring',
+                    'locationName' => 'discountOfferPrice',
+                ],
+            ],
+            'required' => [
+                'productId',
+            ],
         ],
 
        /***********************************************************************
@@ -316,8 +868,6 @@ return [
         *                          DATA TYPES
         *
         **********************************************************************/
-
-
 
         'Boolean' => [
             'type' => 'boolean',
@@ -329,13 +879,35 @@ return [
         'IntegerNoMinMax' => [
             'type' => 'integer',
         ],
+        'IntegerMin0Max1' => [
+            'type' => 'integer',
+            'min' => 0,
+            'max' => 1,
+        ],
+        'IntegerMin0Max2' => [
+            'type' => 'integer',
+            'min' => 0,
+            'max' => 2,
+        ],
         'IntegerMin1Max1' => [
             'type' => 'integer',
             'min' => 1,
             'max' => 1,
         ],
+        'IntegerMin1Max100Default100' => [
+            'type' => 'integer',
+            'min' => 1,
+            'max' => 100,
+            'default' => 50,
+        ],
+        'IntegerMin1NoMaxDefault1' => [
+            'type' => 'integer',
+            'min' => 1,
+            'default' => 1,
+        ],
         'IntegerMax999' => [
             'type' => 'integer',
+            'min' => 0,
             'max' => 999,
         ],
         'StringEan' => [
@@ -363,6 +935,16 @@ return [
             'min' => 3,
             'max' => 80,
         ],
+        'StringMax5' => [
+            'type' => 'string',
+            'min' => 1,
+            'max' => 5,
+        ],
+        'StringMax50' => [
+            'type' => 'string',
+            'min' => 1,
+            'max' => 50,
+        ],
         'StringMax2000' => [
             'type' => 'string',
             'max' => 2000,
@@ -370,6 +952,13 @@ return [
         'StringMax255' => [
             'type' => 'string',
             'max' => 255,
+        ],
+        'StringMax4000' => [
+            'type' => 'string',
+            'max' => 4000,
+        ],
+        'TimestampType' => [
+            'type' => 'timestamp',
         ],
         'Url' => [
             'type' => 'string',
@@ -379,8 +968,8 @@ return [
                 [
                     'method' => 'Respect\Validation\Validator::url',
                     'args' => [true, '@value'],
-                ]
+                ],
             ],
-        ]
-    ]
+        ],
+    ],
 ];

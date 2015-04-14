@@ -1,30 +1,31 @@
 <?php
 namespace Vws\Api\Serializer;
 
-use Vws\Api\ServiceModel;
+use Vws\Api\Service;
 use Vws\Api\Shape;
 
 /**
  * Formats the JSON body of a JSON-REST or JSON-RPC operation.
+ *
  * @internal
  */
 class JsonBody
 {
     private $api;
 
-    public function __construct(ServiceModel $api)
+    public function __construct(Service $api)
     {
         $this->api = $api;
     }
 
     /**
-     * Gets the JSON Content-Type header for a service API
+     * Gets the JSON Content-Type header for a service API.
      *
      * @param Service $service
      *
      * @return string
      */
-    public static function getContentType(ServiceModel $service)
+    public static function getContentType(Service $service)
     {
         return 'application/json';
 
@@ -60,6 +61,7 @@ class JsonBody
                         );
                     }
                 }
+
                 return $data;
 
             case 'list':
@@ -67,6 +69,7 @@ class JsonBody
                 foreach ($value as &$v) {
                     $data[] = $this->format($items, $v);
                 }
+
                 return $value;
 
             case 'map':

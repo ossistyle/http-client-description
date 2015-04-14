@@ -6,7 +6,7 @@ return [
         'serviceFullName' => 'Via Blackbox Service',
         'timestampFormat' => 'rfc822',
         'protocol' => 'rest-json',
-        'jsonVersion' => '1.1'
+        'jsonVersion' => '1.1',
     ],
     'operations' => [
         'GetCatalogs' => [
@@ -43,7 +43,7 @@ return [
             ],
             'output' => [
               'shape' => 'PostCatalogOutput',
-            ]
+            ],
 
         ],
         'PostCatalogs' => [
@@ -57,7 +57,7 @@ return [
             ],
             'output' => [
               'shape' => 'PostCatalogsOutput',
-            ]
+            ],
 
         ],
         'PostProduct' => [
@@ -71,7 +71,7 @@ return [
             ],
             'output' => [
               'shape' => 'PostProductOutput',
-            ]
+            ],
 
         ],
     ],
@@ -80,7 +80,6 @@ return [
      *                          SHAPES
      *
      **********************************************************************/
-
 
     'shapes' => [
 
@@ -93,8 +92,8 @@ return [
             'members' => [
                 'Id' => [
                     'shape' => 'IntegerNoMinMax',
-                    'location' => 'uri'
-                ]
+                    'location' => 'uri',
+                ],
             ],
             'required' => [
               'Id',
@@ -119,7 +118,7 @@ return [
                 'ChildCatalogs' => [
                     'shape' => 'CatalogList',
                 ],
-            ]
+            ],
         ],
 
         'GetCatalogsOutput' => [
@@ -148,7 +147,7 @@ return [
                 'ChildCatalogs' => [
                     'shape' => 'CatalogList',
                 ],
-            ]
+            ],
         ],
 
         'PostCatalogOutput' => [
@@ -169,7 +168,7 @@ return [
                 'ChildCatalogs' => [
                     'shape' => 'CatalogList',
                 ],
-            ]
+            ],
         ],
 
         'PostCatalogsInput' => [
@@ -204,14 +203,14 @@ return [
                 'ChildCatalogs' => [
                     'shape' => 'CatalogList',
                 ],
-            ]
+            ],
         ],
 
         'CatalogList' => [
             'type' => 'list',
             'member' => [
-                'shape' => 'Catalog'
-            ]
+                'shape' => 'Catalog',
+            ],
         ],
 
         /***************************************
@@ -224,7 +223,7 @@ return [
                 'Title',
                 'ForeignId',
                 'Price',
-                'StockAmount'
+                'StockAmount',
             ],
             'members' => [
                 'ForeignId' => [
@@ -257,7 +256,7 @@ return [
                 'ProductImages' => [
                     'shape' => 'ProductImageList',
                 ],
-            ]
+            ],
         ],
 
         'ProductImageList' => [
@@ -265,8 +264,8 @@ return [
             'maxItems' => 1,
             'minItems' => 1,
             'member' => [
-                'shape' => 'ProductImage'
-            ]
+                'shape' => 'ProductImage',
+            ],
         ],
 
         'ProductImage' => [
@@ -286,7 +285,7 @@ return [
                 'Type' => [
                     'shape' => 'IntegerMin1Max1',
                 ],
-            ]
+            ],
         ],
 
         /**********************************
@@ -359,9 +358,8 @@ return [
                 [
                     'method' => 'Respect\Validation\Validator::url',
                     'args' => [true, '@value'],
-                ]
+                ],
             ],
-        ]
-    ]
+        ],
+    ],
 ];
-

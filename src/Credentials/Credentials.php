@@ -1,18 +1,17 @@
 <?php
 namespace Vws\Credentials;
 
-use Vws\Vdk;
+use Vws\Sdk;
 
 class Credentials implements CredentialsInterface
 {
-
     private $username;
     private $password;
     private $token;
     private $vendor;
     private $version;
 
-    public function __construct($username, $password, $token, $vendor = 'vws-php', $version = Vdk::VERSION)
+    public function __construct($username, $password, $token, $vendor = 'vws-php', $version = Sdk::VERSION)
     {
         $this->username = trim($username);
         $this->password = trim($password);
@@ -58,7 +57,7 @@ class Credentials implements CredentialsInterface
             'Password'  => $this->password,
             'SubscriptionToken'   => $this->token,
             'Vendor' => $this->vendor,
-            'Version' => $this->version
+            'Version' => $this->version,
         ];
     }
 }

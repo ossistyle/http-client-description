@@ -1,8 +1,7 @@
 <?php
 namespace Vws\Api\Parser;
 
-use Vws\Api\ServiceModel;
-use Vws\Api\StructureShape;
+use Vws\Api\Service;
 use Vws\Api\Shape;
 use GuzzleHttp\Message\ResponseInterface;
 
@@ -18,7 +17,7 @@ class RestJsonParser extends AbstractRestParser
      * @param Service    $api    Service description
      * @param JsonParser $parser JSON body builder
      */
-    public function __construct(ServiceModel $api, JsonParser $parser = null)
+    public function __construct(Service $api, JsonParser $parser = null)
     {
         parent::__construct($api);
         $this->parser = $parser ?: new JsonParser();

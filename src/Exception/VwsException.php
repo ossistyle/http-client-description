@@ -9,7 +9,7 @@ class VwsException extends CommandException
     /**
      * Gets the client that executed the command.
      *
-     * @return \Aws\AwsClientInterface
+     * @return \Vws\VwsClientInterface
      */
     public function getClient()
     {
@@ -27,7 +27,7 @@ class VwsException extends CommandException
     }
 
     /**
-     * If available, gets the HTTP status code of the corresponding response
+     * If available, gets the HTTP status code of the corresponding response.
      *
      * @return int|null
      */
@@ -51,7 +51,7 @@ class VwsException extends CommandException
     }
 
     /**
-     * Get the AWS error type.
+     * Get the Vws error type.
      *
      * @return string|null Returns null if no response was received
      */
@@ -61,7 +61,7 @@ class VwsException extends CommandException
     }
 
     /**
-     * Get the AWS error code.
+     * Get the Vws error code.
      *
      * @return string|null Returns null if no response was received
      */
@@ -71,7 +71,7 @@ class VwsException extends CommandException
     }
 
     /**
-     * @deprecated Use getAwsRequestId() instead
+     * @deprecated Use getVwsRequestId() instead
      */
     public function getRequestId()
     {
@@ -79,7 +79,7 @@ class VwsException extends CommandException
     }
 
     /**
-     * @deprecated Use getAwsErrorCode() instead
+     * @deprecated Use getVwsErrorCode() instead
      */
     public function getExceptionCode()
     {
@@ -87,7 +87,7 @@ class VwsException extends CommandException
     }
 
     /**
-     * @deprecated Use getAwsErrorType() instead
+     * @deprecated Use getVwsErrorType() instead
      */
     public function getExceptionType()
     {

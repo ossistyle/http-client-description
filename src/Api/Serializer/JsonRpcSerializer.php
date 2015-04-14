@@ -1,11 +1,12 @@
 <?php
 namespace Vws\Api\Serializer;
 
-use Vws\Api\ServiceModel;
+use Vws\Api\Service;
 use GuzzleHttp\Command\CommandTransaction;
 
 /**
  * Prepares a JSON-RPC request for transfer.
+ *
  * @internal
  */
 class JsonRpcSerializer
@@ -28,7 +29,7 @@ class JsonRpcSerializer
      * @param JsonBody $jsonFormatter Optional JSON formatter to use
      */
     public function __construct(
-        ServiceModel $api,
+        Service $api,
         $endpoint,
         JsonBody $jsonFormatter = null
     ) {
@@ -49,15 +50,15 @@ class JsonRpcSerializer
             $this->endpoint,
             [
                 'headers' => [
-                    'Content-Type' => $this->contentType
+                    'Content-Type' => $this->contentType,
                 ],
                 'body' => $this->jsonFormatter->build(
                     $operation->getInput(),
                     $command->toArray()
                 ),
                 'config' => [
-                    'command' => $command
-                ]
+                    'command' => $command,
+                ],
             ]
         );
     }

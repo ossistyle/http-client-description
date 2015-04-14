@@ -6,12 +6,12 @@ class NullCredentials implements CredentialsInterface
 {
     public function getUsername()
     {
-        return null;
+        return;
     }
 
     public function getPassword()
     {
-        return null;
+        return;
     }
 
     public function getSubscriptionToken()
@@ -21,7 +21,7 @@ class NullCredentials implements CredentialsInterface
 
     public function getToken()
     {
-        return null;
+        return;
     }
 
     public function toArray()
@@ -31,7 +31,7 @@ class NullCredentials implements CredentialsInterface
             'Password'  => null,
             'SubscriptionToken' => null,
             'Vendor' => null,
-            'Version' => null
+            'Version' => null,
         ];
     }
 }

@@ -4,7 +4,7 @@ namespace Vws;
 use GuzzleHttp\ToArrayInterface;
 
 /**
- * Represents an AWS result object that is returned from executing an operation.
+ * Represents an Vws result object that is returned from executing an operation.
  */
 interface ResultInterface extends
     \ArrayAccess,
@@ -22,7 +22,7 @@ interface ResultInterface extends
     public function getPath($path);
 
     /**
-     * Check if the model contains a key by name
+     * Check if the model contains a key by name.
      *
      * @param string $name Name of the key to retrieve
      *
@@ -49,12 +49,13 @@ interface ResultInterface extends
      * @param string $expression JMESPath expression to execute
      *
      * @return mixed Returns the result of the JMESPath expression.
+     *
      * @link http://jmespath.readthedocs.org/en/latest/ JMESPath documentation
      */
     public function search($expression);
 
     /**
-     * Provides debug information about the result object
+     * Provides debug information about the result object.
      *
      * @return string
      */

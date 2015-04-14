@@ -1,7 +1,7 @@
 <?php
 namespace Vws\Subscriber;
 
-use Vws\Api\ServiceModel;
+use Vws\Api\Service;
 use GuzzleHttp\Command\Event\InitEvent;
 use GuzzleHttp\Event\SubscriberInterface;
 
@@ -10,7 +10,7 @@ use GuzzleHttp\Event\SubscriberInterface;
  */
 class Validation implements SubscriberInterface
 {
-    /** @var \Aws\Api\Validator */
+    /** @var \Vws\Api\Validator */
     private $validator;
 
     /** @var Service */
@@ -18,10 +18,10 @@ class Validation implements SubscriberInterface
 
     /**
      * The provided validator function is a callable that accepts the
-     * following positional arguments:
+     * following positional arguments:.
      *
      * - string, name of the operation
-     * - Aws\Api\Shape, shape being validated against
+     * - Vws\Api\Shape, shape being validated against
      * - array, input data being validated
      *
      * The callable is expected to throw an \InvalidArgumentException when the
@@ -30,7 +30,7 @@ class Validation implements SubscriberInterface
      * @param Service  $api       API being hit.
      * @param callable $validator Function used to validate input.
      */
-    public function __construct(ServiceModel $api, callable $validator)
+    public function __construct(Service $api, callable $validator)
     {
         $this->validator = $validator;
         $this->api = $api;

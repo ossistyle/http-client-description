@@ -11,7 +11,7 @@ trait JsonParserTrait
     private function genericHandler(ResponseInterface $response)
     {
         $data['status_code'] = (string) $response->getStatusCode();
-        $data['request_id'] = (string) $response->getHeader('x-request-id');
+        //$data['request_id'] = (string) $response->getHeader('x-request-id');
         $data['parsed'] = $response->json();
         $data['type'] = $data['status_code'][0] == '4' ? 'client' : 'server';
         $data['messages'] = [];
@@ -27,6 +27,7 @@ trait JsonParserTrait
                         ];
             }
         }
+
         return $data;
     }
 }

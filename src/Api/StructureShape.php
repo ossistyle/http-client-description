@@ -18,7 +18,7 @@ class StructureShape extends Shape
     }
 
     /**
-     * Gets a list of all members
+     * Gets a list of all members.
      *
      * @return Shape[]
      */
@@ -50,12 +50,13 @@ class StructureShape extends Shape
      * @param string $name Name of the member to retrieve
      *
      * @return Shape
+     *
      * @throws \InvalidArgumentException if the member is not found.
      */
     public function getMember($name)
     {
         if (!isset($this->definition['members'][$name])) {
-            throw new \InvalidArgumentException('Unknown member ' . $name);
+            throw new \InvalidArgumentException('Unknown member '.$name);
         }
 
         return $this->shapeFor($this->definition['members'][$name]);

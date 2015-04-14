@@ -27,7 +27,7 @@ class Validator
         if ($this->errors) {
             $message = sprintf(
                 "Found %d error%s while validating the input provided for the "
-                    . "%s operation:\n%s",
+                    ."%s operation:\n%s",
                 count($this->errors),
                 count($this->errors) > 1 ? 's' : '',
                 $name,
@@ -51,7 +51,7 @@ class Validator
             'long'      => 'check_numeric',
             'string'    => 'check_string',
             'byte'      => 'check_string',
-            'char'      => 'check_string'
+            'char'      => 'check_string',
         ];
 
         $type = $shape->getType();
@@ -93,14 +93,16 @@ class Validator
     private function check_list(ListShape $shape, $value)
     {
         if (!is_array($value)) {
-            $this->addError('must be an array. Found ' . Core::describeType($value));
+            $this->addError('must be an array. Found '.Core::describeType($value));
+
             return;
         }
 
         if ($minItems = $shape->getMin()) {
             $size = count($value);
             if ($size < $minItems) {
-                $this->addError('must contain ' . $minItems . ' or more elements');
+                $this->addError('must contain '.$minItems.' or more elements');
+
                 return;
             }
         }
@@ -108,7 +110,8 @@ class Validator
         if ($maxItems = $shape->getMax()) {
             $size = count($value);
             if ($size > $maxItems) {
-                $this->addError('must contain ' . $maxItems . ' or fewer elements');
+                $this->addError('must contain '.$maxItems.' or fewer elements');
+
                 return;
             }
         }
@@ -141,15 +144,15 @@ class Validator
             'string' => true,
             'integer' => true,
             'double' => true,
-            'resource' => true
+            'resource' => true,
         ];
 
         $type = gettype($value);
         if (!isset($valid[$type])) {
             if ($type != 'object' || !method_exists($value, '__toString')) {
                 $this->addError('must be an fopen resource, a '
-                    . 'GuzzleHttp\Stream\StreamInterface object, or something '
-                    . 'that can be cast to a string. Found ' . Core::describeType($value));
+                    .'GuzzleHttp\Stream\StreamInterface object, or something '
+                    .'that can be cast to a string. Found '.Core::describeType($value));
             }
         }
     }
@@ -157,21 +160,21 @@ class Validator
     private function check_numeric(Shape $shape, $value)
     {
         if (!is_numeric($value)) {
-            $this->addError('must be numeric. Found ' . Core::describeType($value));
+            $this->addError('must be numeric. Found '.Core::describeType($value));
         }
 
         if (($min = $shape->getMin()) && $value < $min) {
-            $this->addError('must be greater than or equal to ' . $min);
+            $this->addError('must be greater than or equal to '.$min);
         }
         if (($max = $shape->getMax()) && $value > $max) {
-            $this->addError('must be less than or equal to ' . $max);
+            $this->addError('must be less than or equal to '.$max);
         }
     }
 
     private function check_boolean(Shape $shape, $value)
     {
         if (!is_bool($value)) {
-            $this->addError('must be a boolean. Found ' . Core::describeType($value));
+            $this->addError('must be a boolean. Found '.Core::describeType($value));
         }
     }
 
@@ -179,18 +182,18 @@ class Validator
     {
         if (!$this->checkCanString($value)) {
             $this->addError('must be a string or an object that implements '
-                . '__toString(). Found ' . Core::describeType($value));
+                .'__toString(). Found '.Core::describeType($value));
         }
         if ($min = $shape->getMin()) {
             $size = strlen($value);
             if ($size < $min) {
-                $this->addError('length must be greater than or equal to ' . $min);
+                $this->addError('length must be greater than or equal to '.$min);
             }
         }
         if ($max = $shape->getMax()) {
             $size = strlen($value);
             if ($size > $max) {
-                $this->addError('length must be less than or equal to ' . $max);
+                $this->addError('length must be less than or equal to '.$max);
             }
         }
     }
@@ -200,7 +203,7 @@ class Validator
         static $valid = [
             'string'  => true,
             'integer' => true,
-            'double'  => true
+            'double'  => true,
         ];
 
         $type = gettype($value);
@@ -213,7 +216,8 @@ class Validator
     {
         if (!is_array($value) || isset($value[0])) {
             $this->addError('must be an associative array. Found '
-                . Core::describeType($value));
+                .Core::describeType($value));
+
             return false;
         }
 
@@ -224,14 +228,14 @@ class Validator
     {
         $this->errors[] =
             implode('', array_map(function ($s) { return "[{$s}]"; }, $this->path))
-            . ' '
-            . $message;
+            .' '
+            .$message;
     }
 
-    private function check_pattern (Shape $shape, $value)
+    private function check_pattern(Shape $shape, $value)
     {
         if (($pattern = $shape->getPattern()) && !preg_match($pattern, $value)) {
-            $this->addError('must match the following regular expression: ' . $pattern);
+            $this->addError('must match the following regular expression: '.$pattern);
         }
     }
 }

@@ -2,37 +2,54 @@
 
 namespace Vws\Test;
 
+use Vws\VwsClient;
+use Vws\Credentials\Credentials;
+use Vws\Blackbox\BlackboxClient;
 use GuzzleHttp\Client;
-
 use GuzzleHttp\Command\Event\PreparedEvent;
 use GuzzleHttp\Message\Request;
-use GuzzleHttp\Message\Response;
-
-use GuzzleHttp\Subscriber\Mock;
-
-use Vws\Api\ServiceModel;
-
-use Vws\Blackbox\BlackboxClient;
-
-use Vws\Credentials\Credentials;
-
-use Vws\Exception\VwsException;
-
-
-use Vws\VwsClient;
 
 /**
  * @covers Vws\VwsClient
  */
 class VwsClientTest extends \PHPUnit_Framework_TestCase
 {
-    public function testCanGetEndpoint()
+    use UsesServiceTrait;
+
+    private function getApiProvider()
     {
-        $client = $this->createClient();
-        $this->assertEquals(
-            'http://local.via.de',
-            $client->getEndpoint()
-        );
+        return function () {
+            return [
+                'metadata' => [
+                    'protocol'       => 'rest-json',
+                    'endpointPrefix' => 'foo',
+                ],
+            ];
+        };
+    }
+
+    /**
+     * [testHasGetters description].
+     */
+    public function testHasGetters()
+    {
+        $config = [
+            'client'       => new Client(),
+            'credentials'  => new Credentials('foo', 'bar', 'foo_bar'),
+            'region'       => 'foo',
+            'endpoint'     => 'http://sandboxapi.via.de:8001/api',
+            'serializer'   => function () {},
+            'api_provider' => $this->getApiProvider(),
+            'service'      => 'foo',
+            'error_parser' => function () {},
+            'version'      => 'latest',
+        ];
+
+        $client = new VwsClient($config);
+        $this->assertSame($config['client'], $client->getHttpClient());
+        $this->assertSame($config['credentials'], $client->getCredentials());
+        $this->assertSame($config['region'], $client->getRegion());
+        $this->assertEquals('foo', $client->getApi()->getEndpointPrefix());
     }
 
     /**
@@ -44,57 +61,23 @@ class VwsClientTest extends \PHPUnit_Framework_TestCase
         $this->createClient()->getCommand('foo');
     }
 
-    public function testCanSpecifyDefaultCommandOptions()
-    {
-        $client = $this->createClient(['operations' => ['foo' => [
-            'http' => ['method' => 'POST']
-        ]]], ['defaults' => ['baz' => 'bam']]);
-
-        $c = $client->getCommand('foo');
-        $this->assertEquals('bam', $c['baz']);
-    }
-
+    /**
+     * [testReturnsCommandForOperation description].
+     */
     public function testReturnsCommandForOperation()
     {
-        $client = $this->createClient(['operations' => ['foo' => [
-            'http' => ['method' => 'POST']
-        ]]]);
+        $client = $this->createClient([
+            'operations' => [
+                'foo' => [
+                    'http' => ['method' => 'POST'],
+                ],
+            ],
+        ]);
 
         $this->assertInstanceOf(
             'GuzzleHttp\Command\CommandInterface',
             $client->getCommand('foo')
         );
-    }
-
-    public function testMergesDefaultCommandParameters()
-    {
-        $client = $this->createClient(
-            ['operations' => ['foo' => ['http' => ['method' => 'POST']]]],
-            ['defaults' => ['test' => 'foo']]
-        );
-        $command = $client->getCommand('foo', ['bar' => 'foo_bar']);
-        $this->assertEquals('foo', $command['test']);
-        $this->assertEquals('foo_bar', $command['bar']);
-    }
-
-    public function testHasGetters()
-    {
-        $config = [
-            'client'       => new Client(),
-            'credentials'  => new Credentials('foo', 'bar', 'foo_bar'),
-            'region'       => 'foo',
-            'endpoint'     => 'https://local.via.de',
-            'serializer'   => function () {},
-            'api'          => new ServiceModel(function () {}, 'foo', 'bar'),
-            'version'      => 'latest',
-            'error_parser' => function () {},
-        ];
-
-        $client = new VwsClient($config);
-        $this->assertSame($config['client'], $client->getHttpClient());
-        $this->assertSame($config['credentials'], $client->getCredentials());
-        $this->assertSame($config['region'], $client->getRegion());
-        $this->assertSame($config['api'], $client->getApi());
     }
 
     /**
@@ -113,120 +96,21 @@ class VwsClientTest extends \PHPUnit_Framework_TestCase
         $client->execute($command);
     }
 
-    public function testCreatesClientsFromFactoryMethod()
-    {
-        $client = BlackboxClient::factory([
-            'region'  => 'local',
-            'version' => 'latest'
-        ]);
-        $this->assertInstanceOf('Vws\Blackbox\BlackboxClient', $client);
-        $this->assertEquals('local', $client->getRegion());
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage is a required option
-     */
-    public function testEnsureMissingRequiredArgumentsThrowException()
-    {
-        new VwsClient([]);
-    }
-
-    private function createClient(array $service = [], array $config = [])
-    {
-        $apiProvider = function ($type) use ($service, $config) {
-            return $service;
-        };
-
-        $api = new ServiceModel($apiProvider, 'service', 'region');
-
-        return new VwsClient($config + [
-            'client'       => new Client(),
-            'credentials'  => new Credentials('foo', 'bar', 'foo_bar'),
-            'endpoint'     => 'http://local.via.de',
-            'region'       => 'foo',
-            'api'          => $api,
-            'serializer'   => function () {},
-            'version'      => 'latest',
-            'error_parser' => function () {},
-        ]);
-    }
-
-    public function errorProvider()
-    {
-        return [
-            [null, 'Vws\Exception\VwsException'],
-            ['Vws\Blackbox\Exception\BlackboxException', 'Vws\Blackbox\Exception\BlackboxException']
-        ];
-    }
-
-    /**
-     * @dataProvider errorProvider
-     */
-    public function testThrowsSpecificErrors($value, $type)
-    {
-        $apiProvider = function () {
-            return ['operations' => ['foo' => [
-                'http' => ['method' => 'POST']
-            ]]];
-        };
-        $service = new ServiceModel($apiProvider, 'foo', 'bar');
-
-        $c = new Client();
-        $client = new VwsClient([
-            'client'          => $c,
-            'credentials'     => new Credentials('foo', 'bar', 'foo_bar'),
-            'endpoint'        => 'http://local.foo.via.de',
-            'region'          => 'foo',
-            'exception_class' => $value,
-            'api'             => $service,
-            'version'         => 'latest',
-            'serializer'   => function () use ($c) {
-                return $c->createRequest('GET', 'http://httpbin.org');
-            },
-            'error_parser'    => function () {
-                return [
-                    'code' => 'foo',
-                    'type' => 'bar',
-                    'request_id' => '123',
-                    'messages' => []
-                ];
-            }
-        ]);
-
-        $client->getHttpClient()->getEmitter()->attach(new Mock([
-            new Response(404)
-        ]));
-
-        try {
-            $client->foo();
-            $this->fail('Did not throw an exception');
-        } catch (VwsException $e) {
-            $this->assertInstanceOf($type, $e);
-            $this->assertEquals([
-                'vws_error' => [
-                    'code' => 'foo',
-                    'type' => 'bar',
-                    'request_id' => '123',
-                    'messages' => []
-                ]
-            ], $e->getTransaction()->context->toArray());
-            $this->assertEquals('foo', $e->getVwsErrorCode());
-            $this->assertEquals('bar', $e->getVwsErrorType());
-            $this->assertEquals('123', $e->getVwsRequestId());
-        }
-    }
-
     /**
      * @expectedException \Vws\Exception\VwsException
-     * @expectedExceptionMessage Error executing Vws\VwsClient::foo() on "http://foo.com"; Baz Bar!
+     * @expectedExceptionMessage Error executing Vws\VwsClient::foo() on "http://foo.com/"; Baz Bar!
      */
     public function testHandlesNetworkingErrorsGracefully()
     {
         $r = new Request('GET', 'http://foo.com');
         $client = $this->createClient(
             ['operations' => ['foo' => ['http' => ['method' => 'POST']]]],
-            ['serializer' => function () use ($r) { return $r; }]
+            [
+                'serializer' => function () use ($r) {
+                    return $r;
+                },
+                'endpoint'   => 'http://foo.com',
+            ]
         );
         $command = $client->getCommand('foo');
         $command->getEmitter()->on('prepared', function (PreparedEvent $e) {
@@ -235,5 +119,121 @@ class VwsClientTest extends \PHPUnit_Framework_TestCase
             });
         });
         $client->execute($command);
+    }
+
+    /**
+     * [testChecksBothLowercaseAndUppercaseOperationNames description].
+     */
+    public function testChecksBothLowercaseAndUppercaseOperationNames()
+    {
+        $client = $this->createClient(['operations' => ['Foo' => [
+            'http' => ['method' => 'POST'],
+        ]]]);
+
+        $this->assertInstanceOf(
+            'GuzzleHttp\Command\CommandInterface',
+            $client->getCommand('foo')
+        );
+    }
+
+    public function testCanGetIterator()
+    {
+        $client = $this->getTestClient('blackbox');
+        $this->assertInstanceOf(
+            'Generator',
+            $client->getIterator('GetProducts', ['PageNumber' => 2])
+        );
+    }
+
+    /**
+     * @expectedException \UnexpectedValueException
+     */
+    public function testGetIteratorFailsForMissingConfig()
+    {
+        $client = $this->createClient();
+        $client->getIterator('GetCatalogs');
+    }
+
+    public function testCanGetPaginator()
+    {
+        $client = $this->createClient(['pagination' => [
+            'GetProducts' => [
+                'EntriesPerPage' => 50,
+                'PageNumber' => 3,
+            ],
+        ]]);
+
+        $this->assertInstanceOf(
+            'Vws\ResultPaginator',
+            $client->getPaginator('GetProducts', ['PageNumber' => 2])
+        );
+    }
+
+    /**
+     * @expectedException \UnexpectedValueException
+     */
+    public function testGetPaginatorFailsForMissingConfig()
+    {
+        $client = $this->createClient();
+        $client->getPaginator('GetProducts');
+    }
+
+    /**
+     * [testCreatesClientsFromFactoryMethod description].
+     */
+    public function testCreatesClientsFromFactoryMethod()
+    {
+        $client = new BlackboxClient([
+            'region'  => 'sandbox',
+            'version' => 'latest',
+        ]);
+        $this->assertInstanceOf('Vws\Blackbox\BlackboxClient', $client);
+        $this->assertEquals('sandbox', $client->getRegion());
+    }
+
+    /**
+     * [testCanGetEndpoint description].
+     */
+    public function testCanGetEndpoint()
+    {
+        $client = $this->createClient();
+        $this->assertEquals(
+            'http://sandboxapi.via.de:8001/api',
+            $client->getEndpoint()
+        );
+    }
+
+    private function createClient(array $service = [], array $config = [])
+    {
+        $apiProvider = function ($type) use ($service, $config) {
+            if ($type == 'paginator') {
+                return isset($service['pagination'])
+                    ? ['pagination' => $service['pagination']]
+                    : ['pagination' => []];
+            } elseif ($type == 'waiter') {
+                return isset($service['waiters'])
+                    ? ['waiters' => $service['waiters']]
+                    : ['waiters' => []];
+            } else {
+                if (!isset($service['metadata'])) {
+                    $service['metadata'] = [];
+                }
+                $service['metadata']['protocol'] = 'rest-json';
+
+                return $service;
+            }
+        };
+
+        return new VwsClient($config + [
+            'client'       => new Client(),
+            'credentials'  => new Credentials('foo', 'bar', 'foo_bar'),
+            'endpoint'     => 'http://sandboxapi.via.de:8001/api',
+            'region'       => 'foo',
+            'service'      => 'foo',
+            'api_provider' => $apiProvider,
+            'serializer'   => function () {},
+            'error_parser' => function () {},
+            'version'      => 'latest',
+        ]);
     }
 }
