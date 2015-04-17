@@ -9,6 +9,7 @@ return [
         'endpointPrefix' => 'blackbox',
         'jsonVersion' => '1.1',
     ],
+
     'operations' => [
         'GetCatalogs' => [
             'name' => 'GetCatalogs',
@@ -122,7 +123,7 @@ return [
         'DeleteLink' => [
             'name' => 'DeleteLink',
             'http' => [
-              'method' => 'POST',
+              'method' => 'DELETE',
               'requestUri' => 'Products/{productForeignId}/DeleteLink/{catalogForeignId}',
             ],
             'input' => [
@@ -202,6 +203,20 @@ return [
               'shape' => 'PatchOptionalAttributesOutput',
             ],
         ],
+
+        'PatchProduct' => [
+            'name' => 'PatchProduct',
+            'http' => [
+              'method' => 'PATCH',
+              'requestUri' => 'Products?ForeignId={ForeignId}',
+            ],
+            'input' => [
+              'shape' => 'PatchProductInput',
+            ],
+            'output' => [
+              'shape' => 'PatchProductOutput',
+            ],
+        ],
     ],
     /***********************************************************************
      *
@@ -254,6 +269,10 @@ return [
                 'Messages' =>  [
                     'shape' => 'MessageList',
                 ],
+                'StatusCode' => [
+                  'shape' => 'IntegerNoMinMax',
+                  'location' => 'statusCode',
+                ],
             ],
         ],
 
@@ -265,6 +284,10 @@ return [
                 ],
                 'Messages' =>  [
                     'shape' => 'MessageList',
+                ],
+                'StatusCode' => [
+                  'shape' => 'IntegerNoMinMax',
+                  'location' => 'statusCode',
                 ],
             ],
         ],
@@ -300,6 +323,10 @@ return [
                 'Messages' =>  [
                     'shape' => 'MessageList',
                 ],
+                'StatusCode' => [
+                  'shape' => 'IntegerNoMinMax',
+                  'location' => 'statusCode',
+                ],
             ],
         ],
 
@@ -318,6 +345,10 @@ return [
                   ],
                   'Messages' =>  [
                       'shape' => 'MessageList',
+                  ],
+                  'StatusCode' => [
+                    'shape' => 'IntegerNoMinMax',
+                    'location' => 'statusCode',
                   ],
               ],
         ],
@@ -394,6 +425,59 @@ return [
              ],
         ],
 
+        'PatchProductInput' => [
+            'type' => 'structure',
+            'required' => [
+                'ForeignId',
+            ],
+            'members' => [
+                'ForeignId' => [
+                    'shape' => 'StringMax255',
+                    'location' => 'uri'
+                ],
+                'Title' => [
+                    'shape' => 'StringMin3Max80',
+                ],
+                'Description' => [
+                    'shape' => 'StringNoMinMax',
+                ],
+                'ShortDescription' => [
+                    'shape' => 'StringMax2000',
+                ],
+                'Price' => [
+                    'shape' => 'Float',
+                ],
+                'Ean' => [
+                    'shape' => 'StringEan',
+                ],
+                'Upc' => [
+                    'shape' => 'StringUpc',
+                ],
+                'Isbn' => [
+                    'shape' => 'StringIsbn',
+                ],
+                'StockAmount' => [
+                    'shape' => 'IntegerMax999',
+                ],
+            ],
+        ],
+
+        'PatchProductOutput' => [
+            'type' => 'structure',
+            'members' => [
+                'EntityList' =>  [
+                  'shape' => 'ProductList',
+                ],
+                'Messages' =>  [
+                    'shape' => 'MessageList',
+                ],
+                'StatusCode' => [
+                  'shape' => 'IntegerNoMinMax',
+                  'location' => 'statusCode',
+                ],
+            ],
+        ],
+
         'GetProductsOutput' => [
              'type' => 'structure',
              'members' => [
@@ -454,6 +538,10 @@ return [
                 'Messages' =>  [
                     'shape' => 'MessageList',
                 ],
+                'StatusCode' => [
+                  'shape' => 'IntegerNoMinMax',
+                  'location' => 'statusCode',
+                ],
             ],
         ],
 
@@ -485,6 +573,10 @@ return [
                 ],
                 'Messages' =>  [
                     'shape' => 'MessageList',
+                ],
+                'StatusCode' => [
+                  'shape' => 'IntegerNoMinMax',
+                  'location' => 'statusCode',
                 ],
             ],
         ],
