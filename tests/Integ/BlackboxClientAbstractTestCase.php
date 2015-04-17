@@ -7,6 +7,15 @@ use Vws\Result;
 
 class BlackboxClientAbstractTestCase extends AbstractTestCase
 {
+    use IntegUtils;
+
+    protected function setUp()
+    {
+        $this->client = $this->createBlackboxClient();
+        $this->actualResponse = null;
+        $this->expectedResponse = null;
+    }
+
     /**
      * validate response header and body by given value
      *
@@ -15,53 +24,9 @@ class BlackboxClientAbstractTestCase extends AbstractTestCase
      *
      * @uses    $actualResponse, $expectedResponse
      */
-    public function postValidation($operation, $data, $args = [])
+    protected function postValidation($operation, $data, $args = [])
     {
-        try {
-            $this->actualResponse = $this->getResponse($operation, $data, $args);
-
-            $this->validateStatusCode($this->actualResponse->get('StatusCode'));
-            $this->validateEntityListCount();
-
-            if (isset($this->expectedResponse['Messages'])) {
-                $this->validateMessagesNumber();
-                $this->validateMessages();
-            } else {
-                $this->validateMessagesNumber(false);
-            }
-
-        } catch (BlackboxException $e) {
-
-            $this->validateStatusCode($e->getStatusCode());
-
-            if ($e->getResponse()) {
-                $responseBody = json_decode(
-                    $e->getResponse()->getBody()->__toString(),
-                    true
-                );
-
-                if ($responseBody !== null) {
-                    $this->actualResponse = new Result($responseBody);
-                } else {
-                    $this->fail('Response Body has no Content!');
-                }
-
-                $this->validateEntityListCount();
-
-                if (isset($this->expectedResponse['Messages'])) {
-                    $this->validateMessagesNumber();
-                    $this->validateMessages();
-                } else {
-                    $this->validateMessagesNumber(false);
-                }
-            } else {
-                $this->fail('Response Body has no Content!');
-            }
-
-
-        } catch (\Exception $e) {
-            $this->fail('Failed with php Exception ' . $e->getMessage());
-        }
+        $this->validate($operation, $data, $args = []);
     }
 
     /**
@@ -72,7 +37,44 @@ class BlackboxClientAbstractTestCase extends AbstractTestCase
      *
      * @uses    $actualResponse, $expectedResponse
      */
-    public function patchValidation($operation, $data, $args = [])
+    protected function patchValidation($operation, $data, $args = [])
+    {
+        $this->validate($operation, $data, $args = []);
+    }
+
+    /**
+     * validate response header and body by given value
+     *
+     * @param   string   $operation  Name of the operation (e.g. patchProduct)
+     * @param   array    $data       Operation data
+     *
+     * @uses    $actualResponse, $expectedResponse
+     */
+    protected function createLinkValidation($operation, $data, $args = [])
+    {
+        $this->validate($operation, $data, $args = []);
+    }
+
+    /**
+     * validate response header and body by given value
+     *
+     * @param   string   $operation  Name of the operation (e.g. patchProduct)
+     * @param   array    $data       Operation data
+     *
+     * @uses    $actualResponse, $expectedResponse
+     */
+    public function deleteLinkValidation($operation, $data, $args = [])
+    {
+        $this->validate($operation, $data, $args = []);
+    }
+
+    protected function createAndDeleteLinkValidation($data, $args = [])
+    {
+        $this->createLinkValidation('CreateLink', $data);
+        $this->deleteLinkValidation('DeleteLink', $data);
+    }
+
+    private function validate($operation, $data, $args = [])
     {
         try {
             $this->actualResponse = $this->getResponse($operation, $data, $args);
@@ -123,6 +125,8 @@ class BlackboxClientAbstractTestCase extends AbstractTestCase
             $this->fail('Failed with php Exception ' . $e->getMessage());
         }
     }
+
+
 
     /**
      * Get response from given operation and data
