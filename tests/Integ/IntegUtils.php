@@ -27,10 +27,13 @@ trait IntegUtils
         ]);
     }
 
-    protected static function randStrGen($len)
+    protected static function randStrGen($len, $includeWhiteSpace = true)
     {
         $result = "";
-        $chars = "abcdefghijklmnopqrstuvwxyz$\_?!- 0123456789";
+        $chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+        if ($includeWhiteSpace) {
+            $chars = $chars . " ";
+        }
         $charArray = str_split($chars);
         for ($i = 0; $i < $len; $i++) {
             $randItem = array_rand($charArray);
@@ -39,7 +42,7 @@ trait IntegUtils
         return $result;
     }
 
-    protected function createClient($args = [])
+    protected function createBlackboxClient($args = [])
     {
         $client = $this->getSdk()->createBlackbox($args);
         return $client;
