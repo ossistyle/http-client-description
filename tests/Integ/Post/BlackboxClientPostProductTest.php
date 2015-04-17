@@ -32,10 +32,8 @@ class BlackboxClientPostProductTest extends BlackboxClientAbstractTestCase
         $expectedResponse
     ) {
         $this->expectedResponse = $expectedResponse;
-        //unset($product['StockAmount']);
-        //unset($product['Price']);
-        $product['StockAmount'] = 1;
-        $product['Price'] = 1.23;
+        unset($product['StockAmount']);
+        unset($product['Price']);
         $this->postValidation('postProduct', $product);
     }
 }

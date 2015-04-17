@@ -11,6 +11,7 @@ trait OptionalAttributesDataProvider
             self::missingOptionalAttributesForeignId(),
             self::invalidOptionalAttributesForeignId(),
             // too long
+            // self::tooLongOptionalAttributesForeignId(),
             self::tooLongOptionalAttributesName(),
             self::tooLongOptionalAttributesValue(),
             self::tooLongOptionalAttributesNameAndValue()
@@ -73,6 +74,41 @@ trait OptionalAttributesDataProvider
                     'StatusCode' => 404,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
+                ],
+            ],
+
+        ];
+    }
+
+    public static function tooLongOptionalAttributesForeignId()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => self::randStrGen(61),
+                    'Name' => '3 OptionalAttributes ' . date('y-m-d H:i:s'),
+                    'Value' => 'Lorem ipsum dolor sit amet - ' . date('y-m-d H:i:s'),
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
+                    'Messages' => [
+                        [
+                            'Code' => 7003,
+                            'Severity' => 1,
+                            'Message' => 'OptionalProductAttributes.ForeignId is too long.',
+                            'Description' => 'Product (.+): The \'ForeignId\' of the '
+                                            .'OptionalProductAttributes with '
+                                            .'(.+): (.+) is too long. '
+                                            .'Maximum length for \'ForeignId\' is 60 chars. '
+                                            .'It is required to send a unique ForeignId.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
                 ],
             ],
 

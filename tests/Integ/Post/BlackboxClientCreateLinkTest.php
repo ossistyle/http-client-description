@@ -11,48 +11,14 @@ class BlackboxClientPostCreateLinkTest extends BlackboxClientAbstractTestCase
     /**
      * @dataProvider productCatalogCreateLinkData
      */
-    public function _testCreateLink($catalogForeignId, $productForeignId, $expectedResponse)
+    public function testCreateLink($catalogForeignId, $productForeignId, $expectedResponse)
     {
         $this->expectedResponse = $expectedResponse;
-        $this->validate(
+        $this->createLinkValidation(
             'CreateLink',
             [
                 'productForeignId' => $productForeignId[0],
                 'catalogForeignId' => $catalogForeignId[0]
-            ]
-        );
-    }
-
-    /**
-     * @dataProvider customAssignment
-     */
-    public function _testCreateLinkCustomAssignment($catalog, $product, $expectedResponse)
-    {
-        $this->expectedResponse = $expectedResponse;
-
-        $this->validate(
-            'postProduct',
-            $product[0]
-        );
-
-        $this->validate(
-            'postCatalog',
-            $catalog[0]
-        );
-
-        $this->validate(
-            'CreateLink',
-            [
-                'productForeignId' => $product[0]['ForeignId'],
-                'catalogForeignId' => $catalog[0]['ForeignId']
-            ]
-        );
-
-        $this->validate(
-            'DeleteLink',
-            [
-                'productForeignId' => $product[0]['ForeignId'],
-                'catalogForeignId' => $catalog[0]['ForeignId']
             ]
         );
     }

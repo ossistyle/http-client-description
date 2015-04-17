@@ -7,7 +7,7 @@ use Vws\Test\Integ\BlackboxClientAbstractTestCase;
 /**
  *
  */
-class BlackboxClientPatchProductTest extends BlackboxClientAbstractTestCase
+class BlackboxClientOptionalAttributesTest extends BlackboxClientAbstractTestCase
 {
     use OptionalAttributesDataProvider;
 

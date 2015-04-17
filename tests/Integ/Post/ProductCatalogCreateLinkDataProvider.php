@@ -15,10 +15,12 @@ trait ProductCatalogCreateLinkDataProvider
             self::emptyProductForeignId(),
             self::nullProductForeignId(),
             self::invalidProductForeignId(),
+            self::greaterThan60CharsProductForeignId(),
             // CatalogForeignId
             self::emptyCatalogForeignId(),
             self::nullCatalogForeignId(),
             self::invalidCatalogForeignId(),
+            self::greaterThan60CharsCatalogForeignId(),
             // valid assignments
             self::existingAssignment()
         );
@@ -108,6 +110,37 @@ trait ProductCatalogCreateLinkDataProvider
                             'Severity' => 1,
                             'Message' => 'productForeignId does not exists.',
                             'Description' => 'The \'productForeignId\' (.+) does not exists.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ]
+            ]
+        ];
+    }
+
+    public static function greaterThan60CharsProductForeignId()
+    {
+        return
+        [
+            [
+                [
+                    117699
+                ],
+                [
+                    self::randStrGen(61, false)
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
+                    'Messages' => [
+                        [
+                            'Code' => 4021,
+                            'Severity' => 1,
+                            'Message' => 'productForeignId is too long.',
+                            'Description' => 'The \'productForeignId\' (.+) is too long.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -210,13 +243,13 @@ trait ProductCatalogCreateLinkDataProvider
         ];
     }
 
-    public static function existingAssignment()
+    public static function greaterThan60CharsCatalogForeignId()
     {
         return
         [
             [
                 [
-                    117760
+                    self::randStrGen(61, false)
                 ],
                 [
                     '200_BNW233031'
@@ -228,12 +261,10 @@ trait ProductCatalogCreateLinkDataProvider
                     'EntityListCount' => 0,
                     'Messages' => [
                         [
-                            'Code' => 4024,
-                            'Severity' => 2,
-                            'Message' => 'Assignment already exists.',
-                            'Description' => 'The assignment of the product '
-                                            .'(.+): (.+) to the catalog '
-                                            .'(.+): (.+) already exists.',
+                            'Code' => 4021,
+                            'Severity' => 1,
+                            'Message' => 'catalogForeignId is too long.',
+                            'Description' => 'The \'catalogForeignId\' (.+) is too long.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -243,16 +274,16 @@ trait ProductCatalogCreateLinkDataProvider
         ];
     }
 
-    public function customAssignment()
+    public static function existingAssignment()
     {
         return
         [
             [
                 [
-                    $this->buildCatalog()->toArray()
+                    117760
                 ],
                 [
-                    $this->buildProduct()->toArray()
+                    '200_BNW233031'
                 ],
                 [
                     'Succeeded' => false,

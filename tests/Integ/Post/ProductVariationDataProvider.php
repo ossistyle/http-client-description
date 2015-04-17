@@ -43,7 +43,7 @@ trait ProductVariationDataProvider
             [
                 [
                     'ForeignId' => self::getGUID(),
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Title' => 'Integration-Smoke-Test validate Variations Variations '.__FUNCTION__,
                     'Description' => '<h1>HTML Ipsum Presents</h1>
 
                                     <p><strong>Pellentesque habitant morbi
@@ -122,20 +122,18 @@ trait ProductVariationDataProvider
                     'Variations' => []
                 ],
                 [
-                    'Succeeded' => true,
-                    'StatusCode' => 201,
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
                     'Messages' => [
                         [
-                            'Code' => 8000,
-                            'Severity' => 1,
-                            'Message' => 'Variations container is empty.',
-                            'Description' => 'The product with the '
-                                            .'(.+): (.+) has an empty '
-                                            .'\'Variations\' container. '
-                                            .'The product will be created '
-                                            .'as a standard product.',
+                            'Code' => 4004,
+                            'Severity' => 2,
+                            'Message' => 'Invalid StockAmount',
+                            'Description' => 'The StockAmount of the product with '
+                                            .'ForeignId: (.+) cannot be empty '
+                                            .'or must be greater\/equal than zero.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -152,7 +150,7 @@ trait ProductVariationDataProvider
             [
                 [
                     'ForeignId' => self::getGUID(),
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Title' => 'Integration-Smoke-Test validate Variations '.__FUNCTION__,
                     'Description' => '<h1>HTML Ipsum Presents</h1>
 
                                     <p><strong>Pellentesque habitant morbi
@@ -257,7 +255,7 @@ trait ProductVariationDataProvider
             [
                 [
                     'ForeignId' => self::getGUID(),
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Title' => 'Integration-Smoke-Test validate Variations '.__FUNCTION__,
                     'Description' => '<h1>HTML Ipsum Presents</h1>
 
                                     <p><strong>Pellentesque habitant morbi
@@ -399,7 +397,7 @@ trait ProductVariationDataProvider
             [
                 [
                     'ForeignId' => self::getGUID(),
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Title' => 'Integration-Smoke-Test validate Variations '.__FUNCTION__,
                     'Description' => '<h1>HTML Ipsum Presents</h1>
 
                                     <p><strong>Pellentesque habitant morbi
@@ -541,7 +539,7 @@ trait ProductVariationDataProvider
             [
                 [
                     'ForeignId' => self::getGUID(),
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Title' => 'Integration-Smoke-Test validate Variations '.__FUNCTION__,
                     'Description' => '<h1>HTML Ipsum Presents</h1>
 
                                     <p><strong>Pellentesque habitant morbi
@@ -682,7 +680,7 @@ trait ProductVariationDataProvider
             [
                 [
                     'ForeignId' => self::getGUID(),
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Title' => 'Integration-Smoke-Test validate Variations '.__FUNCTION__,
                     'Description' => '<h1>HTML Ipsum Presents</h1>
 
                                     <p><strong>Pellentesque habitant morbi
@@ -824,7 +822,7 @@ trait ProductVariationDataProvider
             [
                 [
                     'ForeignId' => self::getGUID(),
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Title' => 'Integration-Smoke-Test validate Variations '.__FUNCTION__,
                     'Description' => '<h1>HTML Ipsum Presents</h1>
 
                                     <p><strong>Pellentesque habitant morbi
@@ -966,7 +964,7 @@ trait ProductVariationDataProvider
             [
                 [
                     'ForeignId' => self::getGUID(),
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Title' => 'Integration-Smoke-Test validate Variations '.__FUNCTION__,
                     'Description' => '<h1>HTML Ipsum Presents</h1>
 
                                     <p><strong>Pellentesque habitant morbi
@@ -1107,7 +1105,7 @@ trait ProductVariationDataProvider
             [
                 [
                     'ForeignId' => self::getGUID(),
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Title' => 'Integration-Smoke-Test validate Variations '.__FUNCTION__,
                     'Description' => '<h1>HTML Ipsum Presents</h1>
 
                                     <p><strong>Pellentesque habitant morbi
@@ -1252,7 +1250,7 @@ trait ProductVariationDataProvider
             [
                 [
                     'ForeignId' => self::getGUID(),
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Title' => 'Integration-Smoke-Test validate Variations '.__FUNCTION__,
                     'Description' => '<h1>HTML Ipsum Presents</h1>
 
                                     <p><strong>Pellentesque habitant morbi
@@ -1396,7 +1394,7 @@ trait ProductVariationDataProvider
             [
                 [
                     'ForeignId' => self::getGUID(),
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Title' => 'Integration-Smoke-Test validate Variations '.__FUNCTION__,
                     'Description' => '<h1>HTML Ipsum Presents</h1>
 
                                     <p><strong>Pellentesque habitant morbi
@@ -1541,7 +1539,7 @@ trait ProductVariationDataProvider
             [
                 [
                     'ForeignId' => self::getGUID(),
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Title' => 'Integration-Smoke-Test validate Variations '.__FUNCTION__,
                     'Description' => '<h1>HTML Ipsum Presents</h1>
 
                                     <p><strong>Pellentesque habitant morbi
@@ -1674,7 +1672,7 @@ trait ProductVariationDataProvider
             [
                 [
                     'ForeignId' => self::getGUID(),
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Title' => 'Integration-Smoke-Test validate Variations '.__FUNCTION__,
                     'Description' => '<h1>HTML Ipsum Presents</h1>
 
                                     <p><strong>Pellentesque habitant morbi
@@ -1806,7 +1804,7 @@ trait ProductVariationDataProvider
             [
                 [
                     'ForeignId' => self::getGUID(),
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Title' => 'Integration-Smoke-Test validate Variations '.__FUNCTION__,
                     'Description' => '<h1>HTML Ipsum Presents</h1>
 
                                     <p><strong>Pellentesque habitant morbi
@@ -1939,7 +1937,7 @@ trait ProductVariationDataProvider
             [
                 [
                     'ForeignId' => self::getGUID(),
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Title' => 'Integration-Smoke-Test validate Variations '.__FUNCTION__,
                     'Description' => '<h1>HTML Ipsum Presents</h1>
 
                                     <p><strong>Pellentesque habitant morbi
@@ -2083,7 +2081,7 @@ trait ProductVariationDataProvider
             [
                 [
                     'ForeignId' => self::getGUID(),
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Title' => 'Integration-Smoke-Test validate Variations '.__FUNCTION__,
                     'Description' => '<h1>HTML Ipsum Presents</h1>
 
                                     <p><strong>Pellentesque habitant morbi
@@ -2226,7 +2224,7 @@ trait ProductVariationDataProvider
             [
                 [
                     'ForeignId' => self::getGUID(),
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Title' => 'Integration-Smoke-Test validate Variations '.__FUNCTION__,
                     'Description' => '<h1>HTML Ipsum Presents</h1>
 
                                     <p><strong>Pellentesque habitant morbi
@@ -2370,7 +2368,7 @@ trait ProductVariationDataProvider
             [
                 [
                     'ForeignId' => self::getGUID(),
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Title' => 'Integration-Smoke-Test validate Variations '.__FUNCTION__,
                     'Description' => '<h1>HTML Ipsum Presents</h1>
 
                                     <p><strong>Pellentesque habitant morbi
@@ -2514,7 +2512,7 @@ trait ProductVariationDataProvider
             [
                 [
                     'ForeignId' => self::getGUID(),
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Title' => 'Integration-Smoke-Test validate Variations '.__FUNCTION__,
                     'Description' => '<h1>HTML Ipsum Presents</h1>
 
                                     <p><strong>Pellentesque habitant morbi
@@ -2657,7 +2655,7 @@ trait ProductVariationDataProvider
             [
                 [
                     'ForeignId' => self::getGUID(),
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Title' => 'Integration-Smoke-Test validate Variations '.__FUNCTION__,
                     'Description' => '<h1>HTML Ipsum Presents</h1>
 
                                     <p><strong>Pellentesque habitant morbi
@@ -2801,7 +2799,7 @@ trait ProductVariationDataProvider
             [
                 [
                     'ForeignId' => self::getGUID(),
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Title' => 'Integration-Smoke-Test validate Variations '.__FUNCTION__,
                     'Description' => '<h1>HTML Ipsum Presents</h1>
 
                                     <p><strong>Pellentesque habitant morbi
@@ -2925,7 +2923,7 @@ trait ProductVariationDataProvider
                         [
                             'Code' => 8103,
                             'Severity' => 2,
-                            'Message' => 'Variations.Specifics.Name invalid.',
+                            'Message' => 'Specifics.Name invalid.',
                             'Description' => 'The \'Specifics.Name\' of the '
                                             .'variation with the specifics '
                                             .'(.+): (.+) has duplicate value.',
@@ -2945,7 +2943,7 @@ trait ProductVariationDataProvider
             [
                 [
                     'ForeignId' => self::getGUID(),
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Title' => 'Integration-Smoke-Test validate Variations '.__FUNCTION__,
                     'Description' => '<h1>HTML Ipsum Presents</h1>
 
                                     <p><strong>Pellentesque habitant morbi
@@ -3089,7 +3087,7 @@ trait ProductVariationDataProvider
             [
                 [
                     'ForeignId' => self::getGUID(),
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Title' => 'Integration-Smoke-Test validate Variations '.__FUNCTION__,
                     'Description' => '<h1>HTML Ipsum Presents</h1>
 
                                     <p><strong>Pellentesque habitant morbi
@@ -3232,7 +3230,7 @@ trait ProductVariationDataProvider
             [
                 [
                     'ForeignId' => self::getGUID(),
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Title' => 'Integration-Smoke-Test validate Variations '.__FUNCTION__,
                     'Description' => '<h1>HTML Ipsum Presents</h1>
 
                                     <p><strong>Pellentesque habitant morbi
@@ -3376,7 +3374,7 @@ trait ProductVariationDataProvider
             [
                 [
                     'ForeignId' => self::getGUID(),
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Title' => 'Integration-Smoke-Test validate Variations '.__FUNCTION__,
                     'Description' => '<h1>HTML Ipsum Presents</h1>
 
                                     <p><strong>Pellentesque habitant morbi
@@ -3500,7 +3498,7 @@ trait ProductVariationDataProvider
                         [
                             'Code' => 8105,
                             'Severity' => 2,
-                            'Message' => 'Variations.Specifics.Value invalid.',
+                            'Message' => 'Specifics.Value invalid.',
                             'Description' => 'The \'Specifics.Value\' of the '
                                             .'variation with the specifics '
                                             .'(.+): (.+) has duplicate values.',
@@ -3618,7 +3616,7 @@ trait ProductVariationDataProvider
                         [
                             'ForeignId' => self::getGUID(),
                             'Price' => 1.24,
-                            'StockAmount' => 1,
+                            'StockAmount' => 0,
                             'Sku' => 't-shirt-m-blau',
                             'Specifics' => [
                                 [
@@ -3654,7 +3652,7 @@ trait ProductVariationDataProvider
                         [
                             'ForeignId' => self::getGUID(),
                             'Price' => 1.26,
-                            'StockAmount' => 1,
+                            'StockAmount' => 0,
                             'Sku' => 't-shirt-xl-blau',
                             'Specifics' => [
                                 [
@@ -3690,7 +3688,7 @@ trait ProductVariationDataProvider
                         [
                             'ForeignId' => self::getGUID(),
                             'Price' => 1.24,
-                            'StockAmount' => 1,
+                            'StockAmount' => 0,
                             'Sku' => 't-shirt-m-rot',
                             'Specifics' => [
                                 [
@@ -3726,7 +3724,7 @@ trait ProductVariationDataProvider
                         [
                             'ForeignId' => self::getGUID(),
                             'Price' => 1.26,
-                            'StockAmount' => 1,
+                            'StockAmount' => 0,
                             'Sku' => 't-shirt-xl-rot',
                             'Specifics' => [
                                 [
@@ -3762,7 +3760,7 @@ trait ProductVariationDataProvider
                         [
                             'ForeignId' => self::getGUID(),
                             'Price' => 1.24,
-                            'StockAmount' => 1,
+                            'StockAmount' => 0,
                             'Sku' => 't-shirt-m-gruen',
                             'Specifics' => [
                                 [
@@ -3798,7 +3796,7 @@ trait ProductVariationDataProvider
                         [
                             'ForeignId' => self::getGUID(),
                             'Price' => 1.26,
-                            'StockAmount' => 1,
+                            'StockAmount' => 0,
                             'Sku' => 't-shirt-xl-gruen',
                             'Specifics' => [
                                 [

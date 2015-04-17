@@ -1,16 +1,15 @@
 <?php
 
-namespace Vws\Test\Integ;
+namespace Vws\Test\Integ\Auth;
 
 use GuzzleHttp\Command\Event\PreparedEvent;
+use Vws\Test\Integ\BlackboxClientAbstractTestCase;
 
 /**
  *
  */
-class BlackboxClientAuthorizationSmokeTest extends BlackboxClientAbstractTestCase
+class BlackboxClientAuthorizationTest extends BlackboxClientAbstractTestCase
 {
-    use IntegUtils;
-
     /**
      * @expectedException \Vws\Blackbox\Exception\BlackboxException
      * @expectedExceptionMessage (client error): The header parameter "Username" or "Password" is not valid or empty

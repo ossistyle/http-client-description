@@ -69,8 +69,8 @@ trait ProductDataProvider
             self::emptyOptionalAttributesNameAndValue(),
             self::missingOptionalAttributesNameAndValue(),
             self::nullOptionalAttributesNameAndValue(),
-            self::tooLongOptionalAttributesName(),
-            self::tooLongOptionalAttributesValue(),
+            self::greaterThan255CharsOptionalAttributesName(),
+            self::greaterThan4000AttributesValue(),
             self::tooLongOptionalAttributesNameAndValue()
         );
     }
@@ -190,7 +190,7 @@ trait ProductDataProvider
                 [
                     'ForeignId' => self::getGUID(),
                     'Title' => '',
-                    'Description' => 'Beschreibung',
+                    'Description' => 'Beschreibung ' . __FUNCTION__,
                     'ShortDescription' => 'Kurzbeschreibung',
                     'Price' => 1.23,
                     'Ean' => '14352638',
@@ -426,6 +426,45 @@ trait ProductDataProvider
                             'DeveloperHelpLink' => '',
                         ],
                     ],
+                ],
+            ],
+
+        ];
+    }
+
+    public static function exactly80CharsTitle()
+    {
+        return
+        [
+            [
+
+                [
+                    'ForeignId' => self::getGUID(),
+                    'Title' => self::randStrGen(80),
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'StockAmount' => 10,
+                    'Images' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => true,
+                    'StatusCode' => 201,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
                 ],
             ],
 
@@ -870,30 +909,7 @@ trait ProductDataProvider
                     'ForeignId' => self::getGUID(),
                     'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
                     'Description' => 'Beschreibung',
-                    'ShortDescription' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Integer nec odio. Praesent libero.
-                    Sed cursus ante dapibus diam. Sed nisi.
-                    Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum.
-                    Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa.
-                    Vestibulum lacinia arcu eget nulla.
-                    Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
-                    Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam.
-                    In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas porttitor.
-                    Morbi lectus risus, iaculis vel, suscipit quis, luctus non, massa. Fusce ac turpis quis ligula lacinia aliquet.
-                    Mauris ipsum. Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh.
-                    Quisque volutpat condimentum velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra,
-                    per inceptos himenaeos. Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam,
-                    a cursus ipsum ante quis turpis. Nulla facilisi. Ut fringilla. Suspendisse potenti.
-                    Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam. Etiam ultrices.
-                    Suspendisse in justo eu magna luctus suscipit. Sed lectus. Integer euismod lacus luctus magna.
-                    Quisque cursus, metus vitae pharetra auctor, sem massa mattis sem, at interdum magna augue eget diam.
-                    Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi lacinia molestie dui.
-                    Praesent blandit dolor. Sed non quam. In vel mi sit amet augue congue elementum.
-                    Morbi in ipsum sit amet pede facilisis laoreet. Donec lacus nunc, viverra nec, blandit vel, egestas et, augue.
-                    Vestibulum tincidunt malesuada tellus. Ut ultrices ultrices enim. Curabitur sit amet mauris.
-                    Morbi in dui quis est pulvinar ullamcorper. Nulla facilisi. Integer lacinia sollicitudin massa.
-                    Cras metus. Sed aliquet risus a tortor.
-                    Integer id quam. Morbi mi. Quisque nisl felis, venenatis tristique, dignissim in, ultrice.',
+                    'ShortDescription' => self::randStrGen(2001),
                     'Price' => 1.23,
                     'StockAmount' => 1,
                     'Ean' => '14352638',
@@ -912,7 +928,7 @@ trait ProductDataProvider
                     ],
                 ],
                 [
-                    'Succeeded' => false,
+                    'Succeeded' => true,
                     'StatusCode' => 201,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
@@ -926,6 +942,45 @@ trait ProductDataProvider
                             'DeveloperHelpLink' => '',
                         ],
                     ],
+                ],
+            ],
+
+        ];
+    }
+
+    public static function exactly2000CharsShortDescription()
+    {
+        return
+        [
+            [
+
+                [
+                    'ForeignId' => self::getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => self::randStrGen(2000),
+                    'Price' => 1.23,
+                    'StockAmount' => 1,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => true,
+                    'StatusCode' => 201,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
                 ],
             ],
 
@@ -2059,6 +2114,43 @@ trait ProductDataProvider
         ];
     }
 
+    public static function exactly40CharsSpecificsName()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => self::getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => self::randStrGen(40),
+                            'Value' => 'VIA-Ebay',
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => true,
+                    'StatusCode' => 201,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
+                ],
+            ],
+        ];
+    }
+
     public static function emptySpecificsValue()
     {
         return
@@ -2194,6 +2286,43 @@ trait ProductDataProvider
                             'DeveloperHelpLink' => '',
                         ],
                     ],
+                ],
+            ],
+        ];
+    }
+
+    public static function exactly50CharsSpecificsValue()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => self::getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => 'Beschreibung',
+                    'ShortDescription' => 'Kurzbeschreibung',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
+                            'Type' => 2,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => self::randStrGen(50),
+                        ],
+                    ],
+                ],
+                [
+                    'Succeeded' => true,
+                    'StatusCode' => 201,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
                 ],
             ],
         ];
@@ -4733,7 +4862,7 @@ trait ProductDataProvider
         ];
     }
 
-    public static function tooLongOptionalAttributesName()
+    public static function greaterThan255CharsOptionalAttributesName()
     {
         return
         [
@@ -4820,74 +4949,12 @@ trait ProductDataProvider
                         [
                             'ForeignId' => self::getGUID(),
                             'Name' => '1 OptionalAttributes',
-                            'Value' => 'Lorem ipsum dolor sit amet,
-                                        consectetuer adipiscing elit.
-                                        Aenean commodo ligula eget dolor. Aenean massa.
-                                        Cum sociis natoque penatibus et magnis dis parturient montes,
-                                        nascetur ridiculus mus. Donec quam felis,
-                                        ultricies nec, pellentesque eu, pretium quis, sem.
-                                        Nulla consequat massa quis enim. Donec pede justo,
-                                        fringilla vel, aliquet nec, vulputate eget, arcu.
-                                        In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
-                                        Nullam dictum felis eu pede mollis pretium. Integer tincidunt.
-                                        Cras dapibus. Vivamus elementum semper nisi.
-                                        Aenean vulputate eleifend tellus. Aenean leo ligula,
-                                        porttitor eu, consequat vitae, eleifend ac, enim.
-                                        Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus.
-                                        Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum.
-                                        Aenean imperdiet. Etiam ultricies nisi vel augue.
-                                        Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus.
-                                        Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero,
-                                        sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel,
-                                        luctus pulvinar, hendrerit id, lorem.
-                                        Maecenas nec odio et ante tincidunt tempus.
-                                        Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante.
-                                        Etiam sit amet orci eget eros faucibus tincidunt. Duis leo.
-                                        Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna.
-                                        Sed consequat, leo eget bibendum sodales, augue velit cursus nunc,
-                                        quis gravida magna mi a libero. Fusce vulputate eleifend sapien.
-                                        Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus.
-                                        Nullam accumsan lorem in dui.
-                                        Cras ultricies mi eu turpis hendrerit fringilla.
-                                        Vestibulum ante ipsum primis in
-                                        faucibus orci luctus et ultrices posuere cubilia Curae;
-                                        In ac dui quis mi consectetuer lacinia.'
+                            'Value' => self::randStrGen(300)
                         ],
                         [
                             'ForeignId' => self::getGUID(),
-                            'Name' => '2 OptionalAttributes with a too long name ... Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium qui',
-                            'Value' => 'Lorem ipsum dolor sit amet,
-                                        consectetuer adipiscing elit.
-                                        Aenean commodo ligula eget dolor. Aenean massa.
-                                        Cum sociis natoque penatibus et magnis dis parturient montes,
-                                        nascetur ridiculus mus. Donec quam felis,
-                                        ultricies nec, pellentesque eu, pretium quis, sem.
-                                        Nulla consequat massa quis enim. Donec pede justo,
-                                        fringilla vel, aliquet nec, vulputate eget, arcu.
-                                        In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
-                                        Nullam dictum felis eu pede mollis pretium. Integer tincidunt.
-                                        Cras dapibus. Vivamus elementum semper nisi.
-                                        Aenean vulputate eleifend tellus. Aenean leo ligula,
-                                        porttitor eu, consequat vitae, eleifend ac, enim.
-                                        Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus.
-                                        Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum.
-                                        Aenean imperdiet. Etiam ultricies nisi vel augue.
-                                        Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus.
-                                        Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero,
-                                        sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel,
-                                        luctus pulvinar, hendrerit id, lorem.
-                                        Maecenas nec odio et ante tincidunt tempus.
-                                        Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante.
-                                        Etiam sit amet orci eget eros faucibus tincidunt. Duis leo.
-                                        Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna.
-                                        Sed consequat, leo eget bibendum sodales, augue velit cursus nunc,
-                                        quis gravida magna mi a libero. Fusce vulputate eleifend sapien.
-                                        Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus.
-                                        Nullam accumsan lorem in dui.
-                                        Cras ultricies mi eu turpis hendrerit fringilla.
-                                        Vestibulum ante ipsum primis in
-                                        faucibus orci luctus et ultrices posuere cubilia Curae;
-                                        In ac dui quis mi consectetuer lacinia.'
+                            'Name' => self::randStrGen(256),
+                            'Value' => self::randStrGen(300)
                         ]
                     ]
                 ],
@@ -4914,7 +4981,113 @@ trait ProductDataProvider
         ];
     }
 
-    public static function tooLongOptionalAttributesValue()
+    public static function exactly255CharsOptionalAttributesName()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => self::getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => '<h1>HTML Ipsum Presents</h1>
+
+                                    <p><strong>Pellentesque habitant morbi
+                                    tristique</strong> senectus et netus et
+                                    malesuada fames ac turpis egestas.
+                                    Vestibulum tortor quam, feugiat vitae,
+                                    ultricies eget, tempor sit amet, ante.
+                                    Donec eu libero sit amet quam egestas semper.
+                                    <em>Aenean ultricies mi vitae est.</em>
+                                    Mauris placerat eleifend leo.
+                                    Quisque sit amet est et sapien
+                                    ullamcorper pharetra.
+                                    Vestibulum erat wisi, condimentum sed,
+                                    <code>commodo vitae</code>,
+                                    ornare sit amet, wisi.
+                                    Aenean fermentum, elit eget tincidunt
+                                    condimentum, eros ipsum rutrum orci,
+                                    sagittis tempus lacus enim ac dui.
+                                    <a href="#">Donec non enim</a>
+                                    in turpis pulvinar facilisis. Ut felis.</p>
+
+                                <h2>Header Level 2</h2>
+
+                                <ol>
+                                   <li>Lorem ipsum dolor sit amet,
+                                    consectetuer adipiscing elit.</li>
+                                   <li>Aliquam tincidunt mauris eu risus.</li>
+                                </ol>',
+                    'ShortDescription' => '<dl>
+                                   <dt>Definition list</dt>
+                                   <dd>Consectetur adipisicing elit, sed do
+                                   eiusmod tempor incididunt ut labore et
+                                   dolore magna aliqua.
+                                   Ut enim ad minim veniam, quis
+                                   nostrud exercitation ullamco laboris
+                                   nisi ut aliquip ex ea
+                                   commodo consequat.</dd>
+                                   <dt>Lorem ipsum dolor sit amet</dt>
+                                   <dd>Consectetur adipisicing elit,
+                                   sed do eiusmod tempor incididunt ut labore
+                                   et dolore magna aliqua. Ut enim ad minim veniam,
+                                   quis nostrud exercitation
+                                   ullamco laboris nisi ut aliquip ex ea
+                                   commodo consequat.</dd>
+                                </dl>',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_2.jpg',
+                            'Type' => 2,
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_3.jpg',
+                            'Type' => 3,
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_4.jpg',
+                            'Type' => 4,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                        [
+                            'Name' => 'Hersteller',
+                            'Value' => 'VIA-eBay',
+                        ],
+                    ],
+                    'OptionalAttributes' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'Name' => self::randStrGen(255),
+                            'Value' => self::randStrGen(300)
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'Name' => self::randStrGen(255),
+                            'Value' => self::randStrGen(300)
+                        ]
+                    ]
+                ],
+                [
+                    'Succeeded' => true,
+                    'StatusCode' => 201,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
+                ],
+            ],
+        ];
+    }
+
+    public static function greaterThan4000AttributesValue()
     {
         return
         [
@@ -5037,51 +5210,7 @@ trait ProductDataProvider
                         [
                             'ForeignId' => self::getGUID(),
                             'Name' => '2 OptionalAttributes',
-                            'Value' => 'Lorem ipsum dolor sit amet,
-                                        consectetuer adipiscing elit.
-                                        Aenean commodo ligula eget dolor. Aenean massa.
-                                        Cum sociis natoque penatibus et magnis dis parturient montes,
-                                        nascetur ridiculus mus. Donec quam felis,
-                                        ultricies nec, pellentesque eu, pretium quis, sem.
-                                        Nulla consequat massa quis enim. Donec pede justo,
-                                        fringilla vel, aliquet nec, vulputate eget, arcu.
-                                        In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
-                                        Nullam dictum felis eu pede mollis pretium. Integer tincidunt.
-                                        Cras dapibus. Vivamus elementum semper nisi.
-                                        Aenean vulputate eleifend tellus. Aenean leo ligula,
-                                        porttitor eu, consequat vitae, eleifend ac, enim.
-                                        Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus.
-                                        Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum.
-                                        Aenean imperdiet. Etiam ultricies nisi vel augue.
-                                        Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus.
-                                        Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero,
-                                        sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel,
-                                        luctus pulvinar, hendrerit id, lorem.
-                                        Maecenas nec odio et ante tincidunt tempus.
-                                        Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante.
-                                        Etiam sit amet orci eget eros faucibus tincidunt. Duis leo.
-                                        Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna.
-                                        Sed consequat, leo eget bibendum sodales, augue velit cursus nunc,
-                                        quis gravida magna mi a libero. Fusce vulputate eleifend sapien.
-                                        Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus.
-                                        Nullam accumsan lorem in dui.
-                                        Cras ultricies mi eu turpis hendrerit fringilla.
-                                        Vestibulum ante ipsum primis in
-                                        faucibus orci luctus et ultrices posuere cubilia Curae;
-                                        In ac dui quis mi consectetuer lacinia.
-                                        Nam pretium turpis et arcu. Duis arcu tortor,
-                                        suscipit eget, imperdiet nec, imperdiet iaculis, ipsum.
-                                        Sed aliquam ultrices mauris. Integer ante arcu, accumsan a,
-                                        consectetuer eget, posuere ut, mauris. Praesent adipiscing.
-                                        Phasellus ullamcorper ipsum rutrum nunc. Nunc nonummy metus.
-                                        Vestibulum volutpat pretium libero. Cras id dui.
-                                        Aenean ut eros et nisl sagittis vestibulum. Nullam nulla eros,
-                                        ultricies sit amet, nonummy id, imperdiet feugiat, pede. Sed lectus.
-                                        Donec mollis hendrerit risus. Phasellus nec sem in justo pellentesque
-                                        facilisis. Etiam imperdiet imperdiet orci. Nunc nec neque.
-                                        Phasellus leo dolor, tempus non, auctor et, hendrerit quis, nisi.
-                                        Curabitur ligula sapien, tincidunt non, euismod vitae,
-                                        posuere imperdiet, leo.'
+                            'Value' => self::randStrGen(4001)
                         ]
                     ]
                 ],
@@ -5103,6 +5232,112 @@ trait ProductDataProvider
                             'DeveloperHelpLink' => '',
                         ],
                     ],
+                ],
+            ],
+        ];
+    }
+
+    public static function exactly4000AttributesValue()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => self::getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => '<h1>HTML Ipsum Presents</h1>
+
+                                    <p><strong>Pellentesque habitant morbi
+                                    tristique</strong> senectus et netus et
+                                    malesuada fames ac turpis egestas.
+                                    Vestibulum tortor quam, feugiat vitae,
+                                    ultricies eget, tempor sit amet, ante.
+                                    Donec eu libero sit amet quam egestas semper.
+                                    <em>Aenean ultricies mi vitae est.</em>
+                                    Mauris placerat eleifend leo.
+                                    Quisque sit amet est et sapien
+                                    ullamcorper pharetra.
+                                    Vestibulum erat wisi, condimentum sed,
+                                    <code>commodo vitae</code>,
+                                    ornare sit amet, wisi.
+                                    Aenean fermentum, elit eget tincidunt
+                                    condimentum, eros ipsum rutrum orci,
+                                    sagittis tempus lacus enim ac dui.
+                                    <a href="#">Donec non enim</a>
+                                    in turpis pulvinar facilisis. Ut felis.</p>
+
+                                <h2>Header Level 2</h2>
+
+                                <ol>
+                                   <li>Lorem ipsum dolor sit amet,
+                                    consectetuer adipiscing elit.</li>
+                                   <li>Aliquam tincidunt mauris eu risus.</li>
+                                </ol>',
+                    'ShortDescription' => '<dl>
+                                   <dt>Definition list</dt>
+                                   <dd>Consectetur adipisicing elit, sed do
+                                   eiusmod tempor incididunt ut labore et
+                                   dolore magna aliqua.
+                                   Ut enim ad minim veniam, quis
+                                   nostrud exercitation ullamco laboris
+                                   nisi ut aliquip ex ea
+                                   commodo consequat.</dd>
+                                   <dt>Lorem ipsum dolor sit amet</dt>
+                                   <dd>Consectetur adipisicing elit,
+                                   sed do eiusmod tempor incididunt ut labore
+                                   et dolore magna aliqua. Ut enim ad minim veniam,
+                                   quis nostrud exercitation
+                                   ullamco laboris nisi ut aliquip ex ea
+                                   commodo consequat.</dd>
+                                </dl>',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_2.jpg',
+                            'Type' => 2,
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_3.jpg',
+                            'Type' => 3,
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_4.jpg',
+                            'Type' => 4,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                        [
+                            'Name' => 'Hersteller',
+                            'Value' => 'VIA-eBay',
+                        ],
+                    ],
+                    'OptionalAttributes' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'Name' => self::randStrGen(30),
+                            'Value' => self::randStrGen(4000)
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'Name' => self::randStrGen(30),
+                            'Value' => self::randStrGen(4000)
+                        ]
+                    ]
+                ],
+                [
+                    'Succeeded' => true,
+                    'StatusCode' => 201,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
                 ],
             ],
         ];
@@ -5195,87 +5430,12 @@ trait ProductDataProvider
                         [
                             'ForeignId' => self::getGUID(),
                             'Name' => '1 OptionalAttributes',
-                            'Value' => 'Lorem ipsum dolor sit amet,
-                                        consectetuer adipiscing elit.
-                                        Aenean commodo ligula eget dolor. Aenean massa.
-                                        Cum sociis natoque penatibus et magnis dis parturient montes,
-                                        nascetur ridiculus mus. Donec quam felis,
-                                        ultricies nec, pellentesque eu, pretium quis, sem.
-                                        Nulla consequat massa quis enim. Donec pede justo,
-                                        fringilla vel, aliquet nec, vulputate eget, arcu.
-                                        In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
-                                        Nullam dictum felis eu pede mollis pretium. Integer tincidunt.
-                                        Cras dapibus. Vivamus elementum semper nisi.
-                                        Aenean vulputate eleifend tellus. Aenean leo ligula,
-                                        porttitor eu, consequat vitae, eleifend ac, enim.
-                                        Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus.
-                                        Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum.
-                                        Aenean imperdiet. Etiam ultricies nisi vel augue.
-                                        Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus.
-                                        Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero,
-                                        sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel,
-                                        luctus pulvinar, hendrerit id, lorem.
-                                        Maecenas nec odio et ante tincidunt tempus.
-                                        Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante.
-                                        Etiam sit amet orci eget eros faucibus tincidunt. Duis leo.
-                                        Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna.
-                                        Sed consequat, leo eget bibendum sodales, augue velit cursus nunc,
-                                        quis gravida magna mi a libero. Fusce vulputate eleifend sapien.
-                                        Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus.
-                                        Nullam accumsan lorem in dui.
-                                        Cras ultricies mi eu turpis hendrerit fringilla.
-                                        Vestibulum ante ipsum primis in
-                                        faucibus orci luctus et ultrices posuere cubilia Curae;
-                                        In ac dui quis mi consectetuer lacinia.'
+                            'Value' => self::randStrGen(300)
                         ],
                         [
                             'ForeignId' => self::getGUID(),
-                            'Name' => '2 OptionalAttributes with a too long name ... Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium qui',
-                            'Value' => 'Lorem ipsum dolor sit amet,
-                                        consectetuer adipiscing elit.
-                                        Aenean commodo ligula eget dolor. Aenean massa.
-                                        Cum sociis natoque penatibus et magnis dis parturient montes,
-                                        nascetur ridiculus mus. Donec quam felis,
-                                        ultricies nec, pellentesque eu, pretium quis, sem.
-                                        Nulla consequat massa quis enim. Donec pede justo,
-                                        fringilla vel, aliquet nec, vulputate eget, arcu.
-                                        In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
-                                        Nullam dictum felis eu pede mollis pretium. Integer tincidunt.
-                                        Cras dapibus. Vivamus elementum semper nisi.
-                                        Aenean vulputate eleifend tellus. Aenean leo ligula,
-                                        porttitor eu, consequat vitae, eleifend ac, enim.
-                                        Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus.
-                                        Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum.
-                                        Aenean imperdiet. Etiam ultricies nisi vel augue.
-                                        Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus.
-                                        Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero,
-                                        sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel,
-                                        luctus pulvinar, hendrerit id, lorem.
-                                        Maecenas nec odio et ante tincidunt tempus.
-                                        Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante.
-                                        Etiam sit amet orci eget eros faucibus tincidunt. Duis leo.
-                                        Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna.
-                                        Sed consequat, leo eget bibendum sodales, augue velit cursus nunc,
-                                        quis gravida magna mi a libero. Fusce vulputate eleifend sapien.
-                                        Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus.
-                                        Nullam accumsan lorem in dui.
-                                        Cras ultricies mi eu turpis hendrerit fringilla.
-                                        Vestibulum ante ipsum primis in
-                                        faucibus orci luctus et ultrices posuere cubilia Curae;
-                                        In ac dui quis mi consectetuer lacinia.
-                                        Nam pretium turpis et arcu. Duis arcu tortor,
-                                        suscipit eget, imperdiet nec, imperdiet iaculis, ipsum.
-                                        Sed aliquam ultrices mauris. Integer ante arcu, accumsan a,
-                                        consectetuer eget, posuere ut, mauris. Praesent adipiscing.
-                                        Phasellus ullamcorper ipsum rutrum nunc. Nunc nonummy metus.
-                                        Vestibulum volutpat pretium libero. Cras id dui.
-                                        Aenean ut eros et nisl sagittis vestibulum. Nullam nulla eros,
-                                        ultricies sit amet, nonummy id, imperdiet feugiat, pede. Sed lectus.
-                                        Donec mollis hendrerit risus. Phasellus nec sem in justo pellentesque
-                                        facilisis. Etiam imperdiet imperdiet orci. Nunc nec neque.
-                                        Phasellus leo dolor, tempus non, auctor et, hendrerit quis, nisi.
-                                        Curabitur ligula sapien, tincidunt non, euismod vitae,
-                                        posuere imperdiet, leo.'
+                            'Name' => self::randStrGen(256),
+                            'Value' => self::randStrGen(4001)
                         ]
                     ]
                 ],
