@@ -11,9 +11,14 @@ class BlackboxClientAbstractTestCase extends AbstractTestCase
 
     protected function setUp()
     {
-        $this->client = $this->createBlackboxClient();
+        $this->client = self::createBlackboxClient();
         $this->actualResponse = null;
         $this->expectedResponse = null;
+    }
+
+    protected function authValidation($operation, $data, $args = [])
+    {
+        $this->validate($operation, $data, $args = []);
     }
 
     /**

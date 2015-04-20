@@ -42,9 +42,9 @@ trait IntegUtils
         return $result;
     }
 
-    protected function createBlackboxClient($args = [])
+    protected static function createBlackboxClient($args = [])
     {
-        $client = $this->getSdk()->createBlackbox($args);
+        $client = self::getSdk()->createBlackbox($args);
         return $client;
     }
 

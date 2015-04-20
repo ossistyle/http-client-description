@@ -2,559 +2,156 @@
 
 namespace Vws\Test\Integ\Auth;
 
-use GuzzleHttp\Command\Event\PreparedEvent;
 use Vws\Test\Integ\BlackboxClientAbstractTestCase;
+use GuzzleHttp\Command\Event\PreparedEvent;
 
 /**
  *
  */
 class BlackboxClientAuthorizationTest extends BlackboxClientAbstractTestCase
 {
+    use AuthorizationDataProvider;
+
     /**
-     * @expectedException \Vws\Blackbox\Exception\BlackboxException
-     * @expectedExceptionMessage (client error): The header parameter "Username" or "Password" is not valid or empty
+     * @dataProvider authorizationData
+     *
      */
-    public function testAuthorizationInvalidEmptyUsername()
+    public function testAuthorization($callback, $expectedResponse)
     {
-        $args = [
-          'profile' => 'integ-sandbox-invalid-username',
-        ];
-        $client = $this->createClient($args);
-        $response = $client->getCatalogs();
-
-        $this->assertSame(
-            401,
-            $response->getStatusCode(),
-            'Response StatusCode is not 401'
-        );
-        $this->assertSame(
-            1000,
-            $response->search('Messages[0].Code'),
-            'Messages[0].Code is not 1000'
-        );
-        $this->assertSame(
-            2,
-            $response->search('Messages[0].Severity'),
-            'Messages[0].Severity is not Error (2)'
-        );
-        $this->assertSame(
-            'The header parameter "Username" or "Password" is not valid or empty.',
-            $response->search('Messages[0].Message'),
-            'Messages[0].Message does not contains '
-            .'"The header parameter "Username" or "Password" is not valid or empty."'
-        );
-
-        // empty username
-
-        $client->getEmitter()->on('prepared', function (PreparedEvent $event) {
-            $request = $event->getRequest();
-            $request->setHeader('Username', '');
-        }, 'last');
-
-        $response = $client->getCatalogs($args);
-
-        $this->assertSame(
-            401,
-            $response->getStatusCode(),
-            'Response StatusCode is not 401'
-        );
-        $this->assertSame(
-            1000,
-            $response->search('Messages[0].Code'),
-            'Messages[0].Code is not 1000'
-        );
-        $this->assertSame(
-            2,
-            $response->search('Messages[0].Severity'),
-            'Messages[0].Severity is not Error (2)'
-        );
-        $this->assertSame(
-            'The header parameter "Username" or "Password" is not valid or empty.',
-            $response->search('Messages[0].Message'),
-            'Messages[0].Message does not contains '
-            .'"The header parameter "Username" or "Password" is not valid or empty."'
-        );
+        $this->expectedResponse = $expectedResponse;
+        $callbackName = 'emit' . ucfirst($callback[0]);
+        $fnc = $this->{$callbackName}();
+        $fnc();
+        $this->authValidation('getCatalogs', null);
     }
 
-    /**
-     * @expectedException \Vws\Blackbox\Exception\BlackboxException
-     * @expectedExceptionMessage (client error): The header parameter "Username" or "Password" is not valid or empty
-     */
-    public function testAuthorizationInvalidMissingUsername()
+    private function emitInvalidUsername()
     {
-        $args = [
-          'profile' => 'integ-sandbox-invalid-username',
-        ];
-        $client = $this->createClient($args);
-        $response = $client->getCatalogs();
-
-        $this->assertSame(
-            401,
-            $response->getStatusCode(),
-            'Response StatusCode is not 401'
-        );
-        $this->assertSame(
-            1000,
-            $response->search('Messages[0].Code'),
-            'Messages[0].Code is not 1000'
-        );
-        $this->assertSame(
-            2,
-            $response->search('Messages[0].Severity'),
-            'Messages[0].Severity is not Error (2)'
-        );
-        $this->assertSame(
-            'The header parameter "Username" or "Password" is not valid or empty.',
-            $response->search('Messages[0].Message'),
-            'Messages[0].Message does not contains '
-            .'"The header parameter "Username" or "Password" is not valid or empty."'
-        );
-
-        // no username
-
-        $client->getEmitter()->on('prepared', function (PreparedEvent $event) {
-            $request = $event->getRequest();
-            $request->removeHeader('Username');
-        }, 'last');
-
-        $response = $client->getCatalogs();
-
-        $this->assertSame(
-            401,
-            $response->getStatusCode(),
-            'Response StatusCode is not 401'
-        );
-        $this->assertSame(
-            1000,
-            $response->search('Messages[0].Code'),
-            'Messages[0].Code is not 1000'
-        );
-        $this->assertSame(
-            2,
-            $response->search('Messages[0].Severity'),
-            'Messages[0].Severity is not Error (2)'
-        );
-        $this->assertSame(
-            'The header parameter "Username" or "Password" is not valid or empty.',
-            $response->search('Messages[0].Message'),
-            'Messages[0].Message does not contains '
-            .'"The header parameter "Username" or "Password" is not valid or empty."'
-        );
+        return function () {
+            $this->client->getEmitter()->on('prepared', function (PreparedEvent $event) {
+                $request = $event->getRequest();
+                $request->setHeader('Username', 'invalid-username');
+            }, 'last');
+        };
     }
 
-    /**
-     * @expectedException \Vws\Blackbox\Exception\BlackboxException
-     * @expectedExceptionMessage (client error): The header parameter "Username" or "Password" is not valid or empty
-     */
-    public function testAuthorizationInvalidEmptyPassword()
+    private function emitEmptyUsername()
     {
-        $args = [
-           'profile' => 'integ-sandbox-invalid-password',
-         ];
-         $client = $this->createClient($args);
-        $response = $client->getCatalogs();
-
-        $this->assertSame(
-            401,
-            $response->getStatusCode(),
-            'Response StatusCode is not 401'
-        );
-        $this->assertSame(
-            1000,
-            $response->search('Messages[0].Code'),
-            'Messages[0].Code is not 1000'
-        );
-        $this->assertSame(
-            2,
-            $response->search('Messages[0].Severity'),
-            'Messages[0].Severity is not Error (2)'
-        );
-        $this->assertSame(
-            'The header parameter "Username" or "Password" is not valid or empty.',
-            $response->search('Messages[0].Message'),
-            'Messages[0].Message does not contains '
-            . '"The header parameter "Username" or "Password" is not valid or empty."'
-        );
-
-         // empty password
-
-         $client->getEmitter()->on('prepared', function (PreparedEvent $event) {
-             $request = $event->getRequest();
-             $request->setHeader('Password', '');
-         }, 'last');
-
-        $response = $client->getCatalogs();
-
-        $this->assertSame(
-            401,
-            $response->getStatusCode(),
-            'Response StatusCode is not 401'
-        );
-        $this->assertSame(
-            1000,
-            $response->search('Messages[0].Code'),
-            'Messages[0].Code is not 1000'
-        );
-        $this->assertSame(
-            2,
-            $response->search('Messages[0].Severity'),
-            'Messages[0].Severity is not Error (2)'
-        );
-        $this->assertSame(
-            'The header parameter "Username" or "Password" is not valid or empty.',
-            $response->search('Messages[0].Message'),
-            'Messages[0].Message does not contains '
-            . '"The header parameter "Username" or "Password" is not valid or empty."'
-        );
+        return function () {
+            $this->client->getEmitter()->on('prepared', function (PreparedEvent $event) {
+                $request = $event->getRequest();
+                $request->setHeader('Username', '');
+            }, 'last');
+        };
     }
 
-    /**
-     * @expectedException \Vws\Blackbox\Exception\BlackboxException
-     * @expectedExceptionMessage (client error): The header parameter "Username" or "Password" is not valid or empty
-     */
-    public function testAuthorizationInvalidMissingPassword()
+    private function emitMissingUsername()
     {
-        $args = [
-           'profile' => 'integ-sandbox-invalid-password',
-         ];
-         $client = $this->createClient($args);
-        $response = $client->getCatalogs();
-
-        $this->assertSame(
-            401,
-            $response->getStatusCode(),
-            'Response StatusCode is not 401'
-        );
-        $this->assertSame(
-            1000,
-            $response->search('Messages[0].Code'),
-            'Messages[0].Code is not 1000'
-        );
-        $this->assertSame(
-            2,
-            $response->search('Messages[0].Severity'),
-            'Messages[0].Severity is not Error (2)'
-        );
-        $this->assertSame(
-            'The header parameter "Username" or "Password" is not valid or empty.',
-            $response->search('Messages[0].Message'),
-            'Messages[0].Message does not contains '
-            . '"The header parameter "Username" or "Password" is not valid or empty."'
-        );
-
-         // missing password
-
-         $client->getEmitter()->on('prepared', function (PreparedEvent $event) {
-             $request = $event->getRequest();
-             $request->removeHeader('Password');
-         }, 'last');
-
-        $response = $client->getCatalogs();
-
-        $this->assertSame(
-            401,
-            $response->getStatusCode(),
-            'Response StatusCode is not 401'
-        );
-        $this->assertSame(
-            1000,
-            $response->search('Messages[0].Code'),
-            'Messages[0].Code is not 1000'
-        );
-        $this->assertSame(
-            2,
-            $response->search('Messages[0].Severity'),
-            'Messages[0].Severity is not Error (2)'
-        );
-        $this->assertSame(
-            'The header parameter "Username" or "Password" is not valid or empty.',
-            $response->search('Messages[0].Message'),
-            'Messages[0].Message does not contains '
-            . '"The header parameter "Username" or "Password" is not valid or empty."'
-        );
+        return function () {
+            $this->client->getEmitter()->on('prepared', function (PreparedEvent $event) {
+                $request = $event->getRequest();
+                $request->removeHeader('Username');
+            }, 'last');
+        };
     }
 
-    /**
-     * @expectedException \Vws\Blackbox\Exception\BlackboxException
-     * @expectedExceptionMessage (client error): The header parameter "SubscriptionToken" is not valid or empty
-     */
-    public function testAuthorizationInvalidEmptySubscriptionToken()
+    private function emitInvalidPassword()
     {
-        $args = [
-           'profile' => 'integ-sandbox-invalid-subscription_token',
-         ];
-         $client = $this->createClient($args);
-        $response = $client->getCatalogs();
-
-        $this->assertSame(
-            401,
-            $response->getStatusCode(),
-            'Response StatusCode is not 401'
-        );
-        $this->assertSame(
-            1001,
-            $response->search('Messages[0].Code'),
-            'Messages[0].Code is not 1001'
-        );
-        $this->assertSame(
-            2,
-            $response->search('Messages[0].Severity'),
-            'Messages[0].Severity is not Error (2)'
-        );
-        $this->assertSame(
-            'The header parameter "SubscriptionToken" is not valid or empty',
-            $response->search('Messages[0].Message'),
-            'Messages[0].Message does not contains '
-            . '"The header parameter "SubscriptionToken" is not valid or empty"'
-        );
-
-        // empty SubscriptionToken
-
-        $client->getEmitter()->on('prepared', function (PreparedEvent $event) {
-             $request = $event->getRequest();
-             $request->setHeader('SubscriptionToken', '');
-        }, 'last');
-
-        $response = $client->getCatalogs();
-
-        $this->assertSame(
-            401,
-            $response->getStatusCode(),
-            'Response StatusCode is not 401'
-        );
-        $this->assertSame(
-            1001,
-            $response->search('Messages[0].Code'),
-            'Messages[0].Code is not 1001'
-        );
-        $this->assertSame(
-            2,
-            $response->search('Messages[0].Severity'),
-            'Messages[0].Severity is not Error (2)'
-        );
-        $this->assertSame(
-            'The header parameter "SubscriptionToken" is not valid or empty',
-            $response->search('Messages[0].Message'),
-            'Messages[0].Message does not contains '
-            .'"The header parameter "SubscriptionToken" is not valid or empty"'
-        );
+        return function () {
+            $this->client->getEmitter()->on('prepared', function (PreparedEvent $event) {
+                $request = $event->getRequest();
+                $request->setHeader('Password', 'invalid-password');
+            }, 'last');
+        };
     }
 
-    /**
-     * @expectedException \Vws\Blackbox\Exception\BlackboxException
-     * @expectedExceptionMessage (client error): The header parameter "SubscriptionToken" is not valid or empty
-     */
-    public function testAuthorizationInvalidMissingSubscriptionToken()
+    private function emitEmptyPassword()
     {
-        $args = [
-           'profile' => 'integ-sandbox-invalid-subscription_token',
-        ];
-        $client = $this->createClient($args);
-        $response = $client->getCatalogs();
-
-        $this->assertSame(
-            401,
-            $response->getStatusCode(),
-            'Response StatusCode is not 401'
-        );
-        $this->assertSame(
-            1001,
-            $response->search('Messages[0].Code'),
-            'Messages[0].Code is not 1001'
-        );
-        $this->assertSame(
-            2,
-            $response->search('Messages[0].Severity'),
-            'Messages[0].Severity is not Error (2)'
-        );
-        $this->assertSame(
-            'The header parameter "SubscriptionToken" is not valid or empty',
-            $response->search('Messages[0].Message'),
-            'Messages[0].Message does not contains '
-            .'"The header parameter "SubscriptionToken" is not valid or empty"'
-        );
-
-        // missing SubscriptionToken
-
-        $client->getEmitter()->on('prepared', function (PreparedEvent $event) {
-             $request = $event->getRequest();
-             $request->removeHeader('SubscriptionToken');
-        }, 'last');
-
-        $response = $client->getCatalogs();
-
-        $this->assertSame(
-            401,
-            $response->getStatusCode(),
-            'Response StatusCode is not 401'
-        );
-        $this->assertSame(
-            1001,
-            $response->search('Messages[0].Code'),
-            'Messages[0].Code is not 1001'
-        );
-        $this->assertSame(
-            2,
-            $response->search('Messages[0].Severity'),
-            'Messages[0].Severity is not Error (2)'
-        );
-        $this->assertSame(
-            'The header parameter "SubscriptionToken" is not valid or empty',
-            $response->search('Messages[0].Message'),
-            'Messages[0].Message does not contains '
-            .'"The header parameter "SubscriptionToken" is not valid or empty"'
-        );
+        return function () {
+            $this->client->getEmitter()->on('prepared', function (PreparedEvent $event) {
+                $request = $event->getRequest();
+                $request->setHeader('Password', '');
+            }, 'last');
+        };
     }
 
-    /**
-     * @expectedException \Vws\Blackbox\Exception\BlackboxException
-     * @expectedExceptionMessage (client error): The header parameter "Vendor" is not valid or empty.
-     */
-    public function testAuthorizationEmptyVendor()
+    private function emitMissingPassword()
     {
-        $client = $this->createClient();
-
-        $client->getEmitter()->on('prepared', function (PreparedEvent $event) {
-             $request = $event->getRequest();
-             $request->setHeader('Vendor', '');
-        }, 'last');
-
-        $response = $client->getCatalogs();
-
-        $this->assertSame(
-            401,
-            $response->getStatusCode(),
-            'Response StatusCode is not 401'
-        );
-        $this->assertSame(
-            1001,
-            $response->search('Messages[0].Code'),
-            'Messages[0].Code is not 1001'
-        );
-        $this->assertSame(
-            2,
-            $response->search('Messages[0].Severity'),
-            'Messages[0].Severity is not Error (2)'
-        );
-        $this->assertSame(
-            'The header parameter "Vendor" is not valid or empty.',
-            $response->search('Messages[0].Message'),
-            'Messages[0].Message does not contains '
-            .'"The header parameter "Vendor" is not valid or empty."'
-        );
+        return function () {
+            $this->client->getEmitter()->on('prepared', function (PreparedEvent $event) {
+                $request = $event->getRequest();
+                $request->removeHeader('Password');
+            }, 'last');
+        };
     }
 
-    /**
-     * @expectedException \Vws\Blackbox\Exception\BlackboxException
-     * @expectedExceptionMessage (client error): The header parameter "Vendor" is not valid or empty.
-     */
-    public function testAuthorizationMissingVendor()
+    private function emitInvalidSubscriptionToken()
     {
-        $client = $this->createClient();
-
-        $client->getEmitter()->on('prepared', function (PreparedEvent $event) {
-             $request = $event->getRequest();
-             $request->removeHeader('Vendor');
-        }, 'last');
-
-        $response = $client->getCatalogs();
-
-        $this->assertSame(
-            401,
-            $response->getStatusCode(),
-            'Response StatusCode is not 401'
-        );
-        $this->assertSame(
-            1001,
-            $response->search('Messages[0].Code'),
-            'Messages[0].Code is not 1001'
-        );
-        $this->assertSame(
-            2,
-            $response->search('Messages[0].Severity'),
-            'Messages[0].Severity is not Error (2)'
-        );
-        $this->assertSame(
-            'The header parameter "Vendor" is not valid or empty.',
-            $response->search('Messages[0].Message'),
-            'Messages[0].Message does not contains '
-            .'"The header parameter "Vendor" is not valid or empty."'
-        );
+        return function () {
+            $this->client->getEmitter()->on('prepared', function (PreparedEvent $event) {
+                $request = $event->getRequest();
+                $request->setHeader('SubscriptionToken', 'invalid-subscription-token');
+            }, 'last');
+        };
     }
 
-    /**
-     * @expectedException \Vws\Blackbox\Exception\BlackboxException
-     * @expectedExceptionMessage (client error): The header parameter "Version" is not valid or empty.
-     */
-    public function testAuthorizationEmptyVersion()
+    private function emitEmptySubscriptionToken()
     {
-        $client = $this->createClient();
-
-        $client->getEmitter()->on('prepared', function (PreparedEvent $event) {
-             $request = $event->getRequest();
-             $request->setHeader('Version', '');
-        }, 'last');
-
-        $response = $client->getCatalogs();
-
-        $this->assertSame(
-            401,
-            $response->getStatusCode(),
-            'Response StatusCode is not 401'
-        );
-        $this->assertSame(
-            1003,
-            $response->search('Messages[0].Code'),
-            'Messages[0].Code is not 1003'
-        );
-        $this->assertSame(
-            2,
-            $response->search('Messages[0].Severity'),
-            'Messages[0].Severity is not Error (2)'
-        );
-        $this->assertSame(
-            'The header parameter "Vendor" is not valid or empty.',
-            $response->search('Messages[0].Message'),
-            'Messages[0].Message does not contains '
-            .'"The header parameter "Vendor" is not valid or empty."'
-        );
+        return function () {
+            $this->client->getEmitter()->on('prepared', function (PreparedEvent $event) {
+                $request = $event->getRequest();
+                $request->setHeader('SubscriptionToken', '');
+            }, 'last');
+        };
     }
 
-    /**
-     * @expectedException \Vws\Blackbox\Exception\BlackboxException
-     * @expectedExceptionMessage (client error): The header parameter "Version" is not valid or empty.
-     */
-    public function testAuthorizationMissingVersion()
+    private function emitMissingSubscriptionToken()
     {
-        $client = $this->createClient();
+        return function () {
+            $this->client->getEmitter()->on('prepared', function (PreparedEvent $event) {
+                $request = $event->getRequest();
+                $request->removeHeader('SubscriptionToken');
+            }, 'last');
+        };
+    }
 
-        $client->getEmitter()->on('prepared', function (PreparedEvent $event) {
-             $request = $event->getRequest();
-             $request->removeHeader('Version');
-        }, 'last');
+    private function emitEmptyVendor()
+    {
+        return function () {
+            $this->client->getEmitter()->on('prepared', function (PreparedEvent $event) {
+                $request = $event->getRequest();
+                $request->setHeader('Vendor', '');
+            }, 'last');
+        };
+    }
 
-        $response = $client->getCatalogs();
+    private function emitMissingVendor()
+    {
+        return function () {
+            $this->client->getEmitter()->on('prepared', function (PreparedEvent $event) {
+                $request = $event->getRequest();
+                $request->removeHeader('Vendor');
+            }, 'last');
+        };
+    }
 
-        $this->assertSame(
-            401,
-            $response->getStatusCode(),
-            'Response StatusCode is not 401'
-        );
-        $this->assertSame(
-            1003,
-            $response->search('Messages[0].Code'),
-            'Messages[0].Code is not 1003'
-        );
-        $this->assertSame(
-            2,
-            $response->search('Messages[0].Severity'),
-            'Messages[0].Severity is not Error (2)'
-        );
-        $this->assertSame(
-            'The header parameter "Version" is not valid or empty.',
-            $response->search('Messages[0].Message'),
-            'Messages[0].Message does not contains '
-            .'"The header parameter "Version" is not valid or empty."'
-        );
+    private function emitEmptyVersion()
+    {
+        return function () {
+            $this->client->getEmitter()->on('prepared', function (PreparedEvent $event) {
+                $request = $event->getRequest();
+                $request->setHeader('Version', '');
+            }, 'last');
+        };
+    }
+
+    private function emitMissingVersion()
+    {
+        return function () {
+            $this->client->getEmitter()->on('prepared', function (PreparedEvent $event) {
+                $request = $event->getRequest();
+                $request->removeHeader('Version');
+            }, 'last');
+        };
     }
 }
