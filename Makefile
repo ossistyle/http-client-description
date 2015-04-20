@@ -28,3 +28,6 @@ integ-patch:
 
 integ-get:
 	vendor/bin/phpunit --debug --testsuite=integ-get
+
+integ-delete:
+	vendor/bin/phpunit --debug --testsuite=integ-delete
