@@ -218,7 +218,7 @@ trait ProductDataProvider
                         [
                             'Code' => 4000,
                             'Severity' => 2,
-                            'Message' => 'Title is empty.',
+                            'Message' => 'Title cannot be empty.',
                             'Description' => 'The title of the product with the (.+): (.+) cannot be empty.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
@@ -267,7 +267,7 @@ trait ProductDataProvider
                         [
                             'Code' => 4000,
                             'Severity' => 2,
-                            'Message' => 'Title is empty.',
+                            'Message' => 'Title cannot be empty.',
                             'Description' => 'The title of the product with the (.+): (.+) cannot be empty.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
@@ -316,7 +316,7 @@ trait ProductDataProvider
                         [
                             'Code' => 4000,
                             'Severity' => 2,
-                            'Message' => 'Title is empty.',
+                            'Message' => 'Title cannot be empty.',
                             'Description' => 'The title of the product with '
                                             .'the (.+): (.+) cannot be empty.',
                             'UserHelpLink' => '',
