@@ -2,12 +2,13 @@
 
 namespace Vws\Test\Integ;
 
+use Vws\Test\Integ\BlackboxClientAbstractTestCase;
 use GuzzleHttp\Command\Event\ProcessEvent;
 
 /**
  * @internal
  */
-class BlackboxClientProductConcurrencyTest extends \PHPUnit_Framework_TestCase
+class BlackboxClientProductConcurrencyTest extends BlackboxClientAbstractTestCase
 {
     use IntegUtils;
 
@@ -16,23 +17,21 @@ class BlackboxClientProductConcurrencyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetProductParallelRequest10()
     {
-        $client = $this->createClient();
-
         $commands = [
-            $client->getCommand('GetProducts', ['page' => 1]),
-            $client->getCommand('GetProducts', ['page' => 2]),
-            $client->getCommand('GetProducts', ['page' => 3]),
-            $client->getCommand('GetProducts', ['page' => 4]),
-            $client->getCommand('GetProducts', ['page' => 5]),
-            $client->getCommand('GetProducts', ['page' => 6]),
-            $client->getCommand('GetProducts', ['page' => 7]),
-            $client->getCommand('GetProducts', ['page' => 8]),
-            $client->getCommand('GetProducts', ['page' => 9]),
-            $client->getCommand('GetProducts', ['page' => 10]),
+            $this->client->getCommand('GetProducts', ['page' => 1]),
+            $this->client->getCommand('GetProducts', ['page' => 2]),
+            $this->client->getCommand('GetProducts', ['page' => 3]),
+            $this->client->getCommand('GetProducts', ['page' => 4]),
+            $this->client->getCommand('GetProducts', ['page' => 5]),
+            $this->client->getCommand('GetProducts', ['page' => 6]),
+            $this->client->getCommand('GetProducts', ['page' => 7]),
+            $this->client->getCommand('GetProducts', ['page' => 8]),
+            $this->client->getCommand('GetProducts', ['page' => 9]),
+            $this->client->getCommand('GetProducts', ['page' => 10]),
         ];
 
         $processResults = [];
-        $client->executeAll($commands, [
+        $this->client->executeAll($commands, [
             'process' => function (ProcessEvent $e) use (&$processResults) {
                 $processResults[] = $e->getResult();
             },
@@ -60,11 +59,9 @@ class BlackboxClientProductConcurrencyTest extends \PHPUnit_Framework_TestCase
      */
     public function testPostProductParallelRequests10AndDeleteProductParallelRequests10()
     {
-        $client = $this->createClient();
-
         $this->markTestIncomplete('Post Product parallel 10 requests and Delete Product parallel NOT IMPLEMENTED YET');
         // $commands = [
-        //     $client->getCommand('PostProduct', [
+        //     $this->client->getCommand('PostProduct', [
         //         'ForeignId' => '',
         //         'Title' => '',
         //         'Description' => '',
@@ -76,7 +73,7 @@ class BlackboxClientProductConcurrencyTest extends \PHPUnit_Framework_TestCase
         // ];
         //
         // $processResults = [];
-        // $client->executeAll($commands, [
+        // $this->client->executeAll($commands, [
         //     'process' => function (ProcessEvent $e) use (&$processResults) {
         //         $processResults[] = $e->getResult();
         //     },
