@@ -31,3 +31,6 @@ integ-get:
 
 integ-delete:
 	vendor/bin/phpunit --debug --testsuite=integ-delete
+
+integ-products:
+	vendor/bin/phpunit --debug --testsuite=integ-products
