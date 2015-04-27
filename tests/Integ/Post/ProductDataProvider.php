@@ -122,7 +122,7 @@ trait ProductDataProvider
                             'Code' => 4003,
                             'Severity' => 1,
                             'Message' => 'ForeignId is empty.',
-                            'Description' => 'The ForeignId of the product with with the title ForeignId: <EMPTY> is empty. It is recommended to send a unique ForeignId.',
+                            'Description' => 'The ForeignId of the product with with the ForeignId: <EMPTY> is empty. It is recommended to send a unique ForeignId.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -170,7 +170,7 @@ trait ProductDataProvider
                             'Code' => 4003,
                             'Severity' => 1,
                             'Message' => 'ForeignId is empty.',
-                            'Description' => 'The ForeignId of the product with with the title ForeignId: <EMPTY> is empty. It is recommended to send a unique ForeignId.',
+                            'Description' => 'The ForeignId of the product with with the ForeignId: <EMPTY> is empty. It is recommended to send a unique ForeignId.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -4551,10 +4551,10 @@ trait ProductDataProvider
                             'Code' => 7006,
                             'Severity' => 2,
                             'Message' => 'Name and value are empty.',
-                            'Description' => 'Both, OptionalProductAttributes.Name '
+                            'Description' => 'Product (.+): Both, OptionalProductAttributes.Name '
                                             .'and OptionalProductAttributes.Value of the '
-                                            .'OptionalProductAttributes with the (.+): (.+) are empty. '
-                                            .'The optional product attribute has not been created.',
+                                            .'OptionalProductAttributes with the ForeignId: '
+                                            .'(.+) are empty. The product has not been created.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -4699,10 +4699,10 @@ trait ProductDataProvider
                             'Code' => 7006,
                             'Severity' => 2,
                             'Message' => 'Name and value are empty.',
-                            'Description' => 'Both, OptionalProductAttributes.Name '
+                            'Description' => 'Product (.+): Both, OptionalProductAttributes.Name '
                                             .'and OptionalProductAttributes.Value of the '
-                                            .'OptionalProductAttributes with the (.+): (.+) are empty. '
-                                            .'The optional product attribute has not been created.',
+                                            .'OptionalProductAttributes with the ForeignId: '
+                                            .'(.+) are empty. The product has not been created.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -4849,10 +4849,10 @@ trait ProductDataProvider
                             'Code' => 7006,
                             'Severity' => 2,
                             'Message' => 'Name and value are empty.',
-                            'Description' => 'Both, OptionalProductAttributes.Name '
+                            'Description' => 'Product (.+): Both, OptionalProductAttributes.Name '
                                             .'and OptionalProductAttributes.Value of the '
-                                            .'OptionalProductAttributes with the (.+): (.+) are empty. '
-                                            .'The optional product attribute has not been created.',
+                                            .'OptionalProductAttributes with the ForeignId: '
+                                            .'(.+) are empty. The product has not been created.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],

@@ -49,15 +49,16 @@ trait ProductDataProvider
                 ],
                 [
                     'Succeeded' => false,
-                    'StatusCode' => 404,
+                    'StatusCode' => 400,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
                     'Messages' => [
                         [
-                            'Code' => 4003,
-                            'Severity' => 1,
+                            'Code' => 0004,
+                            'Severity' => 2,
                             'Message' => 'ForeignId is empty.',
-                            'Description' => 'The ForeignId of the product with with the title ForeignId: <EMPTY> is empty. It is recommended to send a unique ForeignId.',
+                            'Description' => 'ForeignId is empty or missing. '
+                                            .'It\'s required to enter an existing foreign Id.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -79,15 +80,16 @@ trait ProductDataProvider
                 ],
                 [
                     'Succeeded' => false,
-                    'StatusCode' => 404,
+                    'StatusCode' => 400,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
                     'Messages' => [
                         [
-                            'Code' => 4003,
-                            'Severity' => 1,
+                            'Code' => 0004,
+                            'Severity' => 2,
                             'Message' => 'ForeignId is empty.',
-                            'Description' => 'The ForeignId of the product with with the title ForeignId: <EMPTY> is empty. It is recommended to send a unique ForeignId.',
+                            'Description' => 'ForeignId is empty or missing. '
+                                            .'It\'s required to enter an existing foreign Id.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -115,15 +117,16 @@ trait ProductDataProvider
                 ],
                 [
                     'Succeeded' => false,
-                    'StatusCode' => 404,
+                    'StatusCode' => 400,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
                     'Messages' => [
                         [
-                            'Code' => 4003,
-                            'Severity' => 1,
+                            'Code' => 0004,
+                            'Severity' => 2,
                             'Message' => 'ForeignId is empty.',
-                            'Description' => 'The ForeignId of the product with with the title ForeignId: <EMPTY> is empty. It is recommended to send a unique ForeignId.',
+                            'Description' => 'ForeignId is empty or missing. '
+                                            .'It\'s required to enter an existing foreign Id.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -150,15 +153,16 @@ trait ProductDataProvider
                 ],
                 [
                     'Succeeded' => false,
-                    'StatusCode' => 404,
+                    'StatusCode' => 400,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
                     'Messages' => [
                         [
-                            'Code' => 4003,
+                            'Code' => 0004,
                             'Severity' => 2,
                             'Message' => 'ForeignId is empty.',
-                            'Description' => 'The ForeignId of the product with with the title ForeignId: <EMPTY> is empty. It is recommended to send a unique ForeignId.',
+                            'Description' => 'ForeignId is empty or missing. '
+                                            .'It\'s required to enter an existing foreign Id.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -222,7 +226,7 @@ trait ProductDataProvider
                 ],
                 [
                     'Succeeded' => true,
-                    'StatusCode' => 204,
+                    'StatusCode' => 200,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
                 ],
@@ -250,7 +254,7 @@ trait ProductDataProvider
                 ],
                 [
                     'Succeeded' => true,
-                    'StatusCode' => 204,
+                    'StatusCode' => 200,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
                     'Messages' => [
@@ -281,7 +285,7 @@ trait ProductDataProvider
                     'ForeignId' => 'patch_standard_product',
                     'Title' => 'PATCH Standardproduct ' . date('d-m-Y H:i:s')
                                 . ' ' . __FUNCTION__
-                                . ' ' . self::randStrGen(20, true),
+                                . ' ' . self::randStrGen(18, true),
                     'Description' => 'Beschreibung ' . date('d-m-Y H:i:s'),
                     'ShortDescription' => 'Kurzbeschreibung ' . date('d-m-Y H:i:s'),
                     'Price' => 1.23,
@@ -290,7 +294,7 @@ trait ProductDataProvider
                 ],
                 [
                     'Succeeded' => true,
-                    'StatusCode' => 204,
+                    'StatusCode' => 200,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
                 ],
@@ -351,7 +355,7 @@ trait ProductDataProvider
                 ],
                 [
                     'Succeeded' => true,
-                    'StatusCode' => 204,
+                    'StatusCode' => 200,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
                 ],
@@ -376,7 +380,7 @@ trait ProductDataProvider
                 ],
                 [
                     'Succeeded' => true,
-                    'StatusCode' => 204,
+                    'StatusCode' => 200,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
                 ],
@@ -400,7 +404,7 @@ trait ProductDataProvider
                 ],
                 [
                     'Succeeded' => true,
-                    'StatusCode' => 204,
+                    'StatusCode' => 200,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
                 ],
@@ -498,7 +502,7 @@ trait ProductDataProvider
                 ],
                 [
                     'Succeeded' => true,
-                    'StatusCode' => 204,
+                    'StatusCode' => 200,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
                 ],
@@ -523,7 +527,7 @@ trait ProductDataProvider
                 ],
                 [
                     'Succeeded' => true,
-                    'StatusCode' => 204,
+                    'StatusCode' => 400,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
                     'Messages' => [
@@ -569,7 +573,7 @@ trait ProductDataProvider
                             'Message' => 'Invalid StockAmount',
                             'Description' => 'The StockAmount of the product with '
                                             .'(.+): (.+) cannot be empty or must '
-                                            .'be greater/\equal than zero.',
+                                            .'be greater\/equal than zero.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -595,7 +599,7 @@ trait ProductDataProvider
                 ],
                 [
                     'Succeeded' => true,
-                    'StatusCode' => 204,
+                    'StatusCode' => 200,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
                 ],
@@ -620,7 +624,7 @@ trait ProductDataProvider
                 ],
                 [
                     'Succeeded' => true,
-                    'StatusCode' => 204,
+                    'StatusCode' => 200,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
                 ],
@@ -685,18 +689,6 @@ trait ProductDataProvider
                     'StatusCode' => 200,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'Messages' => [
-                        [
-                            'Code' => 4006,
-                            'Severity' => 1,
-                            'Message' => 'Invalid Ean',
-                            'Description' => 'The EAN of the product with '
-                                            .'(.+): (.+) is not valid. '
-                                            .'Please verify to send a valid EAN with 12 or 13 chars.',
-                            'UserHelpLink' => '',
-                            'DeveloperHelpLink' => '',
-                        ],
-                    ],
                 ],
             ],
         ];
@@ -718,7 +710,7 @@ trait ProductDataProvider
                 ],
                 [
                     'Succeeded' => true,
-                    'StatusCode' => 204,
+                    'StatusCode' => 200,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
                 ],
@@ -783,18 +775,6 @@ trait ProductDataProvider
                     'StatusCode' => 200,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'Messages' => [
-                        [
-                            'Code' => 4007,
-                            'Severity' => 1,
-                            'Message' => 'Invalid Upc',
-                            'Description' => 'The UPC of the product with '
-                                            .'(.+): (.+) is not valid. '
-                                            .'Please verify to send a valid UPC.',
-                            'UserHelpLink' => '',
-                            'DeveloperHelpLink' => '',
-                        ],
-                    ],
                 ],
             ],
         ];
@@ -816,7 +796,7 @@ trait ProductDataProvider
                 ],
                 [
                     'Succeeded' => true,
-                    'StatusCode' => 204,
+                    'StatusCode' => 200,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
                 ],
@@ -881,18 +861,6 @@ trait ProductDataProvider
                     'StatusCode' => 200,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
-                    'Messages' => [
-                        [
-                            'Code' => 4008,
-                            'Severity' => 1,
-                            'Message' => 'Invalid Isbn',
-                            'Description' => 'The ISBN of the product with '
-                                            .'(.+): (.+) is not valid. '
-                                            .'Please verify to send a valid ISBN-10 or ISBN-13.',
-                            'UserHelpLink' => '',
-                            'DeveloperHelpLink' => '',
-                        ],
-                    ],
                 ],
             ],
         ];
@@ -914,7 +882,7 @@ trait ProductDataProvider
                 ],
                 [
                     'Succeeded' => true,
-                    'StatusCode' => 204,
+                    'StatusCode' => 200,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
                 ],

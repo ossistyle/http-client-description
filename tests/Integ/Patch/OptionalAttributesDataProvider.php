@@ -30,9 +30,20 @@ trait OptionalAttributesDataProvider
                 ],
                 [
                     'Succeeded' => false,
-                    'StatusCode' => 404,
+                    'StatusCode' => 400,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
+                    'Messages' => [
+                        [
+                            'Code' => 0004,
+                            'Severity' => 2,
+                            'Message' => 'ForeignId is empty or missing.',
+                            'Description' => 'ForeignId is empty or missing. '
+                                            .'It\'s required to enter an existing foreign Id.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
                 ],
             ],
 
@@ -50,9 +61,20 @@ trait OptionalAttributesDataProvider
                 ],
                 [
                     'Succeeded' => false,
-                    'StatusCode' => 404,
+                    'StatusCode' => 400,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
+                    'Messages' => [
+                        [
+                            'Code' => 0004,
+                            'Severity' => 2,
+                            'Message' => 'ForeignId is empty or missing.',
+                            'Description' => 'ForeignId is empty or missing. '
+                                            .'It\'s required to enter an existing foreign Id.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
                 ],
             ],
 

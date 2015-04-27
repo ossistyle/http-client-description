@@ -137,6 +137,26 @@ trait ProductVariationDataProvider
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
+                        [
+                            'Code' => 4005,
+                            'Severity' => 2,
+                            'Message' => 'Invalid Price',
+                            'Description' => 'The Price of the product with '
+                                            .'ForeignId: (.+) cannot be empty '
+                                            .'or must be greater than zero.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                        [
+                            'Code' => 8000,
+                            'Severity' => 1,
+                            'Message' => 'Variations container is empty.',
+                            'Description' => 'The product with the (.+): (.+) has '
+                                            .'an empty \'Variations\' container. '
+                                            .'The product will be created as a standard product.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
                     ],
                 ],
             ],
@@ -3586,10 +3606,12 @@ trait ProductVariationDataProvider
                     ],
                     'Specifics' => [
                         [
+                            'ForeignId' => self::getGUID(),
                             'Name' => 'Marke',
                             'Value' => 'VIA-Ebay',
                         ],
                         [
+                            'ForeignId' => self::getGUID(),
                             'Name' => 'Hersteller',
                             'Value' => 'VIA-eBay',
                         ],

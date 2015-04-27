@@ -39,7 +39,7 @@ trait ProductCatalogCreateLinkDataProvider
                 ],
                 [
                     'Succeeded' => false,
-                    'StatusCode' => 400,
+                    'StatusCode' => 404,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
                     'Messages' => [
@@ -70,7 +70,7 @@ trait ProductCatalogCreateLinkDataProvider
                 ],
                 [
                     'Succeeded' => false,
-                    'StatusCode' => 400,
+                    'StatusCode' => 404,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
                     'Messages' => [
@@ -107,7 +107,7 @@ trait ProductCatalogCreateLinkDataProvider
                     'Messages' => [
                         [
                             'Code' => 4021,
-                            'Severity' => 1,
+                            'Severity' => 2,
                             'Message' => 'productForeignId does not exists.',
                             'Description' => 'The \'productForeignId\' (.+) does not exists.',
                             'UserHelpLink' => '',
@@ -137,10 +137,11 @@ trait ProductCatalogCreateLinkDataProvider
                     'EntityListCount' => 0,
                     'Messages' => [
                         [
-                            'Code' => 4021,
-                            'Severity' => 1,
-                            'Message' => 'productForeignId is too long.',
-                            'Description' => 'The \'productForeignId\' (.+) is too long.',
+                            'Code' => 4026,
+                            'Severity' => 2,
+                            'Message' => '(.+) is empty or not unique.',
+                            'Description' => 'The \'(.+)\': (.+)  is too long. '
+                                            .'Maximum length for \'(.+)\' is 60 chars.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -163,7 +164,7 @@ trait ProductCatalogCreateLinkDataProvider
                 ],
                 [
                     'Succeeded' => false,
-                    'StatusCode' => 400,
+                    'StatusCode' => 404,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
                     'Messages' => [
@@ -194,7 +195,7 @@ trait ProductCatalogCreateLinkDataProvider
                 ],
                 [
                     'Succeeded' => false,
-                    'StatusCode' => 400,
+                    'StatusCode' => 404,
                     'FunctionName' => __FUNCTION__,
                     'EntityListCount' => 0,
                     'Messages' => [
@@ -261,10 +262,11 @@ trait ProductCatalogCreateLinkDataProvider
                     'EntityListCount' => 0,
                     'Messages' => [
                         [
-                            'Code' => 4021,
-                            'Severity' => 1,
-                            'Message' => 'catalogForeignId is too long.',
-                            'Description' => 'The \'catalogForeignId\' (.+) is too long.',
+                            'Code' => 4026,
+                            'Severity' => 2,
+                            'Message' => '(.+) is empty or not unique.',
+                            'Description' => 'The \'(.+)\': (.+)  is too long. '
+                                            .'Maximum length for \'(.+)\' is 60 chars.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],

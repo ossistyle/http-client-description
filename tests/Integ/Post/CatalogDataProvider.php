@@ -39,9 +39,9 @@ trait CatalogDataProvider
                         [
                             'Code' => 3000,
                             'Severity' => 2,
-                            'Message' => 'Invalid ForeignId.',
-                            'Description' => 'The ForeignId of the catalog with '
-                                            .'the ForeignId: <EMPTY> is empty. '
+                            'Message' => 'ForeignId is empty.',
+                            'Description' => 'The ForeignId of the catalog with with '
+                                            .'the Name: (.+) is empty. '
                                             .'It is recommended to send a unique ForeignId.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
@@ -72,9 +72,9 @@ trait CatalogDataProvider
                         [
                             'Code' => 3000,
                             'Severity' => 2,
-                            'Message' => 'Invalid ForeignId.',
-                            'Description' => 'The ForeignId of the catalog with '
-                                            .'the ForeignId: <EMPTY> is empty. '
+                            'Message' => 'ForeignId is empty.',
+                            'Description' => 'The ForeignId of the catalog with with '
+                                            .'the Name: (.+) is empty. '
                                             .'It is recommended to send a unique ForeignId.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
@@ -93,6 +93,7 @@ trait CatalogDataProvider
 
                 [
                     'Name' => 'Child has empty ForeignId',
+                    'ForeignId' => 'root_1',
                     'IsRootLevel' => true,
                     'ChildCatalogs' => [
                         [
@@ -102,7 +103,6 @@ trait CatalogDataProvider
                             'ChildCatalogs' => [
                                 [
                                     'Name' => 'Child 1.1.1',
-                                    'ForeignId' => 'child_1_1_1',
                                     'IsRootLevel' => false,
                                 ],
                             ],
@@ -118,10 +118,10 @@ trait CatalogDataProvider
                     'Messages' => [
                         [
                             'Code' => 3000,
-                            'Severity' => 1,
-                            'Message' => 'Invalid ForeignId.',
-                            'Description' => 'The ForeignId of the catalog with '
-                                            .'the ForeignId: <EMPTY> is empty. '
+                            'Severity' => 2,
+                            'Message' => 'ForeignId is empty.',
+                            'Description' => 'The ForeignId of the catalog with with '
+                                            .'the Name: (.+) is empty. '
                                             .'It is recommended to send a unique ForeignId.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
@@ -163,10 +163,10 @@ trait CatalogDataProvider
                     'Messages' => [
                         [
                             'Code' => 3000,
-                            'Severity' => 1,
-                            'Message' => 'Invalid ForeignId.',
-                            'Description' => 'The ForeignId of the catalog with '
-                                            .'the ForeignId: <EMPTY> is empty. '
+                            'Severity' => 2,
+                            'Message' => 'ForeignId is empty.',
+                            'Description' => 'The ForeignId of the catalog with with '
+                                            .'the Name: (.+) is empty. '
                                             .'It is recommended to send a unique ForeignId.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
@@ -198,9 +198,9 @@ trait CatalogDataProvider
                         [
                             'Code' => 3001,
                             'Severity' => 2,
-                            'Message' => 'Invalid Name.',
-                            'Description' => 'The \'Name\' of the catalog with '
-                                            .'the {0}: {1} cannot be empty.',
+                            'Message' => 'Name is empty.',
+                            'Description' => 'The Name of the product with with '
+                                            .'the (.+): (.+) is empty.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -230,9 +230,9 @@ trait CatalogDataProvider
                         [
                             'Code' => 3001,
                             'Severity' => 2,
-                            'Message' => 'Invalid Name.',
-                            'Description' => 'The \'Name\' of the catalog with '
-                                            .'the {0}: {1} cannot be empty.',
+                            'Message' => 'Name is empty.',
+                            'Description' => 'The Name of the product with with '
+                                            .'the (.+): (.+) is empty.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -264,8 +264,8 @@ trait CatalogDataProvider
                             'Code' => 3001,
                             'Severity' => 2,
                             'Message' => 'Invalid Name.',
-                            'Description' => 'The \'Name\' of the catalog with '
-                                            .'the {0}: {1} cannot be empty.',
+                            'Description' => 'The \'Name\' of the product with with '
+                                            .'the (.+): (.+) cannot be empty.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -320,60 +320,45 @@ trait CatalogDataProvider
                         [
                             'Code' => 3002,
                             'Severity' => 1,
-                            'Message' => 'Name is too long.',
-                            'Description' => 'The \'Name\' of the catalog with '
-                                            .'the {0}: {1} cannot not be longer '
-                                            .'than 30 chars, because in your eBay '
-                                            .'shop you can only use 30 chars for '
-                                            .'the name of the catalog.',
+                            'Message' => 'The Name of the product with with the (.+): (.+) is too long.',
+                            'Description' => 'The value of the property "Name" cannot not be longer '
+                                            .'than 30 chars, because in the eBay shop supports only 30 chars for the name of a catalog.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
                         [
                             'Code' => 3002,
                             'Severity' => 1,
-                            'Message' => 'Name is too long.',
-                            'Description' => 'The \'Name\' of the catalog with '
-                                            .'the {0}: {1} cannot not be longer '
-                                            .'than 30 chars, because in your eBay '
-                                            .'shop you can only use 30 chars for '
-                                            .'the name of the catalog.',
+                            'Message' => 'The Name of the product with with the (.+): (.+) is too long.',
+                            'Description' => 'The value of the property "Name" cannot not be longer '
+                                            .'than 30 chars, because in the eBay shop supports only 30 chars for the name of a catalog.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
                         [
                             'Code' => 3002,
                             'Severity' => 1,
-                            'Message' => 'Name is too long.',
-                            'Description' => 'The \'Name\' of the catalog with '
-                                            .'the {0}: {1} cannot not be longer '
-                                            .'than 30 chars, because in your eBay '
-                                            .'shop you can only use 30 chars for '
-                                            .'the name of the catalog.',
+                            'Message' => 'The Name of the product with with the (.+): (.+) is too long.',
+                            'Description' => 'The value of the property "Name" cannot not be longer '
+                                            .'than 30 chars, because in the eBay shop supports only 30 chars for the name of a catalog.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
                         [
                             'Code' => 3002,
                             'Severity' => 1,
-                            'Message' => 'Name is too long.',
-                            'Description' => 'The \'Name\' of the catalog with '
-                                            .'the {0}: {1} cannot not be longer '
-                                            .'than 30 chars, because in your eBay '
-                                            .'shop you can only use 30 chars for '
-                                            .'the name of the catalog.',
+                            'Message' => 'The Name of the product with with the (.+): (.+) is too long.',
+                            'Description' => 'The value of the property "Name" cannot not be longer '
+                                            .'than 30 chars, because in the eBay shop supports only 30 chars for the name of a catalog.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
                         [
                             'Code' => 3002,
                             'Severity' => 1,
-                            'Message' => 'Name is too long.',
-                            'Description' => 'The \'Name\' of the catalog with '
-                                            .'the {0}: {1} cannot not be longer '
-                                            .'than 30 chars, because in your eBay '
-                                            .'shop you can only use 30 chars for '
-                                            .'the name of the catalog.',
+                            'Message' => 'The Name of the product with with the (.+): (.+) is too long.',
+                            'Description' => 'The value of the property "Name" cannot not be longer '
+                                            .'than 30 chars, because in the eBay shop supports only 30 chars for the name of a catalog.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -413,8 +398,8 @@ trait CatalogDataProvider
                         [
                             'Code' => 3003,
                             'Severity' => 1,
-                            'Message' => 'One ChildCatalogs has \'IsRootLevel\' : true defined.',
-                            'Description' => 'The ChildCatalogs with [0} : {1} has \'IsRootLevel\' : true defined. This value was changed automatically to false.',
+                            'Message' => 'ChildCatalogs with property \'IsRootLevel\' : true are not allowed.',
+                            'Description' => 'The ChildCatalogs with (.+) : (.+) has \'IsRootLevel\' : true defined. This value was changed automatically to false.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
