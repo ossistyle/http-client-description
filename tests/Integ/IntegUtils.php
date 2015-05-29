@@ -15,15 +15,15 @@ trait IntegUtils
     private static function getSdk(array $args = [])
     {
         return new Sdk($args + [
-            //'region'        => 'sandbox-new',
-            'region'        => 'local',
+            'region'        => 'sandbox-new',
+            //'region'        => 'local',
             'profile'       => 'integ-sandbox',
             'version'       => 'latest',
-            'scheme'        => 'http',
+            'scheme'        => 'https',
             'log'           => true,
             'log_filename'  => 'blackbox-integration',
             'validate'      => false,
-            //'debug'         => true
+            'http'          => ['verify' => false]
         ]);
     }
 

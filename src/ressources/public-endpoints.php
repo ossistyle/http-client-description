@@ -12,7 +12,7 @@ return [
             'endpoint' => 'sandboxapi.via.de:8001',
         ],
         'sandbox-new/blackbox' => [
-            'endpoint' => 'sandboxapi2.via.de/api/',
+            'endpoint' => 'dus-bb-api802.dus.via.de/api/',
         ],
         'sandbox-old/blackbox' => [
             'endpoint' => 'sandboxapi.via.de/publicapi/v1/api.svc/',

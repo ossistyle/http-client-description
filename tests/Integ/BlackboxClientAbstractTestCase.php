@@ -79,6 +79,11 @@ class BlackboxClientAbstractTestCase extends AbstractTestCase
         $this->deleteLinkValidation('DeleteLink', $data);
     }
 
+    protected function deleteValidation($operation, $data, $args = [])
+    {
+        $this->validate($operation, $data, $args = []);
+    }
+
     private function validate($operation, $data, $args = [])
     {
         try {
@@ -95,7 +100,6 @@ class BlackboxClientAbstractTestCase extends AbstractTestCase
             }
 
         } catch (BlackboxException $e) {
-
             $this->validateStatusCode($e->getStatusCode());
 
             if ($e->getResponse()) {

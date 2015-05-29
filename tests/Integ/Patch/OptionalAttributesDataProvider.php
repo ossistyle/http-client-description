@@ -14,7 +14,9 @@ trait OptionalAttributesDataProvider
             // self::tooLongOptionalAttributesForeignId(),
             self::tooLongOptionalAttributesName(),
             self::tooLongOptionalAttributesValue(),
-            self::tooLongOptionalAttributesNameAndValue()
+            self::tooLongOptionalAttributesNameAndValue(),
+            // Iteration 21
+            self::duplicateOptionalAttributesName()
         );
     }
 
@@ -274,6 +276,38 @@ trait OptionalAttributesDataProvider
                 ],
             ],
 
+        ];
+    }
+
+    public static function duplicateOptionalAttributesName()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => '3_optional_attribute',
+                    'Name' => '2 OptionalAttributes',
+                    'Value' => 'Lorem ipsum dolor sit amet - ' . date('y-m-d H:i:s'),
+                ],
+                [
+                    'Succeeded' => true,
+                    'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
+                    'Messages' => [
+                        [
+                            'Code' => 7008,
+                            'Severity' => 2,
+                            'Message' => 'OptionalProductAttributes.Name duplicity.',
+                            'Description' => 'Product (.+): The \'Name\' of the OptionalProductAttributes '
+                                            .'with ForeignId: (.+) alyready exists in database. '
+                                            .'The \'Name\' of an OptionalProductAttributes should be unique.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 }

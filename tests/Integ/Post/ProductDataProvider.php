@@ -71,7 +71,17 @@ trait ProductDataProvider
             self::nullOptionalAttributesNameAndValue(),
             self::greaterThan255CharsOptionalAttributesName(),
             self::greaterThan4000AttributesValue(),
-            self::tooLongOptionalAttributesNameAndValue()
+            self::tooLongOptionalAttributesNameAndValue(),
+            // Iteration 20
+            self::invalidUnitQuantity(),
+            self::emptyUnitQuantity(),
+            self::missingUnitQuantity(),
+            self::emptyUnitType(),
+            self::missingUnitType(),
+            self::notMappedUnitType(),
+            self::validProductIteration20(),
+            // Iteration 21
+            self::duplicateOptionalAttributesName()
         );
     }
 
@@ -5464,6 +5474,969 @@ trait ProductDataProvider
                                             .'OptionalProductAttributes with '
                                             .'(.+): (.+) is too long. The \'Value\' '
                                             .'has been truncated by 4000 chars.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public static function invalidUnitQuantity()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => self::getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => '<h1>HTML Ipsum Presents</h1>
+
+                                    <p><strong>Pellentesque habitant morbi
+                                    tristique</strong> senectus et netus et
+                                    malesuada fames ac turpis egestas.
+                                    Vestibulum tortor quam, feugiat vitae,
+                                    ultricies eget, tempor sit amet, ante.
+                                    Donec eu libero sit amet quam egestas semper.
+                                    <em>Aenean ultricies mi vitae est.</em>
+                                    Mauris placerat eleifend leo.
+                                    Quisque sit amet est et sapien
+                                    ullamcorper pharetra.
+                                    Vestibulum erat wisi, condimentum sed,
+                                    <code>commodo vitae</code>,
+                                    ornare sit amet, wisi.
+                                    Aenean fermentum, elit eget tincidunt
+                                    condimentum, eros ipsum rutrum orci,
+                                    sagittis tempus lacus enim ac dui.
+                                    <a href="#">Donec non enim</a>
+                                    in turpis pulvinar facilisis. Ut felis.</p>
+
+                                <h2>Header Level 2</h2>
+
+                                <ol>
+                                   <li>Lorem ipsum dolor sit amet,
+                                    consectetuer adipiscing elit.</li>
+                                   <li>Aliquam tincidunt mauris eu risus.</li>
+                                </ol>',
+                    'ShortDescription' => '<dl>
+                                   <dt>Definition list</dt>
+                                   <dd>Consectetur adipisicing elit, sed do
+                                   eiusmod tempor incididunt ut labore et
+                                   dolore magna aliqua.
+                                   Ut enim ad minim veniam, quis
+                                   nostrud exercitation ullamco laboris
+                                   nisi ut aliquip ex ea
+                                   commodo consequat.</dd>
+                                   <dt>Lorem ipsum dolor sit amet</dt>
+                                   <dd>Consectetur adipisicing elit,
+                                   sed do eiusmod tempor incididunt ut labore
+                                   et dolore magna aliqua. Ut enim ad minim veniam,
+                                   quis nostrud exercitation
+                                   ullamco laboris nisi ut aliquip ex ea
+                                   commodo consequat.</dd>
+                                </dl>',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_2.jpg',
+                            'Type' => 2,
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_3.jpg',
+                            'Type' => 3,
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_4.jpg',
+                            'Type' => 4,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                        [
+                            'Name' => 'Hersteller',
+                            'Value' => 'VIA-eBay',
+                        ],
+                    ],
+                    'OptionalAttributes' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'Name' => '1 OptionalAttributes',
+                            'Value' => self::randStrGen(300)
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'Name' => self::randStrGen(255),
+                            'Value' => self::randStrGen(4000)
+                        ]
+                    ],
+                    'UnitQuantity' => 'foo',
+                    'UnitType' => '100ml'
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
+                    'Messages' => [
+                        [
+                            'Code' => 4012,
+                            'Severity' => 2,
+                            'Message' => 'UnitQuantity invalid.',
+                            'Description' => 'The \'UnitQuantity\' of the product '
+                                            .'with the (.+): (.+) is empty, but the '
+                                            .'\'UnitType\' has a valid value. '
+                                            .'Be sure to provide values in both '
+                                            .'properties \'UnitQuantity\' and \'UnitType\' '
+                                            .'or do not send any of both properties.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public static function emptyUnitQuantity()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => self::getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => '<h1>HTML Ipsum Presents</h1>
+
+                                    <p><strong>Pellentesque habitant morbi
+                                    tristique</strong> senectus et netus et
+                                    malesuada fames ac turpis egestas.
+                                    Vestibulum tortor quam, feugiat vitae,
+                                    ultricies eget, tempor sit amet, ante.
+                                    Donec eu libero sit amet quam egestas semper.
+                                    <em>Aenean ultricies mi vitae est.</em>
+                                    Mauris placerat eleifend leo.
+                                    Quisque sit amet est et sapien
+                                    ullamcorper pharetra.
+                                    Vestibulum erat wisi, condimentum sed,
+                                    <code>commodo vitae</code>,
+                                    ornare sit amet, wisi.
+                                    Aenean fermentum, elit eget tincidunt
+                                    condimentum, eros ipsum rutrum orci,
+                                    sagittis tempus lacus enim ac dui.
+                                    <a href="#">Donec non enim</a>
+                                    in turpis pulvinar facilisis. Ut felis.</p>
+
+                                <h2>Header Level 2</h2>
+
+                                <ol>
+                                   <li>Lorem ipsum dolor sit amet,
+                                    consectetuer adipiscing elit.</li>
+                                   <li>Aliquam tincidunt mauris eu risus.</li>
+                                </ol>',
+                    'ShortDescription' => '<dl>
+                                   <dt>Definition list</dt>
+                                   <dd>Consectetur adipisicing elit, sed do
+                                   eiusmod tempor incididunt ut labore et
+                                   dolore magna aliqua.
+                                   Ut enim ad minim veniam, quis
+                                   nostrud exercitation ullamco laboris
+                                   nisi ut aliquip ex ea
+                                   commodo consequat.</dd>
+                                   <dt>Lorem ipsum dolor sit amet</dt>
+                                   <dd>Consectetur adipisicing elit,
+                                   sed do eiusmod tempor incididunt ut labore
+                                   et dolore magna aliqua. Ut enim ad minim veniam,
+                                   quis nostrud exercitation
+                                   ullamco laboris nisi ut aliquip ex ea
+                                   commodo consequat.</dd>
+                                </dl>',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_2.jpg',
+                            'Type' => 2,
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_3.jpg',
+                            'Type' => 3,
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_4.jpg',
+                            'Type' => 4,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                        [
+                            'Name' => 'Hersteller',
+                            'Value' => 'VIA-eBay',
+                        ],
+                    ],
+                    'OptionalAttributes' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'Name' => '1 OptionalAttributes',
+                            'Value' => self::randStrGen(300)
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'Name' => self::randStrGen(255),
+                            'Value' => self::randStrGen(4000)
+                        ]
+                    ],
+                    'UnitQuantity' => '',
+                    'UnitType' => '100ml'
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
+                    'Messages' => [
+                        [
+                            'Code' => 4012,
+                            'Severity' => 2,
+                            'Message' => 'UnitQuantity invalid.',
+                            'Description' => 'The \'UnitQuantity\' of the product '
+                                            .'with the (.+): (.+) is empty, but the '
+                                            .'\'UnitType\' has a valid value. '
+                                            .'Be sure to provide values in both '
+                                            .'properties \'UnitQuantity\' and \'UnitType\' '
+                                            .'or do not send any of both properties.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public static function missingUnitQuantity()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => self::getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => '<h1>HTML Ipsum Presents</h1>
+
+                                    <p><strong>Pellentesque habitant morbi
+                                    tristique</strong> senectus et netus et
+                                    malesuada fames ac turpis egestas.
+                                    Vestibulum tortor quam, feugiat vitae,
+                                    ultricies eget, tempor sit amet, ante.
+                                    Donec eu libero sit amet quam egestas semper.
+                                    <em>Aenean ultricies mi vitae est.</em>
+                                    Mauris placerat eleifend leo.
+                                    Quisque sit amet est et sapien
+                                    ullamcorper pharetra.
+                                    Vestibulum erat wisi, condimentum sed,
+                                    <code>commodo vitae</code>,
+                                    ornare sit amet, wisi.
+                                    Aenean fermentum, elit eget tincidunt
+                                    condimentum, eros ipsum rutrum orci,
+                                    sagittis tempus lacus enim ac dui.
+                                    <a href="#">Donec non enim</a>
+                                    in turpis pulvinar facilisis. Ut felis.</p>
+
+                                <h2>Header Level 2</h2>
+
+                                <ol>
+                                   <li>Lorem ipsum dolor sit amet,
+                                    consectetuer adipiscing elit.</li>
+                                   <li>Aliquam tincidunt mauris eu risus.</li>
+                                </ol>',
+                    'ShortDescription' => '<dl>
+                                   <dt>Definition list</dt>
+                                   <dd>Consectetur adipisicing elit, sed do
+                                   eiusmod tempor incididunt ut labore et
+                                   dolore magna aliqua.
+                                   Ut enim ad minim veniam, quis
+                                   nostrud exercitation ullamco laboris
+                                   nisi ut aliquip ex ea
+                                   commodo consequat.</dd>
+                                   <dt>Lorem ipsum dolor sit amet</dt>
+                                   <dd>Consectetur adipisicing elit,
+                                   sed do eiusmod tempor incididunt ut labore
+                                   et dolore magna aliqua. Ut enim ad minim veniam,
+                                   quis nostrud exercitation
+                                   ullamco laboris nisi ut aliquip ex ea
+                                   commodo consequat.</dd>
+                                </dl>',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_2.jpg',
+                            'Type' => 2,
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_3.jpg',
+                            'Type' => 3,
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_4.jpg',
+                            'Type' => 4,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                        [
+                            'Name' => 'Hersteller',
+                            'Value' => 'VIA-eBay',
+                        ],
+                    ],
+                    'OptionalAttributes' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'Name' => '1 OptionalAttributes',
+                            'Value' => self::randStrGen(300)
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'Name' => self::randStrGen(255),
+                            'Value' => self::randStrGen(4000)
+                        ]
+                    ],
+                    'UnitType' => '100ml'
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
+                    'Messages' => [
+                        [
+                            'Code' => 4012,
+                            'Severity' => 2,
+                            'Message' => 'UnitQuantity invalid.',
+                            'Description' => 'The \'UnitQuantity\' of the product '
+                                            .'with the (.+): (.+) is empty, but the '
+                                            .'\'UnitType\' has a valid value. '
+                                            .'Be sure to provide values in both '
+                                            .'properties \'UnitQuantity\' and \'UnitType\' '
+                                            .'or do not send any of both properties.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public static function emptyUnitType()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => self::getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => '<h1>HTML Ipsum Presents</h1>
+
+                                    <p><strong>Pellentesque habitant morbi
+                                    tristique</strong> senectus et netus et
+                                    malesuada fames ac turpis egestas.
+                                    Vestibulum tortor quam, feugiat vitae,
+                                    ultricies eget, tempor sit amet, ante.
+                                    Donec eu libero sit amet quam egestas semper.
+                                    <em>Aenean ultricies mi vitae est.</em>
+                                    Mauris placerat eleifend leo.
+                                    Quisque sit amet est et sapien
+                                    ullamcorper pharetra.
+                                    Vestibulum erat wisi, condimentum sed,
+                                    <code>commodo vitae</code>,
+                                    ornare sit amet, wisi.
+                                    Aenean fermentum, elit eget tincidunt
+                                    condimentum, eros ipsum rutrum orci,
+                                    sagittis tempus lacus enim ac dui.
+                                    <a href="#">Donec non enim</a>
+                                    in turpis pulvinar facilisis. Ut felis.</p>
+
+                                <h2>Header Level 2</h2>
+
+                                <ol>
+                                   <li>Lorem ipsum dolor sit amet,
+                                    consectetuer adipiscing elit.</li>
+                                   <li>Aliquam tincidunt mauris eu risus.</li>
+                                </ol>',
+                    'ShortDescription' => '<dl>
+                                   <dt>Definition list</dt>
+                                   <dd>Consectetur adipisicing elit, sed do
+                                   eiusmod tempor incididunt ut labore et
+                                   dolore magna aliqua.
+                                   Ut enim ad minim veniam, quis
+                                   nostrud exercitation ullamco laboris
+                                   nisi ut aliquip ex ea
+                                   commodo consequat.</dd>
+                                   <dt>Lorem ipsum dolor sit amet</dt>
+                                   <dd>Consectetur adipisicing elit,
+                                   sed do eiusmod tempor incididunt ut labore
+                                   et dolore magna aliqua. Ut enim ad minim veniam,
+                                   quis nostrud exercitation
+                                   ullamco laboris nisi ut aliquip ex ea
+                                   commodo consequat.</dd>
+                                </dl>',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_2.jpg',
+                            'Type' => 2,
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_3.jpg',
+                            'Type' => 3,
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_4.jpg',
+                            'Type' => 4,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                        [
+                            'Name' => 'Hersteller',
+                            'Value' => 'VIA-eBay',
+                        ],
+                    ],
+                    'OptionalAttributes' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'Name' => '1 OptionalAttributes',
+                            'Value' => self::randStrGen(300)
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'Name' => self::randStrGen(255),
+                            'Value' => self::randStrGen(4000)
+                        ]
+                    ],
+                    'UnitQuantity' => '1.5',
+                    'UnitType' => ''
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
+                    'Messages' => [
+                        [
+                            'Code' => 4011,
+                            'Severity' => 2,
+                            'Message' => 'UnitType invalid.',
+                            'Description' => 'The \'UnitType\' of the product '
+                                            .'with the (.+): (.+) is empty, '
+                                            .'but the \'UnitQuantity\' has a valid value. '
+                                            .'Be sure to provide values in both '
+                                            .'properties \'UnitQuantity\' and \'UnitType\' '
+                                            .'or do not send any of both properties',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public static function missingUnitType()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => self::getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => '<h1>HTML Ipsum Presents</h1>
+
+                                    <p><strong>Pellentesque habitant morbi
+                                    tristique</strong> senectus et netus et
+                                    malesuada fames ac turpis egestas.
+                                    Vestibulum tortor quam, feugiat vitae,
+                                    ultricies eget, tempor sit amet, ante.
+                                    Donec eu libero sit amet quam egestas semper.
+                                    <em>Aenean ultricies mi vitae est.</em>
+                                    Mauris placerat eleifend leo.
+                                    Quisque sit amet est et sapien
+                                    ullamcorper pharetra.
+                                    Vestibulum erat wisi, condimentum sed,
+                                    <code>commodo vitae</code>,
+                                    ornare sit amet, wisi.
+                                    Aenean fermentum, elit eget tincidunt
+                                    condimentum, eros ipsum rutrum orci,
+                                    sagittis tempus lacus enim ac dui.
+                                    <a href="#">Donec non enim</a>
+                                    in turpis pulvinar facilisis. Ut felis.</p>
+
+                                <h2>Header Level 2</h2>
+
+                                <ol>
+                                   <li>Lorem ipsum dolor sit amet,
+                                    consectetuer adipiscing elit.</li>
+                                   <li>Aliquam tincidunt mauris eu risus.</li>
+                                </ol>',
+                    'ShortDescription' => '<dl>
+                                   <dt>Definition list</dt>
+                                   <dd>Consectetur adipisicing elit, sed do
+                                   eiusmod tempor incididunt ut labore et
+                                   dolore magna aliqua.
+                                   Ut enim ad minim veniam, quis
+                                   nostrud exercitation ullamco laboris
+                                   nisi ut aliquip ex ea
+                                   commodo consequat.</dd>
+                                   <dt>Lorem ipsum dolor sit amet</dt>
+                                   <dd>Consectetur adipisicing elit,
+                                   sed do eiusmod tempor incididunt ut labore
+                                   et dolore magna aliqua. Ut enim ad minim veniam,
+                                   quis nostrud exercitation
+                                   ullamco laboris nisi ut aliquip ex ea
+                                   commodo consequat.</dd>
+                                </dl>',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_2.jpg',
+                            'Type' => 2,
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_3.jpg',
+                            'Type' => 3,
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_4.jpg',
+                            'Type' => 4,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                        [
+                            'Name' => 'Hersteller',
+                            'Value' => 'VIA-eBay',
+                        ],
+                    ],
+                    'OptionalAttributes' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'Name' => '1 OptionalAttributes',
+                            'Value' => self::randStrGen(300)
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'Name' => self::randStrGen(255),
+                            'Value' => self::randStrGen(4000)
+                        ]
+                    ],
+                    'UnitQuantity' => '1.5',
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
+                    'Messages' => [
+                        [
+                            'Code' => 4011,
+                            'Severity' => 2,
+                            'Message' => 'UnitType invalid.',
+                            'Description' => 'The \'UnitType\' of the product '
+                                            .'with the (.+): (.+) is empty, '
+                                            .'but the \'UnitQuantity\' has a valid value. '
+                                            .'Be sure to provide values in both '
+                                            .'properties \'UnitQuantity\' and \'UnitType\' '
+                                            .'or do not send any of both properties',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public static function notMappedUnitType()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => self::getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => '<h1>HTML Ipsum Presents</h1>
+
+                                    <p><strong>Pellentesque habitant morbi
+                                    tristique</strong> senectus et netus et
+                                    malesuada fames ac turpis egestas.
+                                    Vestibulum tortor quam, feugiat vitae,
+                                    ultricies eget, tempor sit amet, ante.
+                                    Donec eu libero sit amet quam egestas semper.
+                                    <em>Aenean ultricies mi vitae est.</em>
+                                    Mauris placerat eleifend leo.
+                                    Quisque sit amet est et sapien
+                                    ullamcorper pharetra.
+                                    Vestibulum erat wisi, condimentum sed,
+                                    <code>commodo vitae</code>,
+                                    ornare sit amet, wisi.
+                                    Aenean fermentum, elit eget tincidunt
+                                    condimentum, eros ipsum rutrum orci,
+                                    sagittis tempus lacus enim ac dui.
+                                    <a href="#">Donec non enim</a>
+                                    in turpis pulvinar facilisis. Ut felis.</p>
+
+                                <h2>Header Level 2</h2>
+
+                                <ol>
+                                   <li>Lorem ipsum dolor sit amet,
+                                    consectetuer adipiscing elit.</li>
+                                   <li>Aliquam tincidunt mauris eu risus.</li>
+                                </ol>',
+                    'ShortDescription' => '<dl>
+                                   <dt>Definition list</dt>
+                                   <dd>Consectetur adipisicing elit, sed do
+                                   eiusmod tempor incididunt ut labore et
+                                   dolore magna aliqua.
+                                   Ut enim ad minim veniam, quis
+                                   nostrud exercitation ullamco laboris
+                                   nisi ut aliquip ex ea
+                                   commodo consequat.</dd>
+                                   <dt>Lorem ipsum dolor sit amet</dt>
+                                   <dd>Consectetur adipisicing elit,
+                                   sed do eiusmod tempor incididunt ut labore
+                                   et dolore magna aliqua. Ut enim ad minim veniam,
+                                   quis nostrud exercitation
+                                   ullamco laboris nisi ut aliquip ex ea
+                                   commodo consequat.</dd>
+                                </dl>',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_2.jpg',
+                            'Type' => 2,
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_3.jpg',
+                            'Type' => 3,
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_4.jpg',
+                            'Type' => 4,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                        [
+                            'Name' => 'Hersteller',
+                            'Value' => 'VIA-eBay',
+                        ],
+                    ],
+                    'OptionalAttributes' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'Name' => '1 OptionalAttributes',
+                            'Value' => self::randStrGen(300)
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'Name' => self::randStrGen(255),
+                            'Value' => self::randStrGen(4000)
+                        ]
+                    ],
+                    'UnitQuantity' => '1.5',
+                    'UnitType' => 'foo'
+                ],
+                [
+                    'Succeeded' => false,
+                    'StatusCode' => 201,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
+                    'Messages' => [
+                        [
+                            'Code' => 4027,
+                            'Severity' => 1,
+                            'Message' => 'UnitType cannot be mapped.',
+                            'Description' => 'The \'UnitType\' of the product '
+                                            .'with the (.+): (.+) cannot be mapped '
+                                            .'against our mapping table. In this case '
+                                            .'you will not have any unit price info on '
+                                            .'your eBay item. Please send an E-Mail to our support, '
+                                            .'so that we can add your \'UnitType\': (.+) to our mapping table.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public static function validProductIteration20()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => self::getGUID(),
+                    'Title' => 'Valide Product Iteration 20',
+                    'Description' => '<h1>HTML Ipsum Presents</h1>
+
+                                    <p><strong>Pellentesque habitant morbi
+                                    tristique</strong> senectus et netus et
+                                    malesuada fames ac turpis egestas.
+                                    Vestibulum tortor quam, feugiat vitae,
+                                    ultricies eget, tempor sit amet, ante.
+                                    Donec eu libero sit amet quam egestas semper.
+                                    <em>Aenean ultricies mi vitae est.</em>
+                                    Mauris placerat eleifend leo.
+                                    Quisque sit amet est et sapien
+                                    ullamcorper pharetra.
+                                    Vestibulum erat wisi, condimentum sed,
+                                    <code>commodo vitae</code>,
+                                    ornare sit amet, wisi.
+                                    Aenean fermentum, elit eget tincidunt
+                                    condimentum, eros ipsum rutrum orci,
+                                    sagittis tempus lacus enim ac dui.
+                                    <a href="#">Donec non enim</a>
+                                    in turpis pulvinar facilisis. Ut felis.</p>
+
+                                <h2>Header Level 2</h2>
+
+                                <ol>
+                                   <li>Lorem ipsum dolor sit amet,
+                                    consectetuer adipiscing elit.</li>
+                                   <li>Aliquam tincidunt mauris eu risus.</li>
+                                </ol>',
+                    'ShortDescription' => '<dl>
+                                   <dt>Definition list</dt>
+                                   <dd>Consectetur adipisicing elit, sed do
+                                   eiusmod tempor incididunt ut labore et
+                                   dolore magna aliqua.
+                                   Ut enim ad minim veniam, quis
+                                   nostrud exercitation ullamco laboris
+                                   nisi ut aliquip ex ea
+                                   commodo consequat.</dd>
+                                   <dt>Lorem ipsum dolor sit amet</dt>
+                                   <dd>Consectetur adipisicing elit,
+                                   sed do eiusmod tempor incididunt ut labore
+                                   et dolore magna aliqua. Ut enim ad minim veniam,
+                                   quis nostrud exercitation
+                                   ullamco laboris nisi ut aliquip ex ea
+                                   commodo consequat.</dd>
+                                </dl>',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_2.jpg',
+                            'Type' => 2,
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_3.jpg',
+                            'Type' => 3,
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_4.jpg',
+                            'Type' => 4,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                        [
+                            'Name' => 'Hersteller',
+                            'Value' => 'VIA-eBay',
+                        ],
+                    ],
+                    'OptionalAttributes' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'Name' => '1 OptionalAttributes',
+                            'Value' => self::randStrGen(300)
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'Name' => self::randStrGen(255),
+                            'Value' => self::randStrGen(4000)
+                        ]
+                    ],
+                    'UnitQuantity' => '1.5',
+                    'UnitType' => 'L'
+
+                ],
+                [
+                    'Succeeded' => true,
+                    'StatusCode' => 201,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
+                ],
+            ],
+        ];
+    }
+
+    public static function duplicateOptionalAttributesName()
+    {
+        return
+        [
+            [
+                [
+                    'ForeignId' => self::getGUID(),
+                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
+                    'Description' => '<h1>HTML Ipsum Presents</h1>
+
+                                    <p><strong>Pellentesque habitant morbi
+                                    tristique</strong> senectus et netus et
+                                    malesuada fames ac turpis egestas.
+                                    Vestibulum tortor quam, feugiat vitae,
+                                    ultricies eget, tempor sit amet, ante.
+                                    Donec eu libero sit amet quam egestas semper.
+                                    <em>Aenean ultricies mi vitae est.</em>
+                                    Mauris placerat eleifend leo.
+                                    Quisque sit amet est et sapien
+                                    ullamcorper pharetra.
+                                    Vestibulum erat wisi, condimentum sed,
+                                    <code>commodo vitae</code>,
+                                    ornare sit amet, wisi.
+                                    Aenean fermentum, elit eget tincidunt
+                                    condimentum, eros ipsum rutrum orci,
+                                    sagittis tempus lacus enim ac dui.
+                                    <a href="#">Donec non enim</a>
+                                    in turpis pulvinar facilisis. Ut felis.</p>
+
+                                <h2>Header Level 2</h2>
+
+                                <ol>
+                                   <li>Lorem ipsum dolor sit amet,
+                                    consectetuer adipiscing elit.</li>
+                                   <li>Aliquam tincidunt mauris eu risus.</li>
+                                </ol>',
+                    'ShortDescription' => '<dl>
+                                   <dt>Definition list</dt>
+                                   <dd>Consectetur adipisicing elit, sed do
+                                   eiusmod tempor incididunt ut labore et
+                                   dolore magna aliqua.
+                                   Ut enim ad minim veniam, quis
+                                   nostrud exercitation ullamco laboris
+                                   nisi ut aliquip ex ea
+                                   commodo consequat.</dd>
+                                   <dt>Lorem ipsum dolor sit amet</dt>
+                                   <dd>Consectetur adipisicing elit,
+                                   sed do eiusmod tempor incididunt ut labore
+                                   et dolore magna aliqua. Ut enim ad minim veniam,
+                                   quis nostrud exercitation
+                                   ullamco laboris nisi ut aliquip ex ea
+                                   commodo consequat.</dd>
+                                </dl>',
+                    'StockAmount' => 1,
+                    'Price' => 1.23,
+                    'Ean' => '14352638',
+                    'Images' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_2.jpg',
+                            'Type' => 2,
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_3.jpg',
+                            'Type' => 3,
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_4.jpg',
+                            'Type' => 4,
+                        ],
+                    ],
+                    'Specifics' => [
+                        [
+                            'Name' => 'Marke',
+                            'Value' => 'VIA-Ebay',
+                        ],
+                        [
+                            'Name' => 'Hersteller',
+                            'Value' => 'VIA-eBay',
+                        ],
+                    ],
+                    'OptionalAttributes' => [
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'Name' => 'OptionalAttributes',
+                            'Value' => self::randStrGen(300)
+                        ],
+                        [
+                            'ForeignId' => self::getGUID(),
+                            'Name' => 'OptionalAttributes',
+                            'Value' => self::randStrGen(300)
+                        ]
+                    ]
+                ],
+                [
+                    'Succeeded' => true,
+                    'StatusCode' => 400,
+                    'FunctionName' => __FUNCTION__,
+                    'EntityListCount' => 0,
+                    'Messages' => [
+                        [
+                            'Code' => 7008,
+                            'Severity' => 2,
+                            'Message' => 'OptionalProductAttributes.Name duplicity.',
+                            'Description' => 'Product (.+): The \'Name\' of the OptionalProductAttributes '
+                                            .'with ForeignId: (.+) alyready exists in database. '
+                                            .'The \'Name\' of an OptionalProductAttributes should be unique.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],

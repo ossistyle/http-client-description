@@ -29,8 +29,15 @@ class BlackboxClient extends VwsClient
     {
         $args = parent::getArguments();
 
+        $args['scheme']['default'] = 'http';
+
         if (isset($args['region'])) {
             $args['region']['default'] = 'sandbox';
+        }
+
+        if (isset($args['region'])
+            && $args['region'] != 'local') {
+            $args['scheme']['default'] = 'https';
         }
 
         return $args;
