@@ -4,7 +4,7 @@
 		"serviceFullName" : "Via WebApi Service",
 		"timestampFormat" : "iso8601",
 		"protocol" : "rest-json",
-		"endpointPrefix" : "blackbox",
+		"endpointPrefix" : "webapi",
 		"jsonVersion" : "1.1"
 	},
 	"operations" : {

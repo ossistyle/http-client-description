@@ -350,18 +350,9 @@ class VwsClient extends AbstractClient implements VwsClientInterface
 
     private function parseClass()
     {
-        // $class = get_class($this);
-        // if ($class === __CLASS__) {
-        //     return '';
-        // }
-        // $service = substr($class, strrpos($class, '\\') + 1, -6);
-        // $this->commandException = "Vws\\{$service}\\Exception\\{$service}Exception";
-        //
-        // return strtolower($service);
-
         $class = get_class($this);
         if ($class === __CLASS__) {
-            return ['', 'Aws\Exception\AwsException'];
+            return ['', 'Vws\Exception\VwsException'];
         }
         $service = substr($class, strrpos($class, '\\') + 1, -6);
         return [

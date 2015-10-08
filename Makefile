@@ -17,20 +17,23 @@ docs:
 view-docs:
 	open docs/_build/html/index.html
 
-integ:
-	vendor/bin/phpunit --debug --testsuite=integ
+integ-webapi:
+	vendor/bin/phpunit --debug --testsuite=integ-webapi
 
-integ-post:
-	vendor/bin/phpunit --debug --testsuite=integ-post
+integ-webapi-auth:
+	vendor/bin/phpunit --debug --testsuite=integ-webapi-auth
 
-integ-patch:
-	vendor/bin/phpunit --debug --testsuite=integ-patch
+integ-webapi-post:
+	vendor/bin/phpunit --debug --testsuite=integ-webapi-post
 
-integ-get:
-	vendor/bin/phpunit --debug --testsuite=integ-get
+integ-webapi-patch:
+	vendor/bin/phpunit --debug --testsuite=integ-webapi-patch
 
-integ-delete:
-	vendor/bin/phpunit --debug --testsuite=integ-delete
+integ-webapi-get:
+	vendor/bin/phpunit --debug --testsuite=integ-webapi-get
 
-integ-products:
-	vendor/bin/phpunit --debug --testsuite=integ-products
+integ-webapi-delete:
+	vendor/bin/phpunit --debug --testsuite=integ-webapi-delete
+
+integ-webapi-products:
+	vendor/bin/phpunit --debug --testsuite=integ-webapi-products

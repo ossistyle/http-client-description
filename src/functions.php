@@ -2,6 +2,9 @@
 
 namespace Vws;
 
+use Psr\Http\Message\RequestInterface;
+use GuzzleHttp\ClientInterface;
+
 /**
  * Applies a map function $f to each value in a collection.
  *
@@ -143,4 +146,21 @@ function load_compiled_json($path)
         );
     }
     return json_decode(file_get_contents($path), true);
+}
+
+/**
+ * Creates a default HTTP handler based on the available clients.
+ *
+ * @return callable
+ */
+function default_http_handler()
+{
+    $version = (string) ClientInterface::VERSION;
+    if ($version[0] === '5') {
+        return new \Vws\Handler\GuzzleV5\GuzzleHandler();
+    } elseif ($version[0] === '6') {
+        return new \Vws\Handler\GuzzleV6\GuzzleHandler();
+    } else {
+        throw new \RuntimeException('Unknown Guzzle version: ' . $version);
+    }
 }

@@ -48,6 +48,13 @@ class ClientResolver
             'doc'      => 'Name of the service to utilize. This value will be supplied by default when using one of the SDK clients (e.g., Vws\\WebApi\\WebApiClient).',
             'required' => true,
         ],
+        'exception_class' => [
+            'type'     => 'value',
+            'valid'    => ['string'],
+            'doc'      => 'Exception class to create when an error occurs.',
+            'default'  => 'Vws\Exception\VwsException',
+            'internal' => true
+        ],
         'scheme' => [
             'type'     => 'value',
             'valid'    => ['string'],
@@ -132,10 +139,23 @@ class ClientResolver
             'fn'    => [__CLASS__, '_apply_debug'],
         ],
         'http' => [
-            'type'  => 'value',
-            'valid' => ['array'],
-            'doc'   => 'Set to an array of Guzzle client request options (e.g., proxy, verify, etc.). See http://docs.guzzlephp.org/en/latest/clients.html#request-options for a list of available options.',
-            'fn'    => [__CLASS__, '_apply_http'],
+            'type'    => 'value',
+            'valid'   => ['array'],
+            'default' => [],
+            'doc'     => 'Set to an array of SDK request options to apply to each request (e.g., proxy, verify, etc.).',
+        ],
+        'http_handler' => [
+            'type'    => 'value',
+            'valid'   => ['callable'],
+            'doc'     => 'An HTTP handler is a function that accepts a PSR-7 request object and returns a promise that is fulfilled with a PSR-7 response object or rejected with an array of exception data. NOTE: This option supersedes any provided "handler" option.',
+            'fn'      => [__CLASS__, '_apply_http_handler']
+        ],
+        'handler' => [
+            'type'     => 'value',
+            'valid'    => ['callable'],
+            'doc'      => 'A handler that accepts a command object, request object and returns a promise that is fulfilled with an Aws\ResultInterface object or rejected with an Aws\Exception\AwsException. A handler does not accept a next handler as it is terminal and expected to fulfill a command. If no handler is provided, a default Guzzle handler will be utilized.',
+            'fn'       => [__CLASS__, '_apply_handler'],
+            'default'  => [__CLASS__, '_default_handler']
         ],
     ];
 
@@ -393,11 +413,33 @@ class ClientResolver
         }
     }
 
-    public static function _apply_http(array $values, array &$args)
+    // public static function _apply_http(array $values, array &$args)
+    // {
+    //     foreach ($values as $k => $v) {
+    //         $args['client']->setDefaultOption($k, $v);
+    //     }
+    // }
+    public static function _apply_handler($value, array &$args, HandlerList $list)
     {
-        foreach ($values as $k => $v) {
-            $args['client']->setDefaultOption($k, $v);
-        }
+        $list->setHandler($value);
+    }
+    public static function _default_handler(array &$args)
+    {
+        return new WrappedHttpHandler(
+            default_http_handler(),
+            $args['parser'],
+            $args['error_parser'],
+            $args['exception_class']
+        );
+    }
+    public static function _apply_http_handler($value, array &$args, HandlerList $list)
+    {
+        $args['handler'] = new WrappedHttpHandler(
+            $value,
+            $args['parser'],
+            $args['error_parser'],
+            $args['exception_class']
+        );
     }
 
     public static function _apply_profile($_, array &$args)

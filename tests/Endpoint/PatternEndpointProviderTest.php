@@ -21,11 +21,11 @@ class PatternEndpointProviderTest extends \PHPUnit_Framework_TestCase
         return [
             [
                 ['region' => 'sandbox', 'service' => 'webapi'],
-                ['endpoint' => 'https://sandboxapi.via.de:8001'],
+                ['endpoint' => 'https://dus-bb-api802.dus.via.de/api/'],
             ],
             [
                 ['region' => 'local', 'service' => 'webapi', 'scheme' => 'http'],
-                ['endpoint' => 'http://local.via.de/WebApi/'],
+                ['endpoint' => 'http://local.via.de/WebApi/api/'],
             ],
             [
                 ['region' => 'production', 'service' => 'webapi', 'scheme' => 'https'],

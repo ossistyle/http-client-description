@@ -15,7 +15,7 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
     private function getTestApiProvider($useManifest = true)
     {
         $dir = __DIR__ . '/api_provider_fixtures';
-        $manifest = include $dir . '/api-version-manifest.php';
+        $manifest = json_decode(file_get_contents($dir . '/manifest.json'), true);
 
         return $useManifest
             ? ApiProvider::manifest($dir, $manifest)
@@ -36,14 +36,14 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
     {
         $mp = $this->getTestApiProvider();
         $this->assertEquals(
-            ['2015-03-27', '2015-02-28'],
+            ['2015-05-29'],
             $mp->getVersions('webapi')
         );
         $this->assertEquals([], $mp->getVersions('foo'));
 
         $fp = $this->getTestApiProvider(false);
         $this->assertEquals(
-            ['2015-03-27', '2015-02-28'],
+            ['2015-05-29'],
             $fp->getVersions('webapi')
         );
     }
@@ -51,7 +51,7 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
     public function testCanGetDefaultProvider()
     {
         $p = ApiProvider::defaultProvider();
-        $this->assertArrayHasKey('webapi', $this->readAttribute($p, 'versions'));
+        $this->assertArrayHasKey('webapi', $this->readAttribute($p, 'manifest'));
     }
 
     public function testManifestProviderReturnsNullForMissingService()
@@ -76,21 +76,6 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
         ApiProvider::filesystem('/path/to/invalid/dir');
     }
 
-    public function testEnsuresValidJson()
-    {
-        $path = sys_get_temp_dir() . '/invalid-2010-12-05.api.json';
-        file_put_contents($path, 'foo, bar');
-        $p = ApiProvider::filesystem(sys_get_temp_dir());
-        try {
-            $p('api', 'invalid', '2010-12-05');
-            $this->fail('Did not throw');
-        } catch (\Exception $e) {
-            $this->assertInstanceOf('InvalidArgumentException', $e);
-        } finally {
-            unlink($path);
-        }
-    }
-
     public function testNullOnMissingFile()
     {
         $p = $this->getTestApiProvider();
@@ -101,12 +86,6 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
     {
         $p = ApiProvider::filesystem(__DIR__ . '/api_provider_fixtures');
         $this->assertEquals(['foo' => 'bar'], $p('api', 'webapi', 'latest'));
-    }
-
-    public function testCanLoadPhpFile()
-    {
-        $p = ApiProvider::filesystem(__DIR__ . '/api_provider_fixtures');
-        $this->assertEquals(['foo' => 'bar'], $p('api', 'webapi', '2015-02-28'));
     }
 
     public function testReturnsNullWhenNoLatestVersionIsAvailable()
@@ -120,18 +99,9 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
         $p = $this->getTestApiProvider();
         $result = $p('paginator', 'webapi', 'latest');
         $this->assertEquals(['abc' => '123'], $result);
-        $result = $p('paginator', 'webapi', '2015-03-15');
+        $result = $p('paginator', 'webapi', '2015-05-29');
         $this->assertEquals(['abc' => '123'], $result);
     }
-
-    // public function testReturnsWaiterConfigsForLatestCompatibleVersion()
-    // {
-    //     $p = $this->getTestApiProvider();
-    //     $result = $p('waiter', 'dynamodb', 'latest');
-    //     $this->assertEquals(['abc' => '456'], $result);
-    //     $result = $p('waiter', 'dynamodb', '2011-12-05');
-    //     $this->assertEquals(['abc' => '456'], $result);
-    // }
 
     public function testThrowsOnBadType()
     {
@@ -151,6 +121,6 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException(UnresolvedApiException::class);
         $p = $this->getTestApiProvider();
-        ApiProvider::resolve($p, 'api', 'webapi', 'derp');
+        ApiProvider::resolve($p, 'api', 'webapi', 'first');
     }
 }
