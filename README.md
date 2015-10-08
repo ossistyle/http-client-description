@@ -6,7 +6,7 @@ The **VWS for PHP** enables PHP developers to use **VIA Web Services** in their 
 Installing
 ----------
 
-The recommended way to install the AWS SDK for PHP is through Composer.
+The recommended way to install the VWS SDK for PHP is through Composer.
 
 1.	Install Composer:
 
@@ -29,16 +29,16 @@ The recommended way to install the AWS SDK for PHP is through Composer.
 Quick Examples
 --------------
 
-### Create an Via Blackbox client
+### Create an Via WebApi client
 
 ```php
 <?php
 // Require the Composer autoloader.
 require 'vendor/autoload.php';
 
-use Vws\Blackbox\BlackboxClient;
+use Vws\WebApi\WebApiClient;
 
-// Instantiate an Via Blackbox Client.
+// Instantiate an Via WebApi Client.
 $blackbox = BlackboxClient::factory([
     'version' => 'latest',
     'region'  => 'sandbox'

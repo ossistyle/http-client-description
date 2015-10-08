@@ -4,6 +4,7 @@
  * determining the latest API version and hooking up endpoint prefix names
  * with client namespace names.
  */
+
 // Create a list of possible namespaces so that we can include it in the
 // manifest.
 $possibleNamespaces = [];

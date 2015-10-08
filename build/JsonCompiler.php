@@ -1,4 +1,5 @@
 <?php
+
 class JsonCompiler
 {
     use PhpFileLinterTrait;
