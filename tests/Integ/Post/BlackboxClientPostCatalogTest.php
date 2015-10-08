@@ -2,12 +2,12 @@
 
 namespace Vws\Test\Integ\Post;
 
-use Vws\Test\Integ\BlackboxClientAbstractTestCase;
+use Vws\Test\Integ\WebApiClientAbstractTestCase;
 
 /**
  *
  */
-class BlackboxClientPostCatalogTest extends BlackboxClientAbstractTestCase
+class WebApiClientPostCatalogTest extends WebApiClientAbstractTestCase
 {
     use CatalogDataProvider;
 

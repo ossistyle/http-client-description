@@ -4,7 +4,7 @@ namespace Vws\Test;
 
 use Vws\VwsClient;
 use Vws\Credentials\Credentials;
-use Vws\Blackbox\BlackboxClient;
+use Vws\WebApi\WebApiClient;
 use GuzzleHttp\Client;
 use GuzzleHttp\Command\Event\PreparedEvent;
 use GuzzleHttp\Message\Request;
@@ -37,7 +37,7 @@ class VwsClientTest extends \PHPUnit_Framework_TestCase
             'client'       => new Client(),
             'credentials'  => new Credentials('foo', 'bar', 'foo_bar'),
             'region'       => 'foo',
-            'endpoint'     => 'http://sandboxapi.via.de:8001/api',
+            'endpoint'     => 'http://dus-bb-api802.dus.via.de/api/',
             'serializer'   => function () {},
             'api_provider' => $this->getApiProvider(),
             'service'      => 'foo',
@@ -138,7 +138,7 @@ class VwsClientTest extends \PHPUnit_Framework_TestCase
 
     public function testCanGetIterator()
     {
-        $client = $this->getTestClient('blackbox');
+        $client = $this->getTestClient('webapi');
         $this->assertInstanceOf(
             'Generator',
             $client->getIterator('GetProducts', ['PageNumber' => 2])
@@ -183,11 +183,11 @@ class VwsClientTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreatesClientsFromFactoryMethod()
     {
-        $client = new BlackboxClient([
+        $client = new WebApiClient([
             'region'  => 'sandbox',
             'version' => 'latest',
         ]);
-        $this->assertInstanceOf('Vws\Blackbox\BlackboxClient', $client);
+        $this->assertInstanceOf('Vws\WebApi\WebApiClient', $client);
         $this->assertEquals('sandbox', $client->getRegion());
     }
 
@@ -198,7 +198,7 @@ class VwsClientTest extends \PHPUnit_Framework_TestCase
     {
         $client = $this->createClient();
         $this->assertEquals(
-            'http://sandboxapi.via.de:8001/api',
+            'http://dus-bb-api802.dus.via.de/api/',
             $client->getEndpoint()
         );
     }
@@ -227,7 +227,7 @@ class VwsClientTest extends \PHPUnit_Framework_TestCase
         return new VwsClient($config + [
             'client'       => new Client(),
             'credentials'  => new Credentials('foo', 'bar', 'foo_bar'),
-            'endpoint'     => 'http://sandboxapi.via.de:8001/api',
+            'endpoint'     => 'http://dus-bb-api802.dus.via.de/api/',
             'region'       => 'foo',
             'service'      => 'foo',
             'api_provider' => $apiProvider,

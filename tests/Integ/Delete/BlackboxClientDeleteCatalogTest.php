@@ -2,39 +2,37 @@
 
 namespace Vws\Test\Integ\Delete;
 
-use Vws\Test\Integ\BlackboxClientAbstractTestCase;
+use Vws\Test\Integ\WebApiClientAbstractTestCase;
 
 /**
  *
  */
-class BlackboxClientDeleteCatalogTest extends BlackboxClientAbstractTestCase
+class WebApiClientDeleteCatalogTest extends WebApiClientAbstractTestCase
 {
+    use CatalogDataProvider;
+
     /**
-     *
+     * @dataProvider catalogDeleteData
      */
-    public function testDeleteCatalogById()
-    {
-        $args = func_get_args();
+    public function testDeleteCatalogValidation(
+        $catalog,
+        $expectedResponse
+    ) {
+        $this->expectedResponse = $expectedResponse;
+        $this->deleteValidation('deleteCatalogByForeignId', $catalog);
+    }
 
-        $client = $this->createClient();
-
-        foreach ($args as $values) {
-            foreach ($values as $value) {
-                $client->deleteCatalogById(['Id' => $value]);
-                $getResponse = $client->getCatalogById(['Id' => $value]);
-
-                $this->assertSame(
-                    '3000',
-                    $getResponse->search('Messages[0].Code'),
-                    'Messages[0].Code is not 3000'
-                );
-                $this->assertSame(
-                    2,
-                    $getResponse->search('Messages[0].Severity'),
-                    'Messages[0].Severity is not Error (2)'
-                );
-                $this->assertEmpty($getResponse->search('EntityList'), 'EntityList is not empty');
-            }
-        }
+    /**
+     * @dataProvider catalogCreateDeleteData
+     */
+    public function testCreateDeleteCatalogValidation(
+        $catalog,
+        $expectedResponse
+    ) {
+        $this->expectedResponse = $expectedResponse[0];
+        $this->postValidation('postCatalog', $catalog[0]);
+        $catalog[1]['ForeignId'] = $catalog[0]['ForeignId'];
+        $this->expectedResponse = $expectedResponse[1];
+        $this->deleteValidation('deleteCatalogByForeignId', $catalog[1]);
     }
 }

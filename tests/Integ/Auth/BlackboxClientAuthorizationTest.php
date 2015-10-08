@@ -2,13 +2,13 @@
 
 namespace Vws\Test\Integ\Auth;
 
-use Vws\Test\Integ\BlackboxClientAbstractTestCase;
+use Vws\Test\Integ\WebApiClientAbstractTestCase;
 use GuzzleHttp\Command\Event\PreparedEvent;
 
 /**
  *
  */
-class BlackboxClientAuthorizationTest extends BlackboxClientAbstractTestCase
+class WebApiClientAuthorizationTest extends WebApiClientAbstractTestCase
 {
     use AuthorizationDataProvider;
 

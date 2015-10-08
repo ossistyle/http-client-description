@@ -62,7 +62,8 @@ class EndpointProvider
      */
     public static function defaultProvider()
     {
-        $data = require __DIR__.'/../ressources/public-endpoints.php';
+        // $data = require __DIR__.'/../ressources/public-endpoints.php';
+        $data = \Vws\load_compiled_json(__DIR__ . '/../ressources/endpoints.json');
 
         return new PatternEndpointProvider($data['endpoints']);
     }

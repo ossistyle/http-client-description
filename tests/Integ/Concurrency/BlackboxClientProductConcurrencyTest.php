@@ -2,13 +2,13 @@
 
 namespace Vws\Test\Integ;
 
-use Vws\Test\Integ\BlackboxClientAbstractTestCase;
+use Vws\Test\Integ\WebApiClientAbstractTestCase;
 use GuzzleHttp\Command\Event\ProcessEvent;
 
 /**
  * @internal
  */
-class BlackboxClientProductConcurrencyTest extends BlackboxClientAbstractTestCase
+class WebApiClientProductConcurrencyTest extends WebApiClientAbstractTestCase
 {
     use IntegUtils;
 

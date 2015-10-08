@@ -31,10 +31,8 @@ class ApiProvider
         'api'       => 'api',
         'paginator' => 'paginators',
     ];
-    /** @var array The available API version manifest for each service. */
-    private $versions;
-    /** @var bool Whether or not the manifest is provided or calculated. */
-    private $hasManifest;
+    /** @var array API manifest */
+    private $manifest;
     /** @var string The directory containing service models. */
     private $modelsDir;
 
@@ -76,9 +74,9 @@ class ApiProvider
      */
     public static function defaultProvider()
     {
-        $dir = __DIR__.'/../ressources';
-
-        return new self($dir, require $dir.'/api-version-manifest.php');
+        // $dir = __DIR__.'/../ressources';
+        // return new self($dir, require $dir.'/api-version-manifest.php');
+        return new self(__DIR__ . '/../ressources', \Vws\manifest());
     }
     /**
      * Loads API data after resolving the version to the latest, compatible,
@@ -132,14 +130,21 @@ class ApiProvider
      */
     public function getVersions($service)
     {
-        if (!isset($this->versions[$service])) {
-            if ($this->hasManifest) {
-                return [];
-            }
+        // if (!isset($this->versions[$service])) {
+        //     if ($this->hasManifest) {
+        //         return [];
+        //     }
+        //     $this->buildVersionsList($service);
+        // }
+        //
+        // return array_values(array_unique($this->versions[$service]));
+        if (!isset($this->manifest)) {
             $this->buildVersionsList($service);
         }
-
-        return array_values(array_unique($this->versions[$service]));
+        if (!isset($this->manifest[$service]['versions'])) {
+            return [];
+        }
+        return array_values(array_unique($this->manifest[$service]['versions']));
     }
     /**
      * Execute the the provider.
@@ -152,22 +157,43 @@ class ApiProvider
      */
     public function __invoke($type, $service, $version)
     {
+        // // Resolve the type or return null.
+        // if (isset(self::$typeMap[$type])) {
+        //     $type = self::$typeMap[$type];
+        // } else {
+        //     return;
+        // }
+        // // Resolve the version or return null.
+        // if (!isset($this->versions[$service]) && !$this->hasManifest) {
+        //     $this->buildVersionsList($service);
+        // }
+        // if (!isset($this->versions[$service][$version])) {
+        //     return;
+        // }
+        // $version = $this->versions[$service][$version];
+        // // Return the loaded API data for the specified type.
+        // return $this->loadApiData($type, $service, $version);
         // Resolve the type or return null.
         if (isset(self::$typeMap[$type])) {
             $type = self::$typeMap[$type];
         } else {
-            return;
+            return null;
         }
         // Resolve the version or return null.
-        if (!isset($this->versions[$service]) && !$this->hasManifest) {
+        if (!isset($this->manifest)) {
             $this->buildVersionsList($service);
         }
-        if (!isset($this->versions[$service][$version])) {
-            return;
+        if (!isset($this->manifest[$service]['versions'][$version])) {
+            return null;
         }
-        $version = $this->versions[$service][$version];
-        // Return the loaded API data for the specified type.
-        return $this->loadApiData($type, $service, $version);
+        $version = $this->manifest[$service]['versions'][$version];
+        $path = "{$this->modelsDir}/{$service}/{$version}/{$type}.json";
+        try {
+            return \Vws\load_compiled_json($path);
+        } catch (\InvalidArgumentException $e) {
+            return null;
+        }
+
     }
     /**
      * @param string $modelsDir Directory containing service models.
@@ -175,8 +201,15 @@ class ApiProvider
      */
     private function __construct($modelsDir, array $manifest = null)
     {
-        $this->hasManifest = is_array($manifest);
-        $this->versions = $manifest ?: [];
+        // $this->hasManifest = is_array($manifest);
+        // $this->versions = $manifest ?: [];
+        // $this->modelsDir = rtrim($modelsDir, '/');
+        // if (!is_dir($this->modelsDir)) {
+        //     throw new \InvalidArgumentException(
+        //         "The specified models directory, {$modelsDir}, was not found."
+        //     );
+        // }
+        $this->manifest = $manifest;
         $this->modelsDir = rtrim($modelsDir, '/');
         if (!is_dir($this->modelsDir)) {
             throw new \InvalidArgumentException(
@@ -189,34 +222,34 @@ class ApiProvider
      */
     private function buildVersionsList($service)
     {
-        $results = [];
-        $len = strlen($service) + 1;
-        foreach (glob("{$this->modelsDir}/{$service}-*.api.*") as $f) {
-            $results[] = substr(basename($f), $len, 10);
-        }
-        if ($results) {
-            rsort($results);
-            $this->versions[$service] = ['latest' => $results[0]];
-            $this->versions[$service] += array_combine($results, $results);
-        } else {
-            $this->versions[$service] = [];
-        }
-    }
-    /**
-     * Load the file containing the API data for the given type/service/version.
-     */
-    private function loadApiData($type, $service, $version)
-    {
-        // First check for PHP files, then fall back to JSON.
-        $path = "{$this->modelsDir}/{$service}-{$version}.{$type}.php";
-        if (file_exists($path)) {
-            return require $path;
-        }
-        $path = "{$this->modelsDir}/{$service}-{$version}.{$type}.json";
-        if (file_exists($path)) {
-            return Utils::jsonDecode(file_get_contents($path), true);
-        }
+        // $results = [];
+        // $len = strlen($service) + 1;
+        // foreach (glob("{$this->modelsDir}/{$service}-*.api.*") as $f) {
+        //     $results[] = substr(basename($f), $len, 10);
+        // }
+        // if ($results) {
+        //     rsort($results);
+        //     $this->versions[$service] = ['latest' => $results[0]];
+        //     $this->versions[$service] += array_combine($results, $results);
+        // } else {
+        //     $this->versions[$service] = [];
+        // }
 
-        return;
+        $dir = "{$this->modelsDir}/{$service}/";
+        if (!is_dir($dir)) {
+            return;
+        }
+        // Get versions, remove . and .., and sort in descending order.
+        $results = array_diff(scandir($dir, SCANDIR_SORT_DESCENDING), ['..', '.']);
+        if (!$results) {
+            $this->manifest[$service] = ['versions' => []];
+        } else {
+            $this->manifest[$service] = [
+                'versions' => [
+                    'latest' => $results[0]
+                ]
+            ];
+            $this->manifest[$service]['versions'] += array_combine($results, $results);
+        }
     }
 }

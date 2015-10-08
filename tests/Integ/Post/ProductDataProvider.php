@@ -123,23 +123,13 @@ trait ProductDataProvider
                     ],
                 ],
                 [
-                    'Succeeded' => false,
-                    'StatusCode' => 400,
+                    'Succeeded' => true,
+                    'StatusCode' => 201,
                     'FunctionName' => __FUNCTION__,
-                    'EntityListCount' => 0,
-                    'Messages' => [
-                        [
-                            'Code' => 4003,
-                            'Severity' => 1,
-                            'Message' => 'ForeignId is empty.',
-                            'Description' => 'The ForeignId of the product with with the ForeignId: <EMPTY> is empty. It is recommended to send a unique ForeignId.',
-                            'UserHelpLink' => '',
-                            'DeveloperHelpLink' => '',
-                        ],
-                    ],
+                    'EntityListCount' => 1,
+                    'Messages' => [],
                 ],
             ],
-
         ];
     }
 
@@ -171,23 +161,13 @@ trait ProductDataProvider
                     ],
                 ],
                 [
-                    'Succeeded' => false,
-                    'StatusCode' => 400,
+                    'Succeeded' => true,
+                    'StatusCode' => 201,
                     'FunctionName' => __FUNCTION__,
-                    'EntityListCount' => 0,
-                    'Messages' => [
-                        [
-                            'Code' => 4003,
-                            'Severity' => 1,
-                            'Message' => 'ForeignId is empty.',
-                            'Description' => 'The ForeignId of the product with with the ForeignId: <EMPTY> is empty. It is recommended to send a unique ForeignId.',
-                            'UserHelpLink' => '',
-                            'DeveloperHelpLink' => '',
-                        ],
-                    ],
+                    'EntityListCount' => 1,
+                    'Messages' => [],
                 ],
             ],
-
         ];
     }
 

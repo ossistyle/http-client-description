@@ -4,7 +4,7 @@ namespace Vws\Test;
 use Vws\ClientResolver;
 use Vws\Credentials\Credentials;
 use Vws\Exception\VwsException;
-use Vws\Blackbox\BlackboxClient;
+use Vws\WebApi\WebApiClient;
 use GuzzleHttp\Client;
 use Vws\Credentials\CredentialProvider;
 use GuzzleHttp\Event\Emitter;
@@ -28,7 +28,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testAddsValidationSubscriber()
     {
-        $c = new BlackboxClient([
+        $c = new WebApiClient([
             'region'  => 'x',
             'version' => 'latest',
         ]);
@@ -47,7 +47,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testCanDisableValidation()
     {
-        $c = new BlackboxClient([
+        $c = new WebApiClient([
             'region'   => 'x',
             'version'  => 'latest',
             'validate' => false,
@@ -66,7 +66,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
             return ['metadata' => ['protocol' => 'rest-json']];
         };
         $conf = $r->resolve([
-            'service'      => 'blackbox',
+            'service'      => 'webapi',
             'region'       => 'x',
             'api_provider' => $provider,
             'version'      => 'latest',
@@ -128,7 +128,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
         putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN.'=foo_bar');
         $r = new ClientResolver(ClientResolver::getDefaultArguments());
         $conf = $r->resolve([
-            'service' => 'blackbox',
+            'service' => 'webapi',
             'region' => 'x',
             'version' => 'latest',
         ], new Emitter());
@@ -147,7 +147,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
         $exp = time() + 500;
         $r = new ClientResolver(ClientResolver::getDefaultArguments());
         $conf = $r->resolve([
-            'service'     => 'blackbox',
+            'service'     => 'webapi',
             'region'      => 'x',
             'version'     => 'latest',
             'credentials' => [
@@ -166,7 +166,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
     {
         $r = new ClientResolver(ClientResolver::getDefaultArguments());
         $conf = $r->resolve([
-            'service' => 'blackbox',
+            'service' => 'webapi',
             'region' => 'x',
             'credentials' => false,
             'version' => 'latest',
@@ -182,7 +182,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
         $c = new Credentials('foo', 'bar', 'foo_bar');
         $r = new ClientResolver(ClientResolver::getDefaultArguments());
         $conf = $r->resolve([
-            'service'     => 'blackbox',
+            'service'     => 'webapi',
             'region'      => 'x',
             'credentials' => function () use ($c) { return $c; },
             'version'     => 'latest',
@@ -221,7 +221,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
         $c = new Credentials('foo', 'bar', 'foo_bar');
         $r = new ClientResolver(ClientResolver::getDefaultArguments());
         $conf = $r->resolve([
-            'service'     => 'blackbox',
+            'service'     => 'webapi',
             'region'      => 'x',
             'credentials' => $c,
             'version'     => 'latest',
@@ -235,7 +235,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
     //     $logger = $this->getMockBuilder('Psr\Log\LoggerInterface')
     //         ->getMockForAbstractClass();
     //     $conf = $r->resolve([
-    //         'service'      => 'blackbox',
+    //         'service'      => 'webapi',
     //         'region'       => 'x',
     //         'retries'      => 2,
     //         'retry_logger' => $logger,
@@ -253,7 +253,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
     // {
     //     $r = new ClientResolver(ClientResolver::getDefaultArguments());
     //     $conf = $r->resolve([
-    //         'service'      => 'blackbox',
+    //         'service'      => 'webapi',
     //         'region'       => 'x',
     //         'retry_logger' => 'debug',
     //         'endpoint'     => 'http://sandboxapi.via.de:8001',
@@ -271,10 +271,10 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
         $em = new Emitter();
         $r = new ClientResolver(ClientResolver::getDefaultArguments());
         $r->resolve([
-            'service'  => 'blackbox',
+            'service'  => 'webapi',
             'region'   => 'x',
             'debug'    => true,
-            'endpoint' => 'http://sandboxapi.via.de:8001',
+            'endpoint' => 'http://dus-bb-api802.dus.via.de/api/',
             'version'  => 'latest',
         ], $em);
         $this->assertTrue(SdkTest::hasListener(
@@ -289,10 +289,10 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
         $em = new Emitter();
         $r = new ClientResolver(ClientResolver::getDefaultArguments());
         $r->resolve([
-            'service'  => 'blackbox',
+            'service'  => 'webapi',
             'region'   => 'x',
             'debug'    => false,
-            'endpoint' => 'http://sandboxapi.via.de:8001',
+            'endpoint' => 'http://dus-bb-api802.dus.via.de/api/',
             'version'  => 'latest',
         ], $em);
         $this->assertFalse(SdkTest::hasListener(
@@ -310,7 +310,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
     {
         $r = new ClientResolver(ClientResolver::getDefaultArguments());
         $conf = $r->resolve([
-            'service' => 'blackbox',
+            'service' => 'webapi',
             'region'  => 'x',
             'version' => 'latest',
             'client' => function (array $args) {
@@ -329,7 +329,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
     {
         $r = new ClientResolver(ClientResolver::getDefaultArguments());
         $conf = $r->resolve([
-            'service' => 'blackbox',
+            'service' => 'webapi',
             'region'  => 'x',
             'version' => 'latest',
             'http'    => ['foo' => 'bar'],

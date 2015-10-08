@@ -20,15 +20,15 @@ class PatternEndpointProviderTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [
-                ['region' => 'sandbox', 'service' => 'blackbox'],
+                ['region' => 'sandbox', 'service' => 'webapi'],
                 ['endpoint' => 'https://sandboxapi.via.de:8001'],
             ],
             [
-                ['region' => 'local', 'service' => 'blackbox', 'scheme' => 'http'],
+                ['region' => 'local', 'service' => 'webapi', 'scheme' => 'http'],
                 ['endpoint' => 'http://local.via.de/WebApi/'],
             ],
             [
-                ['region' => 'production', 'service' => 'blackbox', 'scheme' => 'https'],
+                ['region' => 'production', 'service' => 'webapi', 'scheme' => 'https'],
                 ['endpoint' => 'https://ebay.api.via.de'],
             ],
         ];

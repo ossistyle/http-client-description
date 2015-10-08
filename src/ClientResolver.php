@@ -45,7 +45,7 @@ class ClientResolver
         'service' => [
             'type'     => 'value',
             'valid'    => ['string'],
-            'doc'      => 'Name of the service to utilize. This value will be supplied by default when using one of the SDK clients (e.g., Vws\\Blackbox\\BlackboxClient).',
+            'doc'      => 'Name of the service to utilize. This value will be supplied by default when using one of the SDK clients (e.g., Vws\\WebApi\\WebApiClient).',
             'required' => true,
         ],
         'scheme' => [
@@ -116,7 +116,7 @@ class ClientResolver
             'type'    => 'value',
             'valid'   => ['bool'],
             'default' => false,
-            'doc'     => 'Set to true to enable resquest/response logging.',
+            'doc'     => 'Set to true to enable request/response logging.',
             'fn'      => [__CLASS__, '_apply_logger'],
         ],
         'log_filename' => [
@@ -445,7 +445,7 @@ class ClientResolver
         return <<<EOT
 A "version" configuration value is required. Specifying a version constraint
 ensures that your code will not be affected by a breaking change made to the
-service. For example, when using Vws Blackbox, you can lock your API version to
+service. For example, when using Vws WebApi, you can lock your API version to
 "2015-01-01".
 
 Your build of the Sdk has the following version(s) of "{$service}": {$versions}

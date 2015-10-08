@@ -109,10 +109,18 @@ class VwsClient extends AbstractClient implements VwsClientInterface
      */
     public function __construct(array $args)
     {
-        $service = $this->parseClass();
+        // $service = $this->parseClass();
+        //
+        // if (!isset($args['service'])) {
+        //     $args['service'] = $service;
+        // }
 
+        list($service, $exceptionClass) = $this->parseClass();
         if (!isset($args['service'])) {
-            $args['service'] = $service;
+            $args['service'] = manifest($service)['endpoint'];
+        }
+        if (!isset($args['exception_class'])) {
+            $args['exception_class'] = $exceptionClass;
         }
 
         $resolver = new ClientResolver(static::getArguments());
@@ -342,14 +350,24 @@ class VwsClient extends AbstractClient implements VwsClientInterface
 
     private function parseClass()
     {
+        // $class = get_class($this);
+        // if ($class === __CLASS__) {
+        //     return '';
+        // }
+        // $service = substr($class, strrpos($class, '\\') + 1, -6);
+        // $this->commandException = "Vws\\{$service}\\Exception\\{$service}Exception";
+        //
+        // return strtolower($service);
+
         $class = get_class($this);
         if ($class === __CLASS__) {
-            return '';
+            return ['', 'Aws\Exception\AwsException'];
         }
         $service = substr($class, strrpos($class, '\\') + 1, -6);
-        $this->commandException = "Vws\\{$service}\\Exception\\{$service}Exception";
-
-        return strtolower($service);
+        return [
+            strtolower($service),
+            "Vws\\{$service}\\Exception\\{$service}Exception"
+        ];
     }
 
     private function applyParser()

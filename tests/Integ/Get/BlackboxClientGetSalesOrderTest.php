@@ -2,13 +2,13 @@
 
 namespace Vws\Test\Integ\Get;
 
-use Vws\Test\Integ\BlackboxClientAbstractTestCase;
+use Vws\Test\Integ\WebApiClientAbstractTestCase;
 use Vws\Test\Integ\IntegUtils;
 
 /**
  *
  */
-class BlackboxClientGetSalesOrderTest extends BlackboxClientAbstractTestCase
+class WebApiClientGetSalesOrderTest extends WebApiClientAbstractTestCase
 {
     use IntegUtils;
 

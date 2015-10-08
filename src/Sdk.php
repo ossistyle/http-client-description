@@ -9,7 +9,7 @@ use GuzzleHttp\Client;
  */
 class Sdk
 {
-    const VERSION = '0.0.0.1';
+    const VERSION = '1.0.0';
 
     /** @var array Arguments for creating clients */
     private $args;
@@ -20,7 +20,8 @@ class Sdk
      * @var array
      */
     private static $aliases = [
-        //'blackbox'          => 'Blackbox',
+        //'blackbox'          => 'WebApi',
+        ''
     ];
 
     public function __construct(array $args = [])
@@ -67,25 +68,19 @@ class Sdk
 
     public function createClient($name, array $args = [])
     {
-        // Merge provided args with stored args
-        if (isset($this->args[$name])) {
-            $args += $this->args[$name];
+        // Get information about the service from the manifest file.
+        $service = manifest($name);
+        $namespace = $service['namespace'];
+        // Merge provided args with stored, service-specific args.
+        if (isset($this->args[$namespace])) {
+            $args += $this->args[$namespace];
         }
-
-        $args += $this->args;
-
+        // Provide the endpoint prefix in the args.
         if (!isset($args['service'])) {
-            $args['service'] = self::getEndpointPrefix($name);
+            $args['service'] = $service['endpoint'];
         }
-
-        $name = ucfirst(strtolower($name));
-
-        $client = "Vws\\{$name}\\{$name}Client";
-
-        if (!class_exists($client)) {
-            $client = 'Vws\\VwsClient';
-        }
-
-        return new $client($args);
+        // Instantiate the client class.
+        $client = "Vws\\{$namespace}\\{$namespace}Client";
+        return new $client($args + $this->args);
     }
 }
