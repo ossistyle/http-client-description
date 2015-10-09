@@ -2,12 +2,12 @@
 
 namespace Vws\Test\Integ\Patch;
 
-use Vws\Test\Integ\WebApiClientAbstractTestCase;
+use Vws\Test\Integ\BlackboxClientAbstractTestCase;
 
 /**
  *
  */
-class WebApiClientProductTest extends WebApiClientAbstractTestCase
+class BlackboxClientProductTest extends BlackboxClientAbstractTestCase
 {
     use ProductDataProvider;
 

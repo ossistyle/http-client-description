@@ -9,7 +9,7 @@ use GuzzleHttp\Client;
  */
 class Sdk
 {
-    const VERSION = '1.0.0';
+    const VERSION = '0.0.0.1';
 
     /** @var array Arguments for creating clients */
     private $args;
@@ -20,8 +20,7 @@ class Sdk
      * @var array
      */
     private static $aliases = [
-        //'blackbox'          => 'WebApi',
-        ''
+        //'blackbox'          => 'Blackbox',
     ];
 
     public function __construct(array $args = [])
@@ -52,6 +51,27 @@ class Sdk
         throw new \BadMethodCallException("Unknown method: {$name}.");
     }
 
+    public function createClient($name, array $args = [])
+    {
+        // Get information about the service from the manifest file.
+        $service = manifest($name);
+        $namespace = $service['namespace'];
+
+        // Merge provided args with stored, service-specific args.
+        if (isset($this->args[$namespace])) {
+            $args += $this->args[$namespace];
+        }
+
+        // Provide the endpoint prefix in the args.
+        if (!isset($args['service'])) {
+            $args['service'] = $service['endpoint'];
+        }
+
+        // Instantiate the client class.
+        $client = "Vws\\{$namespace}\\{$namespace}Client";
+        return new $client($args + $this->args);
+    }
+
     /**
      * Create an endpoint prefix name from a namespace.
      *
@@ -61,26 +81,6 @@ class Sdk
      */
     public static function getEndpointPrefix($name)
     {
-        $name = strtolower($name);
-
-        return isset(self::$aliases[$name]) ? self::$aliases[$name] : $name;
-    }
-
-    public function createClient($name, array $args = [])
-    {
-        // Get information about the service from the manifest file.
-        $service = manifest($name);
-        $namespace = $service['namespace'];
-        // Merge provided args with stored, service-specific args.
-        if (isset($this->args[$namespace])) {
-            $args += $this->args[$namespace];
-        }
-        // Provide the endpoint prefix in the args.
-        if (!isset($args['service'])) {
-            $args['service'] = $service['endpoint'];
-        }
-        // Instantiate the client class.
-        $client = "Vws\\{$namespace}\\{$namespace}Client";
-        return new $client($args + $this->args);
+        return manifest($name)['endpoint'];
     }
 }

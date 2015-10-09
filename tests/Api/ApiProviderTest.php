@@ -36,22 +36,22 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
     {
         $mp = $this->getTestApiProvider();
         $this->assertEquals(
-            ['2015-05-29'],
-            $mp->getVersions('webapi')
+            ['2015-03-27', '2015-02-28'],
+            $mp->getVersions('blackbox')
         );
         $this->assertEquals([], $mp->getVersions('foo'));
 
         $fp = $this->getTestApiProvider(false);
         $this->assertEquals(
-            ['2015-05-29'],
-            $fp->getVersions('webapi')
+            ['2015-03-27', '2015-02-28'],
+            $fp->getVersions('blackbox')
         );
     }
 
     public function testCanGetDefaultProvider()
     {
         $p = ApiProvider::defaultProvider();
-        $this->assertArrayHasKey('webapi', $this->readAttribute($p, 'manifest'));
+        $this->assertArrayHasKey('blackbox', $this->readAttribute($p, 'manifest'));
     }
 
     public function testManifestProviderReturnsNullForMissingService()
@@ -63,7 +63,7 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
     public function testManifestProviderCanLoadData()
     {
         $p = $this->getTestApiProvider();
-        $data = $p('api', 'webapi', 'latest');
+        $data = $p('api', 'blackbox', 'latest');
         $this->assertInternalType('array', $data);
         $this->assertArrayHasKey('foo', $data);
     }
@@ -74,7 +74,7 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
     public function testFilesystemProviderEnsuresDirectoryIsValid()
     {
         ApiProvider::filesystem('/path/to/invalid/dir');
-    }
+    }    
 
     public function testNullOnMissingFile()
     {
@@ -85,7 +85,7 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
     public function testReturnsLatestServiceData()
     {
         $p = ApiProvider::filesystem(__DIR__ . '/api_provider_fixtures');
-        $this->assertEquals(['foo' => 'bar'], $p('api', 'webapi', 'latest'));
+        $this->assertEquals(['foo' => 'bar'], $p('api', 'blackbox', 'latest'));
     }
 
     public function testReturnsNullWhenNoLatestVersionIsAvailable()
@@ -97,9 +97,9 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
     public function testReturnsPaginatorConfigsForLatestCompatibleVersion()
     {
         $p = $this->getTestApiProvider();
-        $result = $p('paginator', 'webapi', 'latest');
+        $result = $p('paginator', 'blackbox', 'latest');
         $this->assertEquals(['abc' => '123'], $result);
-        $result = $p('paginator', 'webapi', '2015-05-29');
+        $result = $p('paginator', 'blackbox', '2015-03-15');
         $this->assertEquals(['abc' => '123'], $result);
     }
 
@@ -107,7 +107,7 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException(UnresolvedApiException::class);
         $p = $this->getTestApiProvider();
-        ApiProvider::resolve($p, 'foo', 'webapi', 'latest');
+        ApiProvider::resolve($p, 'foo', 'blackbox', 'latest');
     }
 
     public function testThrowsOnBadService()
@@ -121,6 +121,6 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException(UnresolvedApiException::class);
         $p = $this->getTestApiProvider();
-        ApiProvider::resolve($p, 'api', 'webapi', 'first');
+        ApiProvider::resolve($p, 'api', 'blackbox', 'derp');
     }
 }

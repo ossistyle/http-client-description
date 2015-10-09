@@ -2,12 +2,12 @@
 
 namespace Vws\Test\Integ\Get;
 
-use Vws\Test\Integ\WebApiClientAbstractTestCase;
+use Vws\Test\Integ\BlackboxClientAbstractTestCase;
 
 /**
  *
  */
-class WebApiClientGetCatalogTest extends WebApiClientAbstractTestCase
+class BlackboxClientGetCatalogTest extends BlackboxClientAbstractTestCase
 {
     /**
      *

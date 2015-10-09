@@ -22,22 +22,25 @@ class ComplianceTest extends \PHPUnit_Framework_TestCase
     public function testCaseProvider()
     {
         $cases = [];
-
         $files = glob(__DIR__ . '/../test_cases/protocols/output/*.json');
         foreach ($files as $file) {
             $data = json_decode(file_get_contents($file), true);
             foreach ($data as $suite) {
                 $suite['metadata']['type'] = $suite['metadata']['protocol'];
                 foreach ($suite['cases'] as $case) {
-                    $description = new Service(function () use ($suite, $case) {
-                        return [
-                            'metadata'   => $suite['metadata'],
-                            'shapes'     => $suite['shapes'],
-                            'operations' => [
-                                $case['given']['name'] => $case['given']
-                            ]
-                        ];
-                    }, 'service', 'version');
+                    $serviceData = [
+                        'metadata'   => $suite['metadata'],
+                        'shapes'     => $suite['shapes'],
+                        'operations' => [
+                            $case['given']['name'] => $case['given']
+                        ]
+                    ];
+                    $description = new Service(
+                        $serviceData,
+                        function () {
+                            return [];
+                        }
+                    );
                     $cases[] = [
                         $file . ': ' . $suite['description'],
                         $description,
@@ -48,7 +51,6 @@ class ComplianceTest extends \PHPUnit_Framework_TestCase
                 }
             }
         }
-
         return $cases;
     }
 

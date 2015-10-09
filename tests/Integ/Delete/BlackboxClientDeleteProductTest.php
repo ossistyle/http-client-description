@@ -2,12 +2,12 @@
 
 namespace Vws\Test\Integ\Delete;
 
-use Vws\Test\Integ\WebApiClientAbstractTestCase;
+use Vws\Test\Integ\BlackboxClientAbstractTestCase;
 
 /**
  *
  */
-class WebApiClientDeleteProductTest extends WebApiClientAbstractTestCase
+class BlackboxClientDeleteProductTest extends BlackboxClientAbstractTestCase
 {
     use ProductDataProvider;
 

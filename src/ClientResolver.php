@@ -45,15 +45,8 @@ class ClientResolver
         'service' => [
             'type'     => 'value',
             'valid'    => ['string'],
-            'doc'      => 'Name of the service to utilize. This value will be supplied by default when using one of the SDK clients (e.g., Vws\\WebApi\\WebApiClient).',
+            'doc'      => 'Name of the service to utilize. This value will be supplied by default when using one of the SDK clients (e.g., Vws\\Blackbox\\BlackboxClient).',
             'required' => true,
-        ],
-        'exception_class' => [
-            'type'     => 'value',
-            'valid'    => ['string'],
-            'doc'      => 'Exception class to create when an error occurs.',
-            'default'  => 'Vws\Exception\VwsException',
-            'internal' => true
         ],
         'scheme' => [
             'type'     => 'value',
@@ -123,7 +116,7 @@ class ClientResolver
             'type'    => 'value',
             'valid'   => ['bool'],
             'default' => false,
-            'doc'     => 'Set to true to enable request/response logging.',
+            'doc'     => 'Set to true to enable resquest/response logging.',
             'fn'      => [__CLASS__, '_apply_logger'],
         ],
         'log_filename' => [
@@ -139,23 +132,10 @@ class ClientResolver
             'fn'    => [__CLASS__, '_apply_debug'],
         ],
         'http' => [
-            'type'    => 'value',
-            'valid'   => ['array'],
-            'default' => [],
-            'doc'     => 'Set to an array of SDK request options to apply to each request (e.g., proxy, verify, etc.).',
-        ],
-        'http_handler' => [
-            'type'    => 'value',
-            'valid'   => ['callable'],
-            'doc'     => 'An HTTP handler is a function that accepts a PSR-7 request object and returns a promise that is fulfilled with a PSR-7 response object or rejected with an array of exception data. NOTE: This option supersedes any provided "handler" option.',
-            'fn'      => [__CLASS__, '_apply_http_handler']
-        ],
-        'handler' => [
-            'type'     => 'value',
-            'valid'    => ['callable'],
-            'doc'      => 'A handler that accepts a command object, request object and returns a promise that is fulfilled with an Aws\ResultInterface object or rejected with an Aws\Exception\AwsException. A handler does not accept a next handler as it is terminal and expected to fulfill a command. If no handler is provided, a default Guzzle handler will be utilized.',
-            'fn'       => [__CLASS__, '_apply_handler'],
-            'default'  => [__CLASS__, '_default_handler']
+            'type'  => 'value',
+            'valid' => ['array'],
+            'doc'   => 'Set to an array of Guzzle client request options (e.g., proxy, verify, etc.). See http://docs.guzzlephp.org/en/latest/clients.html#request-options for a list of available options.',
+            'fn'    => [__CLASS__, '_apply_http'],
         ],
     ];
 
@@ -364,7 +344,15 @@ class ClientResolver
 
     public static function _apply_api_provider($value, array &$args)
     {
-        $api = new Service($value, $args['service'], $args['version']);
+        $api = new Service(
+            ApiProvider::resolve(
+                $value,
+                'api',
+                $args['service'],
+                $args['version']
+            ),
+            $value
+        );
         $args['api'] = $api;
         $args['error_parser'] = Service::createErrorParser($api->getProtocol());
         $args['serializer'] = Service::createSerializer($api, $args['endpoint']);
@@ -413,33 +401,11 @@ class ClientResolver
         }
     }
 
-    // public static function _apply_http(array $values, array &$args)
-    // {
-    //     foreach ($values as $k => $v) {
-    //         $args['client']->setDefaultOption($k, $v);
-    //     }
-    // }
-    public static function _apply_handler($value, array &$args, HandlerList $list)
+    public static function _apply_http(array $values, array &$args)
     {
-        $list->setHandler($value);
-    }
-    public static function _default_handler(array &$args)
-    {
-        return new WrappedHttpHandler(
-            default_http_handler(),
-            $args['parser'],
-            $args['error_parser'],
-            $args['exception_class']
-        );
-    }
-    public static function _apply_http_handler($value, array &$args, HandlerList $list)
-    {
-        $args['handler'] = new WrappedHttpHandler(
-            $value,
-            $args['parser'],
-            $args['error_parser'],
-            $args['exception_class']
-        );
+        foreach ($values as $k => $v) {
+            $args['client']->setDefaultOption($k, $v);
+        }
     }
 
     public static function _apply_profile($_, array &$args)
@@ -487,7 +453,7 @@ class ClientResolver
         return <<<EOT
 A "version" configuration value is required. Specifying a version constraint
 ensures that your code will not be affected by a breaking change made to the
-service. For example, when using Vws WebApi, you can lock your API version to
+service. For example, when using Vws Blackbox, you can lock your API version to
 "2015-01-01".
 
 Your build of the Sdk has the following version(s) of "{$service}": {$versions}

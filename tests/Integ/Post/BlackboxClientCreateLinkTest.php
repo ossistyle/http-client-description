@@ -2,9 +2,9 @@
 
 namespace Vws\Test\Integ\Post;
 
-use Vws\Test\Integ\WebApiClientAbstractTestCase;
+use Vws\Test\Integ\BlackboxClientAbstractTestCase;
 
-class WebApiClientPostCreateLinkTest extends WebApiClientAbstractTestCase
+class BlackboxClientPostCreateLinkTest extends BlackboxClientAbstractTestCase
 {
     use ProductCatalogCreateLinkDataProvider;
 

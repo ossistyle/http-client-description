@@ -17,8 +17,8 @@ class JsonRpcSerializerTest extends \PHPUnit_Framework_TestCase
 
     public function testPreparesRequests()
     {
-        $service = new Service(function () {
-            return [
+        $service = new Service(
+            [
                 'metadata'=> [
                     'targetPrefix' => 'test',
                     'jsonVersion' => '1.1'
@@ -34,8 +34,8 @@ class JsonRpcSerializerTest extends \PHPUnit_Framework_TestCase
                         ]
                     ]
                 ]
-            ];
-        }, 'service', 'region');
+            ]
+        ,function () {return []; });
 
         $http = new Client();
 

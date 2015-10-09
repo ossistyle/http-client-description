@@ -2,9 +2,9 @@
 
 namespace Vws\Test\Integ\Mixed;
 
-use Vws\Test\Integ\WebApiClientAbstractTestCase;
+use Vws\Test\Integ\BlackboxClientAbstractTestCase;
 
-class WebApiClientCreateAndDeleteLinkTest extends WebApiClientAbstractTestCase
+class BlackboxClientCreateAndDeleteLinkTest extends BlackboxClientAbstractTestCase
 {
     use ProductCatalogCreateAndDeleteLinkDataProvider;
 

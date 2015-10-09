@@ -2,12 +2,12 @@
 
 namespace Vws\Test\Integ\Patch;
 
-use Vws\Test\Integ\WebApiClientAbstractTestCase;
+use Vws\Test\Integ\BlackboxClientAbstractTestCase;
 
 /**
  *
  */
-class WebApiClientOptionalAttributesTest extends WebApiClientAbstractTestCase
+class BlackboxClientOptionalAttributesTest extends BlackboxClientAbstractTestCase
 {
     use OptionalAttributesDataProvider;
 
@@ -26,7 +26,7 @@ class WebApiClientOptionalAttributesTest extends WebApiClientAbstractTestCase
             'Value' => isset($request['Value']) ? $request['Value'] : '',
         ];
         if (isset($request['Foo'])) {
-            $data['Foo'] = $request['Foo'];
+            $data['Foo'] = $data['Foo'];
         }
 
         $this->patchValidation(

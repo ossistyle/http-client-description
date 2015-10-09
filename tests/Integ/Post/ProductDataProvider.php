@@ -123,13 +123,23 @@ trait ProductDataProvider
                     ],
                 ],
                 [
-                    'Succeeded' => true,
-                    'StatusCode' => 201,
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
                     'FunctionName' => __FUNCTION__,
-                    'EntityListCount' => 1,
-                    'Messages' => [],
+                    'EntityListCount' => 0,
+                    'Messages' => [
+                        [
+                            'Code' => 4003,
+                            'Severity' => 1,
+                            'Message' => 'ForeignId is empty.',
+                            'Description' => 'The ForeignId of the product with with the ForeignId: <EMPTY> is empty. It is recommended to send a unique ForeignId.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
                 ],
             ],
+
         ];
     }
 
@@ -161,13 +171,23 @@ trait ProductDataProvider
                     ],
                 ],
                 [
-                    'Succeeded' => true,
-                    'StatusCode' => 201,
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
                     'FunctionName' => __FUNCTION__,
-                    'EntityListCount' => 1,
-                    'Messages' => [],
+                    'EntityListCount' => 0,
+                    'Messages' => [
+                        [
+                            'Code' => 4003,
+                            'Severity' => 1,
+                            'Message' => 'ForeignId is empty.',
+                            'Description' => 'The ForeignId of the product with with the ForeignId: <EMPTY> is empty. It is recommended to send a unique ForeignId.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
                 ],
             ],
+
         ];
     }
 

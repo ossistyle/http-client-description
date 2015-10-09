@@ -23,18 +23,30 @@ trait CatalogDataProvider
         return
         [
             [
+
                 [
                     'Name' => 'Root with empty ForeignId',
                     'IsRootLevel' => true,
                     'ForeignId' => '',
                 ],
                 [
-                    'Succeeded' => true,
-                    'StatusCode' => 201,
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
                     'FunctionName' => __FUNCTION__,
-                    'EntityListCount' => 1,
+                    'EntityListCount' => 0,
                     'ReturnMessage' => 'Response contains not expected ',
-                    'Messages' => [],
+                    'Messages' => [
+                        [
+                            'Code' => 3000,
+                            'Severity' => 2,
+                            'Message' => 'ForeignId is empty.',
+                            'Description' => 'The ForeignId of the catalog with with '
+                                            .'the Name: (.+) is empty. '
+                                            .'It is recommended to send a unique ForeignId.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
                 ],
             ],
         ];
@@ -45,17 +57,29 @@ trait CatalogDataProvider
         return
         [
             [
+
                 [
                     'Name' => 'Root with missing ForeignId',
                     'IsRootLevel' => true,
                 ],
                 [
-                    'Succeeded' => true,
-                    'StatusCode' => 201,
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
                     'FunctionName' => __FUNCTION__,
-                    'EntityListCount' => 1,
+                    'EntityListCount' => 0,
                     'ReturnMessage' => 'Response contains not expected ',
-                    'Messages' => [],
+                    'Messages' => [
+                        [
+                            'Code' => 3000,
+                            'Severity' => 2,
+                            'Message' => 'ForeignId is empty.',
+                            'Description' => 'The ForeignId of the catalog with with '
+                                            .'the Name: (.+) is empty. '
+                                            .'It is recommended to send a unique ForeignId.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
                 ],
             ],
         ];
@@ -66,6 +90,7 @@ trait CatalogDataProvider
         return
         [
             [
+
                 [
                     'Name' => 'Child has empty ForeignId',
                     'ForeignId' => 'root_1',
@@ -85,12 +110,23 @@ trait CatalogDataProvider
                     ],
                 ],
                 [
-                    'Succeeded' => true,
-                    'StatusCode' => 201,
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
                     'FunctionName' => __FUNCTION__,
-                    'EntityListCount' => 1,
+                    'EntityListCount' => 0,
                     'ReturnMessage' => 'Response contains not expected ',
-                    'Messages' => [],
+                    'Messages' => [
+                        [
+                            'Code' => 3000,
+                            'Severity' => 2,
+                            'Message' => 'ForeignId is empty.',
+                            'Description' => 'The ForeignId of the catalog with with '
+                                            .'the Name: (.+) is empty. '
+                                            .'It is recommended to send a unique ForeignId.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
                 ],
             ],
         ];
@@ -119,12 +155,23 @@ trait CatalogDataProvider
                     ],
                 ],
                 [
-                    'Succeeded' => true,
-                    'StatusCode' => 201,
+                    'Succeeded' => false,
+                    'StatusCode' => 400,
                     'FunctionName' => __FUNCTION__,
-                    'EntityListCount' => 1,
+                    'EntityListCount' => 0,
                     'ReturnMessage' => 'Response contains not expected ',
-                    'Messages' => [],
+                    'Messages' => [
+                        [
+                            'Code' => 3000,
+                            'Severity' => 2,
+                            'Message' => 'ForeignId is empty.',
+                            'Description' => 'The ForeignId of the catalog with with '
+                                            .'the Name: (.+) is empty. '
+                                            .'It is recommended to send a unique ForeignId.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                    ],
                 ],
             ],
         ];
@@ -153,7 +200,7 @@ trait CatalogDataProvider
                             'Severity' => 2,
                             'Message' => 'Name is empty.',
                             'Description' => 'The Name of the product with with '
-                                            .'the Catalog Name:  is empty.',
+                                            .'the (.+): (.+) is empty.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -185,7 +232,7 @@ trait CatalogDataProvider
                             'Severity' => 2,
                             'Message' => 'Name is empty.',
                             'Description' => 'The Name of the product with with '
-                                            .'the Catalog Name:  is empty.',
+                                            .'the (.+): (.+) is empty.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -218,7 +265,7 @@ trait CatalogDataProvider
                             'Severity' => 2,
                             'Message' => 'Invalid Name.',
                             'Description' => 'The \'Name\' of the product with with '
-                                            .'the Catalog Name:  cannot be empty.',
+                                            .'the (.+): (.+) cannot be empty.',
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -273,7 +320,7 @@ trait CatalogDataProvider
                         [
                             'Code' => 3002,
                             'Severity' => 1,
-                            'Message' => 'The Name of the product with with the Catalog (.+): (.+) is too long.',
+                            'Message' => 'The Name of the product with with the (.+): (.+) is too long.',
                             'Description' => 'The value of the property "Name" cannot not be longer '
                                             .'than 30 chars, because in the eBay shop supports only 30 chars for the name of a catalog.',
                             'UserHelpLink' => '',
@@ -282,7 +329,7 @@ trait CatalogDataProvider
                         [
                             'Code' => 3002,
                             'Severity' => 1,
-                            'Message' => 'The Name of the product with with the Catalog (.+): (.+) is too long.',
+                            'Message' => 'The Name of the product with with the (.+): (.+) is too long.',
                             'Description' => 'The value of the property "Name" cannot not be longer '
                                             .'than 30 chars, because in the eBay shop supports only 30 chars for the name of a catalog.',
                             'UserHelpLink' => '',
@@ -291,7 +338,7 @@ trait CatalogDataProvider
                         [
                             'Code' => 3002,
                             'Severity' => 1,
-                            'Message' => 'The Name of the product with with the Catalog (.+): (.+) is too long.',
+                            'Message' => 'The Name of the product with with the (.+): (.+) is too long.',
                             'Description' => 'The value of the property "Name" cannot not be longer '
                                             .'than 30 chars, because in the eBay shop supports only 30 chars for the name of a catalog.',
                             'UserHelpLink' => '',
@@ -300,7 +347,7 @@ trait CatalogDataProvider
                         [
                             'Code' => 3002,
                             'Severity' => 1,
-                            'Message' => 'The Name of the product with with the Catalog (.+): (.+) is too long.',
+                            'Message' => 'The Name of the product with with the (.+): (.+) is too long.',
                             'Description' => 'The value of the property "Name" cannot not be longer '
                                             .'than 30 chars, because in the eBay shop supports only 30 chars for the name of a catalog.',
                             'UserHelpLink' => '',
@@ -309,7 +356,7 @@ trait CatalogDataProvider
                         [
                             'Code' => 3002,
                             'Severity' => 1,
-                            'Message' => 'The Name of the product with with the Catalog (.+): (.+) is too long.',
+                            'Message' => 'The Name of the product with with the (.+): (.+) is too long.',
                             'Description' => 'The value of the property "Name" cannot not be longer '
                                             .'than 30 chars, because in the eBay shop supports only 30 chars for the name of a catalog.',
                             'UserHelpLink' => '',

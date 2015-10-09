@@ -13,16 +13,14 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testSetsDefaultValues()
     {
-        $s = new Service(function () { return []; }, '', '');
+        $s = new Service([], function () { return []; });
         $this->assertSame([], $s['operations']);
         $this->assertSame([], $s['shapes']);
     }
 
     public function testImplementsArrayAccess()
     {
-        $s = new Service(function () {
-            return ['metadata' => ['foo' => 'bar']];
-        }, '', '');
+        $s = new Service(['metadata' => ['foo' => 'bar']], function () { return []; });
         $this->assertEquals('bar', $s['metadata']['foo']);
         $this->assertNull($s['missing']);
         $s['abc'] = '123';
@@ -32,16 +30,17 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testReturnsApiData()
     {
-        $s = new Service(function () {
-            return [
-                'metadata' => [
-                    'serviceFullName' => 'foo',
-                    'endpointPrefix'  => 'bar',
-                    'apiVersion'      => 'baz',
-                    'protocol'        => 'yak',
-                ]
-            ];
-        }, '', '');
+        $s = new Service(
+                [
+                    'metadata' => [
+                        'serviceFullName' => 'foo',
+                        'endpointPrefix'  => 'bar',
+                        'apiVersion'      => 'baz',
+                        'protocol'        => 'yak',
+                    ]
+                ],
+                function () { return [];}
+        );
         $this->assertEquals('foo', $s->getServiceFullName());
         $this->assertEquals('bar', $s->getEndpointPrefix());
         $this->assertEquals('baz', $s->getApiVersion());
@@ -50,7 +49,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testReturnsMetadata()
     {
-        $s = new Service(function () { return []; }, '', '');
+        $s = new Service([], function () { return []; });
         $this->assertInternalType('array', $s->getMetadata());
         $s['metadata'] = [
             'serviceFullName' => 'foo',
@@ -63,9 +62,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testReturnsIfOperationExists()
     {
-        $s = new Service(function () {
-            return ['operations' => ['foo' => ['input' => []]]];
-        }, '', '');
+        $s = new Service(['operations' => ['foo' => ['input' => []]]], function () { return [];});
         $this->assertTrue($s->hasOperation('foo'));
         $this->assertInstanceOf('Vws\Api\Operation', $s->getOperation('foo'));
         $this->assertArrayHasKey('foo', $s->getOperations());
@@ -76,7 +73,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
      */
     public function testEnsuresOperationExists()
     {
-        $s = new Service(function () { return []; }, '', '');
+        $s = new Service([], function () { return []; });
         $s->getOperation('foo');
     }
 
@@ -89,9 +86,9 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         ];
 
         // Stub out the API provider
-        $service = new Service(function () use ($expected) {
+        $service = new Service([], function () use ($expected) {
             return ['pagination' => ['foo' => $expected]];
-        }, '', '');
+        });
         $this->assertTrue($service->hasPaginator('foo'));
         $actual = $service->getPaginatorConfig('foo');
         $this->assertSame($expected, $actual);

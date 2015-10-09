@@ -4,22 +4,16 @@
 		"*/*" : {
 			"endpoint" : "{region}.via.de"
 		},
-		"local/webapi" : {
+		"local/blackbox" : {
 			"endpoint" : "local.via.de/WebApi/api/"
 		},
-		"sandbox/webapi" : {
+		"sandbox/blackbox" : {
 			"endpoint" : "dus-bb-api802.dus.via.de/api/"
 		},
-		"sandbox/wcfapi" : {
+		"sandbox-old/blackbox" : {
 			"endpoint" : "sandboxapi.via.de/publicapi/v1/api.svc/"
 		},
-		"local/wcfapi" : {
-			"endpoint" : "local.via.de/Api/publicapi/v1/api.svc/"
-		},
-		"production/wcfapi" : {
-			"endpoint" : "ebayapi.via.de/publicapi/v1/api.svc/"
-		},
-		"production/webapi" : {
+		"production/blackbox" : {
 			"endpoint" : "ebay.api.via.de"
 		}
 	}

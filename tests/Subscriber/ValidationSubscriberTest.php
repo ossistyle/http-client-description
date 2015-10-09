@@ -21,10 +21,10 @@ class ValidationSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     public function testValdiatesBeforeSerialization()
     {
-        $webapi = $this->getTestClient('webapi');
-        $api = $webapi->getApi();
-        $command = $webapi->getCommand('PostCatalog');
-        $trans = new CommandTransaction($webapi, $command);
+        $blackbox = $this->getTestClient('blackbox');
+        $api = $blackbox->getApi();
+        $command = $blackbox->getCommand('PostCatalog');
+        $trans = new CommandTransaction($blackbox, $command);
         $event = new InitEvent($trans);
         $validator = new Validator();
         $validation = new Validation($api, $validator);

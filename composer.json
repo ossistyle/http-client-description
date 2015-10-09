@@ -23,14 +23,12 @@
   "autoload": {
     "psr-4": {
       "Vws\\": "src/"
-    },
-    "files": ["src/functions.php"]
+    }
   },
   "autoload-dev": {
     "psr-4": {
       "Vws\\Test\\": "tests/"
-    },
-    "classmap": ["build/"]
+    }
   },
   "minimum-stability": "stable"
 }

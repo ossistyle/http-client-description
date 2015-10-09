@@ -17,8 +17,8 @@ class RestJsonSerializerTest extends \PHPUnit_Framework_TestCase
 
     private function getTestService()
     {
-        return new Service(function () {
-            return [
+        return new Service(
+            [
                 'metadata'=> [
                     'targetPrefix' => 'test',
                     'jsonVersion' => '1.1'
@@ -59,8 +59,8 @@ class RestJsonSerializerTest extends \PHPUnit_Framework_TestCase
                     'BlobShape' => ['type' => 'blob'],
                     'BazShape'  => ['type' => 'string']
                 ]
-            ];
-        }, 'service', 'region');
+            ]
+        , function () {return []; });
     }
 
     private function getRequest($commandName, $input)
