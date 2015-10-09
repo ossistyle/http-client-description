@@ -1,0 +1,3 @@
+<?php
+// This file was auto-generated from sdk-root/var/www/html/vws-php/src/ressources/blackbox/2015-05-12/paginators.json
+return [ 'pagination' => [ 'GetProducts' => [ 'limit' => 'Pagination.EntriesPerPage', 'page' => 'Pagination.PageNumber', 'more_results' => 'Pagination.HasNextPage', 'result_key' => 'EntityList', ], 'GetNewSalesOrdersInput' => [ 'limit' => 'Pagination.EntriesPerPage', 'page' => 'Pagination.PageNumber', 'more_results' => 'Pagination.HasNextPage', 'result_key' => 'EntityList', ], ],];
