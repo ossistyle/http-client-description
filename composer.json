@@ -1,34 +1,36 @@
 {
-  "name": "ossistyle/http-client-description",
-  "description": "Description of project http-client-description.",
-  "authors": [{
-    "name": "ossistyle",
-    "email": "ossistyle@gmail.com"
-  }],
-  "require-dev": {
-    "phpunit/phpunit": "~4.0"
-  },
-  "require": {
-    "php": ">=5.4",
-    "guzzlehttp/guzzle": "~5.1",
-    "guzzlehttp/command": "0.7.*",
-    "guzzlehttp/message-integrity-subscriber": "0.2.*",
-    "guzzlehttp/retry-subscriber": "~2.0",
-    "guzzlehttp/log-subscriber": "~1.0",
-    "monolog/monolog": "~1.12",
-    "mtdowling/jmespath.php": "~2.1",
-    "mtdowling/transducers": "0.3.*",
-    "respect/validation": "0.8.*"
-  },
-  "autoload": {
-    "psr-4": {
-      "Vws\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Vws\\Test\\": "tests/"
-    }
-  },
-  "minimum-stability": "stable"
+    "name": "ossistyle/http-client-description",
+    "description": "Description of project http-client-description.",
+    "authors": [{
+        "name": "ossistyle",
+        "email": "ossistyle@gmail.com"
+    }],
+    "require-dev": {
+        "phpunit/phpunit": "~4.0"
+    },
+    "require": {
+        "php": ">=5.4",
+        "guzzlehttp/guzzle": "~5.1",
+        "guzzlehttp/command": "0.7.*",
+        "guzzlehttp/message-integrity-subscriber": "0.2.*",
+        "guzzlehttp/retry-subscriber": "~2.0",
+        "guzzlehttp/log-subscriber": "~1.0",
+        "monolog/monolog": "~1.12",
+        "mtdowling/jmespath.php": "~2.1",
+        "mtdowling/transducers": "0.3.*",
+        "respect/validation": "0.8.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Vws\\": "src/"
+        },
+        "files": ["src/functions.php"]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Vws\\Test\\": "tests/"
+        },
+        "classmap": ["build/"]
+    },
+    "minimum-stability": "stable"
 }

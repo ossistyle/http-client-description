@@ -347,7 +347,7 @@ class VwsClient extends AbstractClient implements VwsClientInterface
         $class = get_class($this);
 
         if ($class === __CLASS__) {
-            return ['', 'Vws\Exception\AwsException'];
+            return ['', 'Vws\Exception\VwsException'];
         }
 
         $service = substr($class, strrpos($class, '\\') + 1, -6);
