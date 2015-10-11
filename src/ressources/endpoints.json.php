@@ -1,3 +1,3 @@
 <?php
-// This file was auto-generated from sdk-root/var/www/html/vws-php/src/ressources/endpoints.json
-return [ 'version' => 2, 'endpoints' => [ '*/*' => [ 'endpoint' => '{region}.via.de', ], 'local/blackbox' => [ 'endpoint' => 'local.via.de/WebApi/api/', ], 'sandbox/blackbox' => [ 'endpoint' => 'dus-bb-api802.dus.via.de/api/', ], 'sandbox-old/blackbox' => [ 'endpoint' => 'sandboxapi.via.de/publicapi/v1/api.svc/', ], 'production/blackbox' => [ 'endpoint' => 'ebay.api.via.de', ], ],];
+// This file was auto-generated from sdk-root/var/www/html/playground/vws-php/src/ressources/endpoints.json
+return [ 'version' => 2, 'endpoints' => [ '*/*' => [ 'endpoint' => '{region}.via.de', ], 'local/webapi' => [ 'endpoint' => 'local.via.de/WebApi/api/', ], 'sandbox/webapi' => [ 'endpoint' => 'dus-bb-api802.dus.via.de/api/', ], 'production/webapi' => [ 'endpoint' => 'ebaywebapi.via.de/api', ], 'sandbox/wcfapi' => [ 'endpoint' => 'sandboxapi.via.de/publicapi/v1/api.svc/', ], ],];
