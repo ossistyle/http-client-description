@@ -14,22 +14,39 @@ class RestJsonErrorParserTest extends \PHPUnit_Framework_TestCase
     {
         $response = (new MessageFactory())->fromMessage(
             "HTTP/1.1 400 Bad Request\r\n" .
-            "x-amzn-requestid: xyz\r\n\r\n" .
-            '{ "type": "client", "message": "lorem ipsum", "code": "foo" }'
+            "\r\n\r\n" .
+            '{ "Messages": [{"Code": 3000, "Severity": 2, "Message": "foo", "Description": "baz", "UserHelpLink": "", "DeveloperHelpLink": ""}]}'
         );
 
         $parser = new RestJsonErrorParser();
         $this->assertEquals(array(
-            'status_code'       => '400',
-            //'message'    => 'lorem ipsum',
             'type'       => 'client',
-            //'request_id' => 'xyz',
-            'parsed'     => [
-                'type' => 'client',
-                'message' => 'lorem ipsum',
-                'code' => 'foo',
+            'code'       => null,
+            'messages' =>
+            [
+                [
+                    'Code' => 3000,
+                    'Severity' => 2,
+                    'Message' => 'foo',
+                    'Description' => 'baz',
+                    'UserHelpLink' => null,
+                    'DeveloperHelpLink' => null,
+                ]
             ],
-            'messages'     => [],
+            'parsed'     =>
+            [
+                'messages' =>
+                    [
+                        [
+                            'Code' => 3000,
+                            'Severity' => 2,
+                            'Message' => 'foo',
+                            'Description' => 'baz',
+                            'UserHelpLink' => null,
+                            'DeveloperHelpLink' => null,
+                        ]
+                    ]
+            ]
         ), $parser($response));
     }
 
@@ -37,22 +54,16 @@ class RestJsonErrorParserTest extends \PHPUnit_Framework_TestCase
     {
         $response = (new MessageFactory())->fromMessage(
             "HTTP/1.1 400 Bad Request\r\n" .
-            "x-amzn-RequestId: xyz\r\n" .
-            "x-amzn-ErrorType: foo:bar\r\n\r\n" .
-            '{"message": "lorem ipsum"}'
+            "\r\n\r\n" .
+            '{}'
         );
 
         $parser = new RestJsonErrorParser();
         $this->assertEquals(array(
-            'status_code'       => '400',
-            //'code'       => 'foo',
-            //'message'    => 'lorem ipsum',
+            'code'       => null,
+            'messages'    => null,
             'type'       => 'client',
-            //'request_id' => 'xyz',
-            'messages' => [],
-            'parsed'     => array(
-                'message' => 'lorem ipsum',
-            )
+            'parsed'     => []
         ), $parser($response));
     }
 }

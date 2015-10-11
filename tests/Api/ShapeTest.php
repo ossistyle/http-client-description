@@ -58,6 +58,19 @@ class ShapeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('string', $result->getType());
     }
 
+    public function testCreatesCustomShapeReferences()
+    {
+        $s = Shape::create(
+            ['shape' => 'bar'],
+            new ShapeMap(['bar' => ['type' => 'integer', 'min' => 1, 'max' => 100, 'pattern' => '#\\b[\\d\\-]{3,18}\\b#']])
+        );
+        $this->assertInstanceOf('Vws\Api\Shape', $s);
+        $this->assertEquals('integer', $s->getType());
+        $this->assertEquals('1', $s->getMin());
+        $this->assertEquals('100', $s->getMax());
+        $this->assertEquals('#\\b[\\d\\-]{3,18}\\b#', $s->getPattern());
+    }
+
     public function testCreatesNestedShapeReferences()
     {
         $s = Shape::create(
@@ -66,6 +79,9 @@ class ShapeTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertInstanceOf('Vws\Api\Shape', $s);
         $this->assertEquals('float', $s->getType());
+        $this->assertEquals(false, $s->getMin());
+        $this->assertEquals(false, $s->getMax());
+        $this->assertEquals(false, $s->getPattern());
     }
 
     /**

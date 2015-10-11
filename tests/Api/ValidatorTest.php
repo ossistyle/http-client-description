@@ -50,6 +50,30 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             [
                 [
                     'type' => 'structure',
+                    'members' => ['foo' => ['type' => 'string', 'min' => 1]]
+                ],
+                ['foo' => ''],
+                "Found 1 error while validating the input provided for the Foo operation:\n[foo] length must be greater than or equal to 1"
+            ],
+            [
+                [
+                    'type' => 'structure',
+                    'members' => ['foo' => ['type' => 'string', 'max' => 1]]
+                ],
+                ['foo' => 'baz'],
+                "Found 1 error while validating the input provided for the Foo operation:\n[foo] length must be less than or equal to 1"
+            ],
+            [
+                [
+                    'type' => 'structure',
+                    'members' => ['foo' => ['type' => 'integer', 'pattern' => '#\\b[\\d\\-]{3,18}\\b#']]
+                ],
+                ['foo' => 12],
+                "Found 1 error while validating the input provided for the Foo operation:\n[foo] must match the following regular expression: #\\b[\\d\\-]{3,18}\\b#"
+            ],
+            [
+                [
+                    'type' => 'structure',
                     'members' => ['foo' => ['type' => 'boolean']]
                 ],
                 ['foo' => false],
@@ -87,6 +111,22 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
                 ],
                 ['foo' => 1],
                 true
+            ],
+            [
+                [
+                    'type' => 'structure',
+                    'members' => ['foo' => ['type' => 'integer', 'max' => 1]]
+                ],
+                ['foo' => 2],
+                "Found 1 error while validating the input provided for the Foo operation:\n[foo] must be less than or equal to 1"
+            ],
+            [
+                [
+                    'type' => 'structure',
+                    'members' => ['foo' => ['type' => 'integer', 'min' => 2]]
+                ],
+                ['foo' => 1],
+                "Found 1 error while validating the input provided for the Foo operation:\n[foo] must be greater than or equal to 2"
             ],
             [
                 [
@@ -157,6 +197,51 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
                 ],
                 ['foo' => [1, 3]],
                 true
+            ],
+            [
+                [
+                    'type' => 'structure',
+                    'members' => [
+                        'foo' => [
+                            'type' => 'list',
+                            'min' => 1,
+                            'max' => 3,
+                            'member' => ['type' => 'string']
+                        ]
+                    ]
+                ],
+                ['foo' => [1, 3]],
+                true
+            ],
+            [
+                [
+                    'type' => 'structure',
+                    'members' => [
+                        'foo' => [
+                            'type' => 'list',
+                            'min' => 1,
+                            'max' => 3,
+                            'member' => ['type' => 'integer']
+                        ]
+                    ]
+                ],
+                ['foo' => []],
+                "Found 1 error while validating the input provided for the Foo operation:\n[foo] must contain 1 or more elements"
+            ],
+            [
+                [
+                    'type' => 'structure',
+                    'members' => [
+                        'foo' => [
+                            'type' => 'list',
+                            'min' => 1,
+                            'max' => 3,
+                            'member' => ['type' => 'integer']
+                        ]
+                    ]
+                ],
+                ['foo' => [1,2,3,4]],
+                "Found 1 error while validating the input provided for the Foo operation:\n[foo] must contain 3 or fewer elements"
             ],
             [
                 [

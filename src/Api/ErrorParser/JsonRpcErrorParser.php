@@ -15,17 +15,13 @@ class JsonRpcErrorParser
     {
         $data = $this->genericHandler($response);
         // Make the casing consistent across services.
-        if ($data['parsed']) {
+        if ($data['parsed'] && is_array($data['parsed'])) {
             $data['parsed'] = array_change_key_case($data['parsed']);
         }
 
-        if (isset($data['parsed']['__type'])) {
-            $parts = explode('#', $data['parsed']['__type']);
-            $data['code'] = isset($parts[1]) ? $parts[1] : $parts[0];
-            $data['message'] = isset($data['parsed']['message'])
-                ? $data['parsed']['message']
-                : null;
-        }
+        $data['messages'] = isset($data['parsed']['messages'])
+            ? $data['parsed']['messages']
+            : null;
 
         return $data;
     }
