@@ -114,7 +114,7 @@ class VwsClient extends AbstractClient implements VwsClientInterface
             $args['service'] = manifest($service)['endpoint'];
         }
         if (!isset($args['exception_class'])) {
-            $args['exception_class'] = $exceptionClass;
+            $this->commandException = $exceptionClass;
         }
 
         $resolver = new ClientResolver(static::getArguments());
