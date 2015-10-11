@@ -27,13 +27,13 @@ class ClientPostProductTest extends ClientAbstractTestCase
     /**
      * @dataProvider productVariationData
      */
-    public function testPostProductVariationValidation(
-        $product,
-        $expectedResponse
-    ) {
-        $this->expectedResponse = $expectedResponse;
-        unset($product['StockAmount']);
-        unset($product['Price']);
-        $this->postValidation('postProduct', $product);
-    }
+    // public function testPostProductVariationValidation(
+    //     $product,
+    //     $expectedResponse
+    // ) {
+    //     $this->expectedResponse = $expectedResponse;
+    //     unset($product['StockAmount']);
+    //     unset($product['Price']);
+    //     $this->postValidation('postProduct', $product);
+    // }
 }

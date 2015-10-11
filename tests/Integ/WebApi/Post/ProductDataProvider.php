@@ -7,8 +7,6 @@ trait ProductDataProvider
     public static function productData()
     {
         return array_merge(
-            self::emptyForeignId(),
-            self::missingForeignId(),
             self::emptyTitle(),
             self::missingTitle(),
             self::nullTitle(),
@@ -94,111 +92,13 @@ trait ProductDataProvider
         );
     }
 
-    public static function emptyForeignId()
-    {
-        return
-        [
-            [
-
-                [
-                    'ForeignId' => '',
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
-                    'Description' => 'Beschreibung',
-                    'ShortDescription' => 'Kurzbeschreibung',
-                    'Price' => 1.23,
-                    'Ean' => '14352638',
-                    'StockAmount' => 10,
-                    'Images' => [
-                        [
-                            'ForeignId' => self::getGUID(),
-                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
-                            'Type' => 2,
-                        ],
-                    ],
-                    'Specifics' => [
-                        [
-                            'Name' => 'Marke',
-                            'Value' => 'VIA-Ebay',
-                        ],
-                    ],
-                ],
-                [
-                    'Succeeded' => false,
-                    'StatusCode' => 400,
-                    'FunctionName' => __FUNCTION__,
-                    'EntityListCount' => 0,
-                    'Messages' => [
-                        [
-                            'Code' => 4003,
-                            'Severity' => 1,
-                            'Message' => 'ForeignId is empty.',
-                            'Description' => 'The ForeignId of the product with with the ForeignId: <EMPTY> is empty. It is recommended to send a unique ForeignId.',
-                            'UserHelpLink' => '',
-                            'DeveloperHelpLink' => '',
-                        ],
-                    ],
-                ],
-            ],
-
-        ];
-    }
-
-    public static function missingForeignId()
-    {
-        return
-        [
-            [
-
-                [
-                    'Title' => 'Integration-Smoke-Test validate '.__FUNCTION__,
-                    'Description' => 'Beschreibung',
-                    'ShortDescription' => 'Kurzbeschreibung',
-                    'Price' => 1.23,
-                    'Ean' => '14352638',
-                    'StockAmount' => 10,
-                    'Images' => [
-                        [
-                            'ForeignId' => self::getGUID(),
-                            'ImageUrl' => 'http://bilder.afterbuy.de/images/80694/3p0yhxug36592testartikel_1.jpg',
-                            'Type' => 2,
-                        ],
-                    ],
-                    'Specifics' => [
-                        [
-                            'Name' => 'Marke',
-                            'Value' => 'VIA-Ebay',
-                        ],
-                    ],
-                ],
-                [
-                    'Succeeded' => false,
-                    'StatusCode' => 400,
-                    'FunctionName' => __FUNCTION__,
-                    'EntityListCount' => 0,
-                    'Messages' => [
-                        [
-                            'Code' => 4003,
-                            'Severity' => 1,
-                            'Message' => 'ForeignId is empty.',
-                            'Description' => 'The ForeignId of the product with with the ForeignId: <EMPTY> is empty. It is recommended to send a unique ForeignId.',
-                            'UserHelpLink' => '',
-                            'DeveloperHelpLink' => '',
-                        ],
-                    ],
-                ],
-            ],
-
-        ];
-    }
-
     public static function emptyTitle()
     {
         return
         [
             [
-
                 [
-                    'ForeignId' => self::getGUID(),
+                    //'ForeignId' => self::getGUID(),
                     'Title' => '',
                     'Description' => 'Beschreibung ' . __FUNCTION__,
                     'ShortDescription' => 'Kurzbeschreibung',
@@ -229,7 +129,38 @@ trait ProductDataProvider
                             'Code' => 4000,
                             'Severity' => 2,
                             'Message' => 'Title cannot be empty.',
-                            'Description' => 'The title of the product with the (.+): (.+) cannot be empty.',
+                            'Description' => 'The title of the product '.
+                                                'with the (.+): (.+) cannot be empty.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                        [
+                            'Code' => 4007,
+                            'Severity' => 1,
+                            'Message' => 'Invalid Upc',
+                            'Description' => 'The UPC of the product with '.
+                                                '(.+): (.+) is not valid. '.
+                                                'Please verify to send a valid UPC.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                        [
+                            'Code' => 4008,
+                            'Severity' => 1,
+                            'Message' => 'Invalid Isbn',
+                            'Description' => 'The ISBN of the product with '.
+                                                '(.+): (.+) is not valid. '.
+                                                'Please verify to send a valid ISBN-10 or ISBN-13.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                        [
+                            'Code' => 8000,
+                            'Severity' => 1,
+                            'Message' => 'Variations container is empty.',
+                            'Description' => "The product with the (.+): (.+) " .
+                                                "has an empty 'Variations' container. ".
+                                                "The product will be created as a standard product.",
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
@@ -279,6 +210,36 @@ trait ProductDataProvider
                             'Severity' => 2,
                             'Message' => 'Title cannot be empty.',
                             'Description' => 'The title of the product with the (.+): (.+) cannot be empty.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                        [
+                            'Code' => 4007,
+                            'Severity' => 1,
+                            'Message' => 'Invalid Upc',
+                            'Description' => 'The UPC of the product with '.
+                                                '(.+): (.+) is not valid. '.
+                                                'Please verify to send a valid UPC.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                        [
+                            'Code' => 4008,
+                            'Severity' => 1,
+                            'Message' => 'Invalid Isbn',
+                            'Description' => 'The ISBN of the product with '.
+                                                '(.+): (.+) is not valid. '.
+                                                'Please verify to send a valid ISBN-10 or ISBN-13.',
+                            'UserHelpLink' => '',
+                            'DeveloperHelpLink' => '',
+                        ],
+                        [
+                            'Code' => 8000,
+                            'Severity' => 1,
+                            'Message' => 'Variations container is empty.',
+                            'Description' => "The product with the (.+): (.+) " .
+                                                "has an empty 'Variations' container. ".
+                                                "The product will be created as a standard product.",
                             'UserHelpLink' => '',
                             'DeveloperHelpLink' => '',
                         ],
