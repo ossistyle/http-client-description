@@ -8,7 +8,6 @@ use Vws\Api\Service;
 use Vws\Api\Validator;
 use Vws\Credentials\Credentials;
 use Vws\Credentials\CredentialsInterface;
-use Vws\Credentials\NullCredentials;
 use Vws\Subscriber\Validation;
 use Vws\Endpoint\EndpointProvider;
 use Vws\Credentials\CredentialProvider;
@@ -331,7 +330,7 @@ class ClientResolver
                 $value['subscription_token']
             );
         } elseif ($value === false) {
-            $args['credentials'] = new NullCredentials();
+            $args['credentials'] = false;
         } else {
             throw new \InvalidArgumentException('Credentials must be an instance of '
                 .'Vws\Credentials\CredentialsInterface, an associative '

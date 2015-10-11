@@ -2,7 +2,6 @@
 namespace Vws\Credentials;
 
 use Vws\Exception\CredentialsException;
-use Vws\Exception\UnresolvedCredentialsException;
 use Vws\Utils;
 
 /**
@@ -19,7 +18,7 @@ use Vws\Utils;
  * You can wrap your calls to a credential provider with the
  * {@see CredentialProvider::resolve} function to ensure that a credentials
  * object is created. If a credentials object is not created, then the
- * resolve() function will throw a {@see Vws\Exception\UnresolvedCredentialsException}.
+ * resolve() function will throw a {@see Vws\ExceptionCredentialsException}.
  *
  *     use Vws\Credentials\CredentialProvider;
  *     $provider = CredentialProvider::defaultProvider();
@@ -52,7 +51,7 @@ class CredentialProvider
             return $result;
         }
 
-        throw new UnresolvedCredentialsException('Could not load credentials');
+        throw new CredentialsException('Could not load credentials');
     }
 
     /**
@@ -98,6 +97,7 @@ class CredentialProvider
             if (!file_exists($filename)) {
                 return;
             }
+
             if (!is_readable($filename)) {
                 throw new CredentialsException("Cannot read credentials from $filename");
             }

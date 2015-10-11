@@ -3,7 +3,6 @@ namespace Vws\Test\Api\Serializer;
 
 use Vws\Api\Service;
 use Vws\VwsClient;
-use Vws\Credentials\NullCredentials;
 use Vws\Test\UsesServiceTrait;
 use GuzzleHttp\Client;
 use GuzzleHttp\Command\CommandTransaction;
@@ -21,7 +20,7 @@ class ComplianceTest extends \PHPUnit_Framework_TestCase
     public function testCaseProvider()
     {
         $cases = [];
-        $files = glob(__DIR__ . '/../test_cases/protocols/input/rest-json.json');
+        $files = glob(__DIR__ . '/../test_cases/protocols/input/*.json');
         foreach ($files as $file) {
             $data = json_decode(file_get_contents($file), true);
             foreach ($data as $suite) {
@@ -67,7 +66,7 @@ class ComplianceTest extends \PHPUnit_Framework_TestCase
             'api_provider' => function () use ($service) {
                 return $service->toArray();
             },
-            'credentials'  => new NullCredentials(),
+            'credentials'  => false,
             'client'       => new Client(),
             'region'       => 'sandbox',
             'endpoint'     => $ep,

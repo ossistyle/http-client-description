@@ -171,8 +171,8 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
             'credentials' => false,
             'version' => 'latest',
         ], new Emitter());
-        $this->assertInstanceOf(
-            'Vws\Credentials\NullCredentials',
+        $this->assertEquals(
+            false,
             $conf['credentials']
         );
     }

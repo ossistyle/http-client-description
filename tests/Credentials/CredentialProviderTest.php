@@ -47,7 +47,7 @@ class CredentialProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Vws\Exception\UnresolvedCredentialsException
+     * @expectedException \Vws\Exception\CredentialsException
      */
     public function testEnsuresCredentialsAreFound()
     {
@@ -91,42 +91,42 @@ EOT;
         unlink($dir.'/credentials');
     }
 
-    // /**
-    //  * @expectedException \Vws\Exception\UnresolvedCredentialsException
-    //  * @expectedExceptionMessage Invalid credentials file:
-    //  */
-    // public function testEnsuresIniFileIsValid()
-    // {
-    //     $this->clearEnv();
-    //     $dir = sys_get_temp_dir() . '/.vws';
-    //
-    //     if (!is_dir($dir)) {
-    //         mkdir($dir, 0777, true);
-    //     }
-    //
-    //     file_put_contents($dir . '/credentials', "wef \n=\nwef");
-    //     //putenv('HOME=' . dirname($dir));
-    //
-    //     try {
-    //         @CredentialProvider::resolve(CredentialProvider::ini(null, $dir . '/credentials'));
-    //     } catch (\Exception $e) {
-    //         unlink($dir . '/credentials');
-    //         throw $e;
-    //     }
-    // }
+    /**
+     * @expectedException \Vws\Exception\CredentialsException
+     * @expectedExceptionMessage Invalid credentials file:
+     */
+    public function testEnsuresIniFileIsValid()
+    {
+        $this->clearEnv();
+        $dir = sys_get_temp_dir() . '/.vws';
+
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
+
+        file_put_contents($dir . '/credentials', "wef \n=\nwef");
+        //putenv('HOME=' . dirname($dir));
+
+        try {
+            @CredentialProvider::resolve(CredentialProvider::ini(null, $dir . '/credentials'));
+        } catch (\Exception $e) {
+            unlink($dir . '/credentials');
+            throw $e;
+        }
+    }
 
     /**
-     * @expectedException \Vws\Exception\UnresolvedCredentialsException
+     * @expectedException \Vws\Exception\CredentialsException
+     * @expectedExceptionMessage Could not load credentials
      */
     public function testEnsuresIniFileExists()
     {
         $this->clearEnv();
-        //putenv('HOME=/does/not/exist');
         CredentialProvider::resolve(CredentialProvider::ini(null, '/does/not/exist'));
     }
 
     /**
-     * @expectedException \Vws\Exception\UnresolvedCredentialsException
+     * @expectedException \Vws\Exception\CredentialsException
      */
     public function testEnsuresProfileIsNotEmpty()
     {
