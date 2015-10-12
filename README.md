@@ -14,7 +14,7 @@ The recommended way to install the VWS SDK for PHP is through Composer.
 	curl -sS https://getcomposer.org/installer | php
 	```
 
-2.	Next, run the Composer command to install the latest stable version of the AWS SDK for PHP:
+2.	Next, run the Composer command to install the latest stable version of the VWS SDK for PHP:
 
 	```
 	composer require ossistyle/vws-php
