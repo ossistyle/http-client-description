@@ -11,14 +11,15 @@
     "require": {
         "php": ">=5.4",
         "guzzlehttp/guzzle": "~5.3",
-        "guzzlehttp/command": "0.7.*",
+        "guzzlehttp/command": "0.8.*",
         "guzzlehttp/message-integrity-subscriber": "0.2.*",
         "guzzlehttp/retry-subscriber": "~2.0",
         "guzzlehttp/log-subscriber": "~1.0",
         "monolog/monolog": "~1.12",
         "mtdowling/jmespath.php": "~2.1",
         "mtdowling/transducers": "0.3.*",
-        "respect/validation": "0.8.*"
+        "respect/validation": "0.8.*",
+        "symfony/var-dumper": "^2.7"
     },
     "autoload": {
         "psr-4": {

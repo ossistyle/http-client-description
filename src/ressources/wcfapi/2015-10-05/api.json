@@ -4,9 +4,23 @@
 		"serviceFullName" : "Via WcfApi",
 		"timestampFormat" : "rfc822",
 		"protocol" : "rest-json",
+		"endpointPrefix" : "wcfapi",
 		"jsonVersion" : "1.1"
 	},
 	"operations" : {
+		"GetCookie" : {
+			"name" : "GetCookie",
+			"http" : {
+				"method" : "POST",
+				"requestUri" : "/Authentication_JSON_AppService.axd/Login"
+			},
+			"input" : {
+				"shape" : "GetCookieInput"
+			},
+			"output" : {
+				"shape" : "GetCookieOutput"
+			}
+		},
 		"GetCatalogs" : {
 			"name" : "GetCatalogs",
 			"http" : {
@@ -19,6 +33,14 @@
 		}
 	},
 	"shapes" : {
+		"GetCookieInput" : {
+			"type" : "structure",
+			"members" : {
+				"createPersistentCookie": {
+					"shape": "DefaultCreatePersistentCookie"
+				}
+			}
+		},
 		"GetCatalogsOutput" : {
 			"type" : "structure",
 			"members" : {
@@ -162,6 +184,11 @@
 					"args" : [true, "@value"]
 				}
 			]
+		},
+		"DefaultCreatePersistentCookie": {
+			"type": "boolean",
+			"default": false,
+			"static": true
 		}
 	}
 }
