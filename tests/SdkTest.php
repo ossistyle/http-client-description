@@ -73,7 +73,7 @@ class SdkTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(
             'Vws\VwsClientInterface',
-            (new Sdk())->createBlackbox([
+            (new Sdk())->createWebApi([
                 'region'  => 'sandbox',
                 'version' => 'latest',
             ])
@@ -87,7 +87,7 @@ class SdkTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(
             'Vws\VwsClientInterface',
-            (new Sdk())->createBlackbox([
+            (new Sdk())->createWebApi([
                 'region'  => 'sandbox',
                 'version' => 'latest',
             ])

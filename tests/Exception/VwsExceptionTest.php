@@ -16,7 +16,7 @@ class VwsExceptionTest extends \PHPUnit_Framework_TestCase
 
     public function testReturnsClient()
     {
-        $client = $this->getTestClient('blackbox');
+        $client = $this->getTestClient('webapi');
         $trans = new CommandTransaction($client, new Command('foo'));
         $e = new VwsException('Foo', $trans);
         $this->assertSame($client, $e->getClient());
@@ -25,7 +25,7 @@ class VwsExceptionTest extends \PHPUnit_Framework_TestCase
     public function testProvidesContextShortcuts()
     {
         $coll = ['vws_error' => ['request_id' => '10', 'type' => 'mytype', 'code' => 'mycode']];
-        $client = $this->getTestClient('blackbox');
+        $client = $this->getTestClient('webapi');
         $trans = new CommandTransaction($client, new Command('foo'), $coll);
         $e = new VwsException('Foo', $trans);
         $this->assertEquals('10', $e->getVwsRequestId());
@@ -38,15 +38,15 @@ class VwsExceptionTest extends \PHPUnit_Framework_TestCase
 
     public function testReturnsServiceName()
     {
-        $client = $this->getTestClient('blackbox');
+        $client = $this->getTestClient('webapi');
         $trans = new CommandTransaction($client, new Command('foo'));
         $e = new VwsException('Foo', $trans);
-        $this->assertSame('blackbox', $e->getServiceName());
+        $this->assertSame('webapi', $e->getServiceName());
     }
 
     public function testReturnsStatusCode()
     {
-        $client = $this->getTestClient('blackbox');
+        $client = $this->getTestClient('webapi');
         $trans = new CommandTransaction($client, new Command('foo'));
         $trans->response = new Response(400);
         $e = new VwsException('Foo', $trans);

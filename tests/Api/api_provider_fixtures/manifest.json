@@ -1,6 +1,6 @@
 {
-    "blackbox" : {
-        "namespace": "Blackbox",
+    "webapi" : {
+        "namespace": "WebApi",
         "versions": {
             "latest" : "2015-03-27",
             "2015-03-27" : "2015-03-27",

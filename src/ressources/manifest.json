@@ -1,5 +1,5 @@
 {
-    "": {
+    "wcfapi": {
         "namespace": "WcfApi",
         "versions": {
             "latest": "2015-10-05",

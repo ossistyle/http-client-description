@@ -23,7 +23,7 @@ class ResultPaginatorTest extends \PHPUnit_Framework_TestCase
         $requestCount = 0;
 
         // Create the client and paginator
-        $client = $this->getTestClient('blackbox');
+        $client = $this->getTestClient('webapi');
         $this->addMockResults($client, $results);
         $paginator = $client->getPaginator('GetProducts', ['limit' => 10, 'page' => 1], $config + [
             'process' => function () use (&$requestCount) {
@@ -115,7 +115,7 @@ class ResultPaginatorTest extends \PHPUnit_Framework_TestCase
     public function testCanSearchOverResultsUsingFlatMap()
     {
         $requestCount = 0;
-        $client = $this->getTestClient('blackbox');
+        $client = $this->getTestClient('webapi');
         $this->addMockResults($client, [
             new Result([
                 'Pagination' => [
