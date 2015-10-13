@@ -1,4 +1,5 @@
 <?php
+
 namespace Vws\Test\Api;
 
 use Vws\Api\Shape;
@@ -9,10 +10,9 @@ use GuzzleHttp\Stream\Stream;
 /**
  * @covers Vws\Api\Validator
  */
-class ValidatorTest extends \PHPUnit_Framework_TestCase
-{
-    public function validationProvider()
-    {
+class ValidatorTest extends \PHPUnit_Framework_TestCase {
+
+    public function validationProvider() {
         return [
             [
                 [
@@ -53,7 +53,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
                     'members' => ['foo' => ['type' => 'string', 'min' => 1]]
                 ],
                 ['foo' => ''],
-                "Found 1 error while validating the input provided for the Foo operation:\n[foo] length must be greater than or equal to 1"
+                "Found 1 error while validating the input provided for the Foo operation:\n[foo] must be at least 1 characters long. Value provided is 0 characters long."
             ],
             [
                 [
@@ -61,7 +61,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
                     'members' => ['foo' => ['type' => 'string', 'max' => 1]]
                 ],
                 ['foo' => 'baz'],
-                "Found 1 error while validating the input provided for the Foo operation:\n[foo] length must be less than or equal to 1"
+                "Found 1 error while validating the input provided for the Foo operation:\n[foo] must be no more than 1 characters long. Value provided is 3 characters long."
             ],
             [
                 [
@@ -118,7 +118,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
                     'members' => ['foo' => ['type' => 'integer', 'max' => 1]]
                 ],
                 ['foo' => 2],
-                "Found 1 error while validating the input provided for the Foo operation:\n[foo] must be less than or equal to 1"
+                "Found 1 error while validating the input provided for the Foo operation:\n[foo] must be no more than 1. Value provided is 2."
             ],
             [
                 [
@@ -126,7 +126,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
                     'members' => ['foo' => ['type' => 'integer', 'min' => 2]]
                 ],
                 ['foo' => 1],
-                "Found 1 error while validating the input provided for the Foo operation:\n[foo] must be greater than or equal to 2"
+                "Found 1 error while validating the input provided for the Foo operation:\n[foo] must be at least 2. Value provided is 1."
             ],
             [
                 [
@@ -226,7 +226,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
                     ]
                 ],
                 ['foo' => []],
-                "Found 1 error while validating the input provided for the Foo operation:\n[foo] must contain 1 or more elements"
+                "Found 1 error while validating the input provided for the Foo operation:\n[foo] must have at least 1 members. Value provided has 0."
             ],
             [
                 [
@@ -240,8 +240,8 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
                         ]
                     ]
                 ],
-                ['foo' => [1,2,3,4]],
-                "Found 1 error while validating the input provided for the Foo operation:\n[foo] must contain 3 or fewer elements"
+                ['foo' => [1, 2, 3, 4]],
+                "Found 1 error while validating the input provided for the Foo operation:\n[foo] must have no more than 3 members. Value provided has 4."
             ],
             [
                 [
@@ -389,8 +389,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider validationProvider
      */
-    public function testValidatesInput($shape, $input, $result)
-    {
+    public function testValidatesInput($shape, $input, $result) {
         $shape = Shape::create($shape, new ShapeMap([]));
         $validator = new Validator();
 
@@ -407,4 +406,5 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             }
         }
     }
+
 }
