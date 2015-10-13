@@ -24,6 +24,10 @@ class SubscriptionTokenSubscriber implements SubscriberInterface
     public function setCredentials(PreparedEvent $event)
     {
         $request = $event->getRequest();        
-        $request->addHeader('SubscriptionToken', $this->credentials->getSubscriptionToken());
+        if (strtolower($event->getCommand()->getName()) !== 'getcookie') {
+            $request->addHeader('SubscriptionToken', $this->credentials->getSubscriptionToken());
+        } else {
+            $request->removeHeader('SubscriptionToken');
+        }
     }
 }

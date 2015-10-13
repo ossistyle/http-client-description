@@ -15,7 +15,9 @@ class HeaderSubscriber implements SubscriberInterface
     public function setHeaders(PreparedEvent $event)
     {
         $request = $event->getRequest();
-        $request->addHeader('Content-Type', 'application/json');
+        if (!$request->hasHeader('Content-Type')) {
+            $request->addHeader('Content-Type', 'application/json');
+        }
         $request->addHeader('Accept', 'application/json');
     }
 }
