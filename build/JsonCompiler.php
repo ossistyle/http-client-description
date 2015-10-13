@@ -29,8 +29,8 @@ class JsonCompiler
         // Use var_export as a starting point.
         $code = var_export($this->getDecodedData(), true);
         // Convert "array()" to "[]".
-        $code = str_replace('array (', '[', $code);
-        $code = str_replace(')', ']', $code);
+        //$code = str_replace('array (', '[', $code);
+        //$code = str_replace(')', ']', $code);
         // Removing trailing whitespace.
         $code = preg_replace('/\s+$/m', '', $code);
         // Move arrays to the same line.
