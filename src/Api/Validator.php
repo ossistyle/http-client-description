@@ -1,7 +1,7 @@
 <?php
 namespace Vws\Api;
 
-use GuzzleHttp\Ring\Core;
+use Vws;
 
 /**
  * Validates a schema against a hash of input.
@@ -93,27 +93,21 @@ class Validator
     private function check_list(ListShape $shape, $value)
     {
         if (!is_array($value)) {
-            $this->addError('must be an array. Found '.Core::describeType($value));
-
+            $this->addError('must be an array. Found '
+                    .Vws\describe_type($value));
             return;
         }
 
-        if ($minItems = $shape->getMin()) {
-            $size = count($value);
-            if ($size < $minItems) {
-                $this->addError('must contain '.$minItems.' or more elements');
+        list($min, $max, $count) = [$shape['min'], $shape['max'], count($value)];
 
-                return;
-            }
+        if ($min && $count < $min) {
+            $this->addError("must have at least $min members."
+                . " Value provided has $count.");
         }
 
-        if ($maxItems = $shape->getMax()) {
-            $size = count($value);
-            if ($size > $maxItems) {
-                $this->addError('must contain '.$maxItems.' or fewer elements');
-
-                return;
-            }
+        if ($max && $count > $max) {
+            $this->addError("must have no more than $max members."
+                . " Value provided has $count.");
         }
 
         $items = $shape->getMember();
@@ -152,7 +146,8 @@ class Validator
             if ($type != 'object' || !method_exists($value, '__toString')) {
                 $this->addError('must be an fopen resource, a '
                     .'GuzzleHttp\Stream\StreamInterface object, or something '
-                    .'that can be cast to a string. Found '.Core::describeType($value));
+                    .'that can be cast to a string. Found '
+                    .Vws\describe_type($value));
             }
         }
     }
@@ -160,21 +155,29 @@ class Validator
     private function check_numeric(Shape $shape, $value)
     {
         if (!is_numeric($value)) {
-            $this->addError('must be numeric. Found '.Core::describeType($value));
+            $this->addError('must be numeric. Found '
+                .Vws\describe_type($value));
+            return;
         }
 
-        if (($min = $shape->getMin()) && $value < $min) {
-            $this->addError('must be greater than or equal to '.$min);
+        list($min, $max) = [$shape['min'], $shape['max']];
+
+        if ($min && $value < $min) {
+            $this->addError("must be at least $min."
+                . " Value provided is $value.");
         }
-        if (($max = $shape->getMax()) && $value > $max) {
-            $this->addError('must be less than or equal to '.$max);
+
+        if ($max && $value > $max) {
+            $this->addError("must be no more than $max."
+                . " Value provided is $value.");
         }
     }
 
     private function check_boolean(Shape $shape, $value)
     {
         if (!is_bool($value)) {
-            $this->addError('must be a boolean. Found '.Core::describeType($value));
+            $this->addError('must be a boolean. Found '
+                    .Vws\describe_type($value));
         }
     }
 
@@ -182,19 +185,21 @@ class Validator
     {
         if (!$this->checkCanString($value)) {
             $this->addError('must be a string or an object that implements '
-                .'__toString(). Found '.Core::describeType($value));
+                .'__toString(). Found '
+                    .Vws\describe_type($value));
+            return;
         }
-        if ($min = $shape->getMin()) {
-            $size = strlen($value);
-            if ($size < $min) {
-                $this->addError('length must be greater than or equal to '.$min);
-            }
+        
+        list($min, $max, $len) = [$shape['min'], $shape['max'], strlen($value)];
+
+        if ($min && $len < $min) {
+            $this->addError("must be at least $min characters long."
+                . " Value provided is $len characters long.");
         }
-        if ($max = $shape->getMax()) {
-            $size = strlen($value);
-            if ($size > $max) {
-                $this->addError('length must be less than or equal to '.$max);
-            }
+
+        if ($max && $len > $max) {
+            $this->addError("must be no more than $max characters long."
+                . " Value provided is $len characters long.");
         }
     }
 
@@ -216,7 +221,7 @@ class Validator
     {
         if (!is_array($value) || isset($value[0])) {
             $this->addError('must be an associative array. Found '
-                .Core::describeType($value));
+                .Vws\describe_type($value));
 
             return false;
         }
