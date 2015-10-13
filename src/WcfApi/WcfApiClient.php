@@ -25,7 +25,7 @@ class WcfApiClient extends VwsClient
         $em->attach(new SubscriptionTokenSubscriber($this->getCredentials()));
         $em->attach(new HeaderSubscriber($this->getCredentials()));
         $this->getHttpClient()->getEmitter()->attach(new Cookie());
-        $this->getHttpClient()->getEmitter()->attach(new CookieSubscriber($this->getCredentials()));
+        $this->getHttpClient()->getEmitter()->attach(new CookieSubscriber($this->getCredentials(), $this));
     }
 
     /**
