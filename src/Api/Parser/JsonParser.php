@@ -17,6 +17,8 @@ class JsonParser
                     $name = $member['locationName'] ?: $name;
                     if (isset($value[$name])) {
                         $target[$name] = $this->parse($member, $value[$name]);
+                    } else {
+                        $target[$name] = null;
                     }
                 }
 
@@ -28,7 +30,6 @@ class JsonParser
                 foreach ($value as $v) {
                     $target[] = $this->parse($member, $v);
                 }
-
                 return $target;
 
             case 'map':
