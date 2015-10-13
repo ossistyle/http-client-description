@@ -18,7 +18,7 @@ class JsonParser
                     if (isset($value[$name])) {
                         $target[$name] = $this->parse($member, $value[$name]);
                     } else {
-                        $target[$name] = null;
+                        $target[$name] = null; // don't ignore null response values
                     }
                 }
 

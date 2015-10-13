@@ -311,7 +311,7 @@
           },
           "name": "OperationName"
         },
-        "result": {},
+        "result": {"StrType": null},
         "response": {
           "status_code": 200,
           "headers": {},
