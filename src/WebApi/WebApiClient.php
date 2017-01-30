@@ -40,6 +40,15 @@ class WebApiClient extends VwsClient
             $args['scheme']['default'] = 'https';
         }
 
+        
+
         return $args;
+    }
+
+    public function getCredentials()
+    {
+        $creds = parent::getCredentials();
+
+        return $creds;
     }
 }

@@ -6,7 +6,8 @@ use GuzzleHttp\Event\EmitterInterface;
 use Vws\Api\ApiProvider;
 use Vws\Api\Service;
 use Vws\Api\Validator;
-use Vws\Credentials\Credentials;
+use Vws\WebApi\Credentials\Credentials as WebApiCredentials;
+use Vws\WcfApi\Credentials\Credentials as WcfApiCredentials;
 use Vws\Credentials\CredentialsInterface;
 use Vws\Subscriber\Validation;
 use Vws\Endpoint\EndpointProvider;
@@ -44,7 +45,7 @@ class ClientResolver
         'service' => [
             'type'     => 'value',
             'valid'    => ['string'],
-            'doc'      => 'Name of the service to utilize. This value will be supplied by default when using one of the SDK clients (e.g., Vws\\Blackbox\\BlackboxClient).',
+            'doc'      => 'Name of the service to utilize. This value will be supplied by default when using one of the SDK clients (e.g., Vws\\WebApi\\WebApiClient).',
             'required' => true,
         ],
         'scheme' => [
@@ -317,25 +318,60 @@ class ClientResolver
     {
         if ($value instanceof CredentialsInterface) {
             return;
-        } elseif (is_callable($value)) {
-            // Invoke the credentials provider and throw if it does not resolve.
-            $args['credentials'] = CredentialProvider::resolve($value);
-        } elseif (is_array($value)
+        // } elseif (is_callable($value)) {
+        //     // Invoke the credentials provider and throw if it does not resolve.
+        //     $args['credentials'] = CredentialProvider::resolve($value);
+        } elseif (is_array($value)) {
+
+            if (strtolower($args['service']) == 'webapi') {
+
+                if (isset($value['subscription_token'])
+                    && isset($value['secret'])
+                    && isset($value['vendor'])
+                    && isset($value['version'])) {
+                    $args['credentials'] = new WebApiCredentials(
+                        $value['secret'],
+                        $value['subscription_token'],
+                        $value['vendor'],
+                        $value['version']
+                    );
+                } else {
+                    throw new \InvalidArgumentException('Credentials must be an instance of '
+                        .'Vws\Credentials\CredentialsInterface, an associative '
+                        .'array that contains "secret", "subscription_token", "vendor" and "version" '
+                        .'key-value pairs, a credentials provider function, or false.'
+                    );
+                }
+            } elseif(strtolower($args['service']) == 'webapi')
+            {
+                if (isset($value['subscription_token'])
                     && isset($value['username'])
                     && isset($value['password'])
-                    && isset($value['subscription_token'])) {
-            $args['credentials'] = new Credentials(
-                $value['username'],
-                $value['password'],
-                $value['subscription_token']
-            );
+                    && isset($value['vendor'])
+                    && isset($value['version'])) {
+                    $args['credentials'] = new WcfApiCredentials(
+                        $value['username'],
+                        $value['password'],
+                        $value['subscription_token'],
+                        $value['vendor'],
+                        $value['version']
+                    );
+                } else {
+                    throw new \InvalidArgumentException('Credentials must be an instance of '
+                        .'Vws\Credentials\CredentialsInterface, an associative '
+                        .'array that contains "username", "password",
+                        . "subscriptiontoken", "vendor" and "version" '
+                        .'key-value pairs, a credentials provider function, or false.'
+                    );
+                }
+            }
+
         } elseif ($value === false) {
             $args['credentials'] = false;
         } else {
             throw new \InvalidArgumentException('Credentials must be an instance of '
                 .'Vws\Credentials\CredentialsInterface, an associative '
-                .'array that contains "username", "password",
-                . "subscriptiontoken", "vendor" and "version" '
+                .'array that contains "subscription_token", "vendor" and "version" '
                 .'key-value pairs, a credentials provider function, or false.'
             );
         }
@@ -452,7 +488,7 @@ class ClientResolver
         return <<<EOT
 A "version" configuration value is required. Specifying a version constraint
 ensures that your code will not be affected by a breaking change made to the
-service. For example, when using Vws Blackbox, you can lock your API version to
+service. For example, when using Vws WebApi, you can lock your API version to
 "2015-01-01".
 
 Your build of the Sdk has the following version(s) of "{$service}": {$versions}

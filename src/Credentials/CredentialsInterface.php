@@ -1,13 +1,17 @@
 <?php
 namespace Vws\Credentials;
 
-use GuzzleHttp\ToArrayInterface;
-
-interface CredentialsInterface extends ToArrayInterface
+interface CredentialsInterface
 {
     public function getUsername();
 
     public function getPassword();
 
+    public function getSecret();
+
     public function getToken();
+
+    public function getVendor();
+
+    public function getVersion();
 }

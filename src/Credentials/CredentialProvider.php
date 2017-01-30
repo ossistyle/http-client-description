@@ -89,7 +89,6 @@ class CredentialProvider
      */
     public static function ini($profile = null, $filename = null)
     {
-        //$filename = $filename ?: (self::getHomeDir() . '/.Vws/credentials');
         $filename = $filename ?: (self::getWorkingDir().'/.vws/credentials');
         $profile = $profile ?: (getenv(self::ENV_PROFILE) ?: 'default');
 

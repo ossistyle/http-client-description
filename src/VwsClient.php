@@ -137,7 +137,6 @@ class VwsClient extends AbstractClient implements VwsClientInterface
             'headers/User-Agent',
             'vws-sdk-php/'.Sdk::VERSION.' '.Client::getDefaultUserAgent()
         );
-
         if (isset($args['with_resolved'])) {
             /* @var callable $withResolved */
             $args['with_resolved']($config);
@@ -319,11 +318,16 @@ class VwsClient extends AbstractClient implements VwsClientInterface
                 if (!$transaction->context->getPath('vws_error/type')) {
                     $serviceError = $transaction->exception->getMessage();
                 } else {
-                    // Create an easy to read error message.
-                    $serviceError = trim($transaction->context->getPath('vws_error/code')
-                        .' ('.$transaction->context->getPath('vws_error/type')
-                        .' error): '.implode('\r\n', array_column($transaction->context->getPath('vws_error/messages'), 'message'))
-                    );
+                    if (!$response->getStatusCode() == '401')
+                    {
+                        // Create an easy to read error message.
+                        $serviceError = trim($transaction->context->getPath('vws_error/code')
+                            .' ('.$transaction->context->getPath('vws_error/type')
+                            .' error): '.implode('\r\n', array_column($transaction->context->getPath('vws_error/messages'), 'message'))
+                        );
+                    } else {
+                        $serviceError = $response->getHeader('AuthorizationError');
+                    }
                 }
             }
         }
