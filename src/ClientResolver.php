@@ -318,11 +318,10 @@ class ClientResolver
     {
         if ($value instanceof CredentialsInterface) {
             return;
-        // } elseif (is_callable($value)) {
-        //     // Invoke the credentials provider and throw if it does not resolve.
-        //     $args['credentials'] = CredentialProvider::resolve($value);
-        } elseif (is_array($value)) {
-
+        }  elseif (is_callable($value)) {
+            // Invoke the credentials provider and throw if it does not resolve.
+            $args['credentials'] = CredentialProvider::resolve($value);        
+        } elseif (is_array($value) && isset($args['service'])) {
             if (strtolower($args['service']) == 'webapi') {
 
                 if (isset($value['subscription_token'])
@@ -365,7 +364,6 @@ class ClientResolver
                     );
                 }
             }
-
         } elseif ($value === false) {
             $args['credentials'] = false;
         } else {

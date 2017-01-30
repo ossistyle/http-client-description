@@ -31,8 +31,12 @@ class CredentialProvider
 {
     const ENV_USERNAME = 'VWS_USERNAME';
     const ENV_PASSWORD = 'VWS_PASSWORD';
+    const ENV_SECRET = 'VWS_SECRET';
     const ENV_SUBSCRIPTION_TOKEN = 'VWS_SUBSCRIPTION_TOKEN';
+    const ENV_VENDOR = 'VWS_VENDOR';
+    const ENV_VERSION = 'VWS_VERSION';
     const ENV_PROFILE = 'VWS_PROFILE';
+
 
     /**
      * Invokes a credential provider and ensures that the provider returns a
@@ -66,13 +70,38 @@ class CredentialProvider
             // Use credentials from environment variables, if available
             $username = getenv(self::ENV_USERNAME);
             $password = getenv(self::ENV_PASSWORD);
+            $secret = getenv(self::ENV_SECRET);
+            $vendor = getenv(self::ENV_VENDOR);
+            $version = getenv(self::ENV_VERSION);
             $subcriptionToken = getenv(self::ENV_SUBSCRIPTION_TOKEN);
 
-            return $username
+            if ($username
                     && $password
                     && $subcriptionToken
-                ? new Credentials($username, $password, $subcriptionToken)
-                : null;
+                    && $vendor
+                    && $version)
+            {
+                return new \Vws\WcfApi\Credentials\Credentials(
+                    $username,
+                    $password,
+                    $subcriptionToken,
+                    $vendor,
+                    $version
+                );
+            }
+            if ($secret
+                && $subcriptionToken
+                && $vendor
+                && $version)
+            {
+                return new \Vws\WebApi\Credentials\Credentials(
+                    $secret,
+                    $subcriptionToken,
+                    $vendor,
+                    $version
+                );
+            }
+            return null;
         };
     }
 
@@ -142,24 +171,5 @@ class CredentialProvider
         if ($homeDir = getcwd()) {
             return $homeDir;
         }
-    }
-
-    /**
-     * Gets the environment's HOME directory if available.
-     *
-     * @return null|string
-     */
-    private static function getHomeDir()
-    {
-        // On Linux/Unix-like systems, use the HOME environment variable
-        if ($homeDir = getenv('HOME')) {
-            return $homeDir;
-        }
-
-        // Get the HOMEDRIVE and HOMEPATH values for Windows hosts
-        $homeDrive = getenv('HOMEDRIVE');
-        $homePath = getenv('HOMEPATH');
-
-        return ($homeDrive && $homePath) ? $homeDrive.$homePath : null;
     }
 }

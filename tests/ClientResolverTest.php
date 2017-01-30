@@ -2,7 +2,7 @@
 namespace Vws\Test;
 
 use Vws\ClientResolver;
-use Vws\Credentials\Credentials;
+use Vws\WebApi\Credentials\Credentials;
 use Vws\Exception\VwsException;
 use Vws\WebApi\WebApiClient;
 use GuzzleHttp\Client;
@@ -31,11 +31,12 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
         $c = new WebApiClient([
             'region'  => 'x',
             'version' => 'latest',
+            'credentials' => false
         ]);
 
         try {
-            // CreateTable requires actual input parameters.
-            $c->PostCatalog([]);
+            // PostCatalog requires actual input parameters.
+            $c->GetProduct([]);
             $this->fail('Did not validate');
         } catch (VwsException $e) {
         }
@@ -51,8 +52,9 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
             'region'   => 'x',
             'version'  => 'latest',
             'validate' => false,
+            'credentials' => false
         ]);
-        $command = $c->getCommand('PostCatalog');
+        $command = $c->getCommand('GetProducts');
         $command->getEmitter()->on('prepared', function () {
             throw new \Exception('Throwing!');
         });
@@ -70,6 +72,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
             'region'       => 'x',
             'api_provider' => $provider,
             'version'      => 'latest',
+            'credentials' => false
         ], new Emitter());
         $this->assertArrayHasKey('api', $conf);
         $this->assertArrayHasKey('error_parser', $conf);
@@ -120,12 +123,17 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testLoadsFromDefaultChainIfNeeded()
     {
-        $username = getenv(CredentialProvider::ENV_USERNAME);
-        $password = getenv(CredentialProvider::ENV_PASSWORD);
+        $secret = getenv(CredentialProvider::ENV_SECRET);
         $token = getenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN);
-        putenv(CredentialProvider::ENV_USERNAME.'=foo');
-        putenv(CredentialProvider::ENV_PASSWORD.'=bar');
-        putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN.'=foo_bar');
+        $vendor = getenv(CredentialProvider::ENV_VENDOR);
+        $version = getenv(CredentialProvider::ENV_VERSION);
+
+        putenv(CredentialProvider::ENV_SECRET.'=secret_foo');
+        putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN.'=token_foo');
+        putenv(CredentialProvider::ENV_VENDOR.'=vendor_foo');
+        putenv(CredentialProvider::ENV_VERSION.'=version_foo');
+        putenv(CredentialProvider::ENV_USERNAME.'=');
+        putenv(CredentialProvider::ENV_PASSWORD.'=');
         $r = new ClientResolver(ClientResolver::getDefaultArguments());
         $conf = $r->resolve([
             'service' => 'webapi',
@@ -134,12 +142,14 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
         ], new Emitter());
         $c = $conf['credentials'];
         $this->assertInstanceOf('Vws\Credentials\CredentialsInterface', $c);
-        $this->assertEquals('foo', $c->getUsername());
-        $this->assertEquals('bar', $c->getPassword());
-        $this->assertEquals('foo_bar', $c->getSubscriptionToken());
-        putenv(CredentialProvider::ENV_USERNAME."=$username");
-        putenv(CredentialProvider::ENV_PASSWORD."=$password");
+        $this->assertEquals('secret_foo', $c->getSecret());
+        $this->assertEquals('token_foo', $c->getToken());
+        $this->assertEquals('vendor_foo', $c->getVendor());
+        $this->assertEquals('version_foo', $c->getVersion());
+        putenv(CredentialProvider::ENV_SECRET."=$secret");
         putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN."=$token");
+        putenv(CredentialProvider::ENV_VENDOR."=$vendor");
+        putenv(CredentialProvider::ENV_VERSION."=$version");
     }
 
     public function testCreatesFromArray()
@@ -151,15 +161,17 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
             'region'      => 'x',
             'version'     => 'latest',
             'credentials' => [
-                'username'     => 'foo',
-                'password'  => 'baz',
-                'subscription_token'   => 'tok',
+                'secret'     => 'secret_foo',
+                'subscription_token'   => 'token_foo',
+                'vendor' => 'vendor_foo',
+                'version' => 'version_foo'
             ],
         ], new Emitter());
         $creds = $conf['credentials'];
-        $this->assertEquals('foo', $creds->getUsername());
-        $this->assertEquals('baz', $creds->getPassword());
-        $this->assertEquals('tok', $creds->getSubscriptionToken());
+        $this->assertEquals('secret_foo', $creds->getSecret());
+        $this->assertEquals('token_foo', $creds->getToken());
+        $this->assertEquals('vendor_foo', $creds->getVendor());
+        $this->assertEquals('version_foo', $creds->getVersion());
     }
 
     public function testCanCreateNullCredentials()
@@ -179,7 +191,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testCanCreateCredentialsFromProvider()
     {
-        $c = new Credentials('foo', 'bar', 'foo_bar');
+        $c = new \Vws\WebApi\Credentials\Credentials('secret', 'token', 'vendor', 'version');
         $r = new ClientResolver(ClientResolver::getDefaultArguments());
         $conf = $r->resolve([
             'service'     => 'webapi',
@@ -190,35 +202,9 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($c, $conf['credentials']);
     }
 
-//     public function testCanCreateCredentialsFromProfile()
-//     {
-//         $dir = sys_get_temp_dir() . '/.vws';
-//         if (!is_dir($dir)) {
-//             mkdir($dir, 0777, true);
-//         }
-//         $ini = <<<EOT
-// [foo]
-// vws_username = foo
-// vws_password = baz
-// vws_subscription_token = tok
-// EOT;
-//         file_put_contents($dir . '/credentials', $ini);
-//         $r = new ClientResolver(ClientResolver::getDefaultArguments());
-//         $conf = $r->resolve([
-//             'service'     => 'sqs',
-//             'region'      => 'x',
-//             'profile'     => 'foo',
-//             'version'     => 'latest'
-//         ], new Emitter());
-//         $creds = $conf['credentials'];
-//         $this->assertEquals('foo', $creds->getAccessKeyId());
-//         $this->assertEquals('baz', $creds->getSecretKey());
-//         $this->assertEquals('tok', $creds->getSecurityToken());
-//     }
-
     public function testCanUseCredentialsObject()
     {
-        $c = new Credentials('foo', 'bar', 'foo_bar');
+        $c = new \Vws\WebApi\Credentials\Credentials('secret', 'token', 'vendor', 'version');
         $r = new ClientResolver(ClientResolver::getDefaultArguments());
         $conf = $r->resolve([
             'service'     => 'webapi',
@@ -229,43 +215,6 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($c, $conf['credentials']);
     }
 
-    // public function testAddsLogger()
-    // {
-    //     $r = new ClientResolver(ClientResolver::getDefaultArguments());
-    //     $logger = $this->getMockBuilder('Psr\Log\LoggerInterface')
-    //         ->getMockForAbstractClass();
-    //     $conf = $r->resolve([
-    //         'service'      => 'blackbox',
-    //         'region'       => 'x',
-    //         'retries'      => 2,
-    //         'retry_logger' => $logger,
-    //         'endpoint'     => 'http://sandboxapi.via.de:8001',
-    //         'version'      => 'latest'
-    //     ], new Emitter());
-    //     $this->assertTrue(SdkTest::hasListener(
-    //         $conf['client']->getEmitter(),
-    //         'GuzzleHttp\Subscriber\Retry\RetrySubscriber',
-    //         'error'
-    //     ));
-    // }
-    //
-    // public function testAddsLoggerWithDebugSettings()
-    // {
-    //     $r = new ClientResolver(ClientResolver::getDefaultArguments());
-    //     $conf = $r->resolve([
-    //         'service'      => 'blackbox',
-    //         'region'       => 'x',
-    //         'retry_logger' => 'debug',
-    //         'endpoint'     => 'http://sandboxapi.via.de:8001',
-    //         'version'      => 'latest'
-    //     ], new Emitter());
-    //     $this->assertTrue(SdkTest::hasListener(
-    //         $conf['client']->getEmitter(),
-    //         'GuzzleHttp\Subscriber\Retry\RetrySubscriber',
-    //         'error'
-    //     ));
-    // }
-
     public function testAddsDebugListener()
     {
         $em = new Emitter();
@@ -274,8 +223,8 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
             'service'  => 'webapi',
             'region'   => 'x',
             'debug'    => true,
-            'endpoint' => 'http://sandboxapi.via.de:8001',
             'version'  => 'latest',
+            'credentials' => false
         ], $em);
         $this->assertTrue(SdkTest::hasListener(
             $em,
@@ -292,8 +241,8 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
             'service'  => 'webapi',
             'region'   => 'x',
             'debug'    => false,
-            'endpoint' => 'http://sandboxapi.via.de:8001',
             'version'  => 'latest',
+            'credentials' => false
         ], $em);
         $this->assertFalse(SdkTest::hasListener(
             $em,
@@ -313,6 +262,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
             'service' => 'webapi',
             'region'  => 'x',
             'version' => 'latest',
+            'credentials' => false,
             'client' => function (array $args) {
                 return new Client([
                     'handler' => function () {
@@ -333,6 +283,7 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
             'region'  => 'x',
             'version' => 'latest',
             'http'    => ['foo' => 'bar'],
+            'credentials' => false
         ], new Emitter());
         $this->assertEquals('bar', $conf['client']->getDefaultOption('foo'));
     }

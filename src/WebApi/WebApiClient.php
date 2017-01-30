@@ -19,7 +19,10 @@ class WebApiClient extends VwsClient
     {
         parent::__construct($args);
         $em = $this->getEmitter();
-        $em->attach(new ApplyCredentialsSubscriber($this->getCredentials()));
+        if ($this->getCredentials() != false)
+        {
+            $em->attach(new ApplyCredentialsSubscriber($this->getCredentials()));
+        }
     }
 
     /**
@@ -40,15 +43,8 @@ class WebApiClient extends VwsClient
             $args['scheme']['default'] = 'https';
         }
 
-        
+
 
         return $args;
-    }
-
-    public function getCredentials()
-    {
-        $creds = parent::getCredentials();
-
-        return $creds;
     }
 }
