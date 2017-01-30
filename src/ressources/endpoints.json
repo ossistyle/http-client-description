@@ -4,17 +4,14 @@
 		"*/*" : {
 			"endpoint" : "{region}.via.de"
 		},
-		"local/webapi" : {
-			"endpoint" : "local.via.de/WebApi/api/"
-		},
 		"sandbox/webapi" : {
-			"endpoint" : "dus-bb-api802.dus.via.de/api/"
-		},
-		"production/webapi" : {
-			"endpoint" : "ebaywebapi.via.de/api"
-		},
+			"endpoint" : "sandboxapi21.via.de"
+		},		
 		"sandbox/wcfapi" : {
 			"endpoint" : "sandboxapi.via.de/publicapi/v1/api.svc/"
+		},
+		"sandbox/wcfapi" : {
+			"endpoint" : "ebayapi.via.de/publicapi/v1/api.svc/"
 		}
 	}
 }
