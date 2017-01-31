@@ -320,7 +320,7 @@ class ClientResolver
             return;
         }  elseif (is_callable($value)) {
             // Invoke the credentials provider and throw if it does not resolve.
-            $args['credentials'] = CredentialProvider::resolve($value);        
+            $args['credentials'] = CredentialProvider::resolve($value);
         } elseif (is_array($value) && isset($args['service'])) {
             if (strtolower($args['service']) == 'webapi') {
 
@@ -341,7 +341,7 @@ class ClientResolver
                         .'key-value pairs, a credentials provider function, or false.'
                     );
                 }
-            } elseif(strtolower($args['service']) == 'webapi')
+            } elseif(strtolower($args['service']) == 'wcfapi')
             {
                 if (isset($value['subscription_token'])
                     && isset($value['username'])

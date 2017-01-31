@@ -2,7 +2,6 @@
 namespace Vws\Test\Credentials;
 
 use Vws\Credentials\CredentialProvider;
-use Vws\Credentials\Credentials;
 
 /**
  * @covers \Vws\Credentials\CredentialProvider
@@ -19,6 +18,7 @@ class CredentialProviderTest extends \PHPUnit_Framework_TestCase
 
     private function clearEnv()
     {
+        putenv(CredentialProvider::ENV_SECRET.'=');
         putenv(CredentialProvider::ENV_USERNAME.'=');
         putenv(CredentialProvider::ENV_PASSWORD.'=');
         putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN.'=');
@@ -59,13 +59,17 @@ class CredentialProviderTest extends \PHPUnit_Framework_TestCase
     public function testCreatesFromEnvironmentVariables()
     {
         $this->clearEnv();
-        putenv(CredentialProvider::ENV_USERNAME.'=abc');
-        putenv(CredentialProvider::ENV_PASSWORD.'=123');
-        putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN.'=1to2ken3');
+        putenv(CredentialProvider::ENV_USERNAME.'=user');
+        putenv(CredentialProvider::ENV_PASSWORD.'=pass');
+        putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN.'=token');
+        putenv(CredentialProvider::ENV_VENDOR.'=vendor');
+        putenv(CredentialProvider::ENV_VERSION.'=version');
         $creds = CredentialProvider::resolve(CredentialProvider::env());
-        $this->assertEquals('abc', $creds->getUsername());
-        $this->assertEquals('123', $creds->getPassword());
-        $this->assertEquals('1to2ken3', $creds->getSubscriptionToken());
+        $this->assertEquals('user', $creds->getUsername());
+        $this->assertEquals('pass', $creds->getPassword());
+        $this->assertEquals('token', $creds->getToken());
+        $this->assertEquals('vendor', $creds->getVendor());
+        $this->assertEquals('version', $creds->getVersion());
     }
 
     public function testCreatesFromIniFile()
@@ -78,16 +82,19 @@ class CredentialProviderTest extends \PHPUnit_Framework_TestCase
         }
         $ini = <<<EOT
 [default]
-vws_username = foo
-vws_password = baz
-vws_subscription_token = tok
+vws_username = user
+vws_password = pass
+vws_subscription_token = token
+vws_vendor = vendor
+vws_version = version
 EOT;
         file_put_contents($dir.'/credentials', $ini);
-        //putenv('HOME=' . dirname($dir));
         $creds = CredentialProvider::resolve(CredentialProvider::ini(null, $dir.'/credentials'));
-        $this->assertEquals('foo', $creds->getUsername());
-        $this->assertEquals('baz', $creds->getPassword());
-        $this->assertEquals('tok', $creds->getSubscriptionToken());
+        $this->assertEquals('user', $creds->getUsername());
+        $this->assertEquals('pass', $creds->getPassword());
+        $this->assertEquals('token', $creds->getToken());
+        $this->assertEquals('vendor', $creds->getVendor());
+        $this->assertEquals('version', $creds->getVersion());
         unlink($dir.'/credentials');
     }
 
@@ -135,11 +142,12 @@ EOT;
         if (!is_dir($dir)) {
             mkdir($dir, 0777, true);
         }
-        $ini = "[default]\vws_username = foo\n"
-            ."vws_password = baz\n"
-            ."vws_subscription_token = foo_baz\n[foo]";
+        $ini = "[default]\vws_username = user\n"
+            ."vws_password = user\n"
+            ."vws_subscription_token = token\n"
+            ."vws_vendor = vendor\n"
+            ."vws_version = version\n[foo]";
         file_put_contents($dir.'/credentials', $ini);
-        //putenv('HOME=' . dirname($dir));
 
         try {
             CredentialProvider::resolve(CredentialProvider::ini('foo', $dir.'/credentials'));
@@ -153,16 +161,16 @@ EOT;
         $u = getenv(CredentialProvider::ENV_USERNAME);
         $p = getenv(CredentialProvider::ENV_PASSWORD);
         $s = getenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN);
-        putenv(CredentialProvider::ENV_USERNAME.'=abc');
-        putenv(CredentialProvider::ENV_PASSWORD.'=123');
-        putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN.'=1to2ken3');
+        putenv(CredentialProvider::ENV_USERNAME.'=user');
+        putenv(CredentialProvider::ENV_PASSWORD.'=pass');
+        putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN.'=token');
         $provider = CredentialProvider::defaultProvider();
         $creds = $provider();
         putenv(CredentialProvider::ENV_USERNAME."={$u}");
         putenv(CredentialProvider::ENV_PASSWORD."={$p}");
         putenv(CredentialProvider::ENV_SUBSCRIPTION_TOKEN."={$s}");
-        $this->assertEquals('abc', $creds->getUsername());
-        $this->assertEquals('123', $creds->getPassword());
-        $this->assertEquals('1to2ken3', $creds->getSubscriptionToken());
+        $this->assertEquals('user', $creds->getUsername());
+        $this->assertEquals('pass', $creds->getPassword());
+        $this->assertEquals('token', $creds->getToken());
     }
 }

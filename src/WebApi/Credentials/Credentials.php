@@ -31,4 +31,14 @@ class Credentials extends AbstractCredentials
     {
         return $this->secret;
     }
+
+    public function toArray()
+    {
+        return [
+            'Secret' => $this->getSecret(),
+            'SubscriptionToken' => $this->getToken(),
+            'Vendor' => $this->getVendor(),
+            'Version' => $this->getVersion(),
+        ];
+    }
 }

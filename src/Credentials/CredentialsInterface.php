@@ -14,4 +14,6 @@ interface CredentialsInterface
     public function getVendor();
 
     public function getVersion();
+
+    public function toArray();
 }

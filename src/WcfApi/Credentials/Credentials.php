@@ -30,4 +30,15 @@ class Credentials extends AbstractCredentials
     {
         throw new \BadMethodCallException();
     }
+
+    public function toArray()
+    {
+        return [
+            'Username' => $this->getUsername(),
+            'Password' => $this->getPassword(),
+            'SubscriptionToken' => $this->getToken(),
+            'Vendor' => $this->getVendor(),
+            'Version'=> $this->getVersion(),
+        ];
+    }
 }
